@@ -1,0 +1,3 @@
+[UNRELEASED VERSION]
+Add:
+    1. Primeiro commit, adicionando a primeira versão da aplicação.
