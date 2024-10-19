@@ -44,6 +44,7 @@ dependencies {
     //firebase important
     implementation(libs.firebase.bom)
     implementation(libs.firebase.analytics)
+    implementation(libs.firebase.auth)
 //    implementation(libs.firebase.crashlytics)
 
     implementation(libs.androidx.core.ktx)

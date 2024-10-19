@@ -12,10 +12,12 @@ constraintlayout = "2.1.4"
 firebaseBom = "33.4.0"
 firebaseAnalytics = "21.3.0"
 firebaseCrashlytics = "18.4.3"
+firebaseAuth= "23.0.0"
 
 [libraries]
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-analytics = {  module = "com.google.firebase:firebase-bom", version.ref = "firebaseAnalytics"}
+firebase-auth = {  module = "com.google.firebase:firebase-auth", version.ref = "firebaseAuth"}
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version.ref = "firebaseCrashlytics"}
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

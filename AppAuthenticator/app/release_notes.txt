@@ -1,3 +1,5 @@
 [UNRELEASED VERSION]
 Add:
     1. Primeiro commit, adicionando a primeira versão da aplicação.
+    2. Refatorado o projeto, adicionando alguns pacotes e mudando paths. Além disso adicionado o sistema de cadastro
+        usando o firebase. Por enquanto apenas email + senha disponíveis.
