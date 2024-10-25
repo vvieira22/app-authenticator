@@ -28,12 +28,14 @@ class FormLogin : AppCompatActivity() {
             }
         }
         binding.botaoLogin.setOnClickListener {
-            callSnackBar(
-                it,
-                "Logado com sucesso!",
-                Color.BLUE,
-                Color.WHITE
-            )
+            if (doLogin(binding.emailLogin.text.toString(), binding.senhaLogin.text.toString())) {
+                callSnackBar(
+                    it,
+                    "Logado com sucesso!",
+                    Color.BLUE,
+                    Color.WHITE
+                )
+            }
         }
         setContentView(binding.root)
     }
@@ -74,17 +76,9 @@ class FormLogin : AppCompatActivity() {
                             val exception = cadastro.exception as? FirebaseAuthException
                             var mensagemErro = exception?.errorCode
                             when (mensagemErro) {
-                                "ERROR_INVALID_EMAIL" -> {
-                                    mensagemErro = "Email inválido"
-                                }
-
-                                "ERROR_WEAK_PASSWORD" -> {
-                                    mensagemErro = "Senha fraca"
-                                }
-
-                                "ERROR_EMAIL_ALREADY_IN_USE" -> {
-                                    mensagemErro = "Email já cadastrado"
-                                }
+                                "ERROR_INVALID_EMAIL" -> mensagemErro = "Email inválido"
+                                "ERROR_WEAK_PASSWORD" -> mensagemErro = "Senha fraca"
+                                "ERROR_EMAIL_ALREADY_IN_USE" -> mensagemErro = "Email já cadastrado"
                             }
                             callSnackBar(
                                 binding.root,
@@ -131,5 +125,42 @@ class FormLogin : AppCompatActivity() {
         snackbar.setBackgroundTint(cor)
         snackbar.setTextColor(corTexto)
         snackbar.show()
+    }
+
+    private fun doLogin(email: String, senha: String): Boolean {
+        var auth = FirebaseAuth.getInstance()
+        var pass = false
+
+        if (email.isEmpty() || senha.isEmpty()) {
+            callSnackBar(
+                binding.root,
+                "Por favor preencher todos os campos.",
+                Color.RED,
+                Color.WHITE
+            )
+        } else {
+            auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener {
+                if (it.isSuccessful) {
+                    pass = true
+                } else {
+                    val exception = it.exception as? FirebaseAuthException
+                    var mensagemErro = exception?.errorCode
+                    when (mensagemErro) {
+                        "ERROR_INVALID_CREDENTIAL" -> mensagemErro = "Senha ou Email incorretos."
+                        "ERROR_USER_NOT_FOUND" -> mensagemErro = "Usuário não encontrado."
+                        "ERROR_USER_DISABLED" -> mensagemErro = "Usuário desabilitado."
+                        "ERROR_TOO_MANY_REQUESTS" -> mensagemErro = "Muitas tentativas de login."
+                        "ERROR_OPERATION_NOT_ALLOWED" -> mensagemErro = "Operação não permitida."
+                    }
+                    callSnackBar(
+                        binding.root,
+                        mensagemErro.toString(),
+                        Color.RED,
+                        Color.WHITE
+                    )
+                }
+            }
+        }
+        return pass
     }
 }
