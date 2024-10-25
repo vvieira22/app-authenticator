@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">AppAuthenticator</string>
+
+    <!--MENSAGENS DE ERRO LOGIN-->
+    <string name="invalid_credential">Senha ou Email incorretos.</string>
+    <string name="usr_not_found">Usuário não encontrado.</string>
+    <string name="user_disabled">Usuário desabilitado.</string>
+    <string name="too_many_requests">Muitas tentativas de login.</string>
+    <string name="operation_not_allowed">Operação não permitida.</string>
+    <string name="campos_vazios">Preencher todos os campos.</string>
+    <string name="login_sucesso">Logado com sucesso.</string>
+
+    <!--MENSAGENS DE ERRO CADASTRO-->
+    <string name="cpf_cnpj_vazio">Campo CPF/CNPJ não pode ser vazio.</string>
+    <string name="nome_vazio">Campo CPF/CNPJ não pode ser vazio.</string>
+    <string name="email_vazio">Campo CPF/CNPJ não pode ser vazio.</string>
+    <string name="senha_vazio">Campo CPF/CNPJ não pode ser vazio.</string>
+    <string name="email_invalido">Email inválido.</string>
+    <string name="senha_fraca">Senha fraca.</string>
+    <string name="email_em_uso">Email já cadastrado.</string>
+    <string name="cadastro_sucesso">Cadastro realizado com sucesso.</string>
+
 </resources>

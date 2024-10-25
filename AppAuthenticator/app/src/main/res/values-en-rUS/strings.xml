@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">AppAuthenticator</string>
+
+    <!--ERROR MESSAGES WHEN SIGN IN-->
+    <string name="invalid_credential">Password or email is invalid.</string>
+    <string name="usr_not_found">User not found.</string>
+    <string name="user_disabled">User disabled.</string>
+    <string name="too_many_requests">Too many requests to log in.</string>
+    <string name="operation_not_allowed">Operation not allowed.</string>
+    <string name="campos_vazios">Fill all fields.</string>
+    <string name="login_sucesso">Signed in successfully.</string>
+
+    <!--ERROR MESSAGES WHEN SIGN UP-->
+    <string name="cpf_cnpj_vazio">Field CPF/CNPJ cannot be empty.</string>
+    <string name="nome_vazio">Field name cannot be empty.</string>
+    <string name="email_vazio">Field email cannot be empty.</string>
+    <string name="senha_vazio">Field password cannot be empty.</string>
+    <string name="email_invalido">Invalid email.</string>
+    <string name="senha_fraca">Password is too weak.</string>
+    <string name="email_em_uso">Email already in use.</string>
+    <string name="cadastro_sucesso">Signed up successfully.</string>
+
+</resources>

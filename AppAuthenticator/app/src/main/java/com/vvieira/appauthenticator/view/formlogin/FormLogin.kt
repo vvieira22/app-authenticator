@@ -3,6 +3,7 @@ package com.vvieira.appauthenticator.view.formlogin
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
+import com.vvieira.appauthenticator.R
 import com.vvieira.appauthenticator.databinding.ActivityFormCadastroBinding
 import com.vvieira.appauthenticator.databinding.ActivityFormLoginBinding
 
@@ -31,7 +33,7 @@ class FormLogin : AppCompatActivity() {
             if (doLogin(binding.emailLogin.text.toString(), binding.senhaLogin.text.toString())) {
                 callSnackBar(
                     it,
-                    "Logado com sucesso!",
+                    getString(R.string.login_sucesso),
                     Color.BLUE,
                     Color.WHITE
                 )
@@ -67,7 +69,7 @@ class FormLogin : AppCompatActivity() {
                         if (cadastro.isSuccessful) {
                             callSnackBar(
                                 view,
-                                "Cadastro realizado com sucesso!",
+                                getString(R.string.cadastro_sucesso),
                                 Color.GREEN,
                                 Color.WHITE
                             )
@@ -76,9 +78,10 @@ class FormLogin : AppCompatActivity() {
                             val exception = cadastro.exception as? FirebaseAuthException
                             var mensagemErro = exception?.errorCode
                             when (mensagemErro) {
-                                "ERROR_INVALID_EMAIL" -> mensagemErro = "Email inválido"
-                                "ERROR_WEAK_PASSWORD" -> mensagemErro = "Senha fraca"
-                                "ERROR_EMAIL_ALREADY_IN_USE" -> mensagemErro = "Email já cadastrado"
+                                "ERROR_INVALID_EMAIL" -> mensagemErro = getString(R.string.email_invalido)
+                                "ERROR_WEAK_PASSWORD" -> mensagemErro = getString(R.string.senha_fraca)
+                                "ERROR_EMAIL_ALREADY_IN_USE" -> mensagemErro = getString(R.string.email_em_uso)
+                                else -> mensagemErro = "Erro desconhecido: $mensagemErro"
                             }
                             callSnackBar(
                                 binding.root,
@@ -106,16 +109,13 @@ class FormLogin : AppCompatActivity() {
         senha: String
     ): String {
         try {
-            if (nome.isEmpty())
-                throw Exception("Campo nome não pode ser vazio.")
-            else if (doc.isEmpty())
-                throw Exception("Campo documento não pode ser vazio.")
-            else if (email.isEmpty())
-                throw Exception("Campo email não pode ser vazio.")
-            else if (senha.isEmpty())
-                throw Exception("Campo senha não pode ser vazio.")
+            if (nome.isEmpty()) throw Exception(getString(R.string.nome_vazio))
+            else if (doc.isEmpty()) throw Exception(getString(R.string.cpf_cnpj_vazio))
+            else if (email.isEmpty()) throw Exception(getString(R.string.email_vazio))
+            else if (senha.isEmpty()) throw Exception(getString(R.string.senha_vazio))
             return ""
         } catch (e: Exception) {
+            Log.e("[ERRO]", "validarCamposCadastro(): " + e.message.toString())
             return e.message.toString()
         }
     }
@@ -134,7 +134,7 @@ class FormLogin : AppCompatActivity() {
         if (email.isEmpty() || senha.isEmpty()) {
             callSnackBar(
                 binding.root,
-                "Por favor preencher todos os campos.",
+                getString(R.string.campos_vazios),
                 Color.RED,
                 Color.WHITE
             )
@@ -146,15 +146,17 @@ class FormLogin : AppCompatActivity() {
                     val exception = it.exception as? FirebaseAuthException
                     var mensagemErro = exception?.errorCode
                     when (mensagemErro) {
-                        "ERROR_INVALID_CREDENTIAL" -> mensagemErro = "Senha ou Email incorretos."
-                        "ERROR_USER_NOT_FOUND" -> mensagemErro = "Usuário não encontrado."
-                        "ERROR_USER_DISABLED" -> mensagemErro = "Usuário desabilitado."
-                        "ERROR_TOO_MANY_REQUESTS" -> mensagemErro = "Muitas tentativas de login."
-                        "ERROR_OPERATION_NOT_ALLOWED" -> mensagemErro = "Operação não permitida."
+                        "ERROR_INVALID_CREDENTIAL" -> mensagemErro = getString(R.string.invalid_credential)
+                        "ERROR_USER_NOT_FOUND" -> mensagemErro = getString(R.string.usr_not_found)
+                        "ERROR_USER_DISABLED" -> mensagemErro = getString(R.string.user_disabled)
+                        "ERROR_TOO_MANY_REQUESTS" -> mensagemErro = getString(R.string.too_many_requests)
+                        "ERROR_OPERATION_NOT_ALLOWED" -> mensagemErro = getString(R.string.operation_not_allowed)
+                        else -> mensagemErro = "Erro desconhecido: $mensagemErro"
                     }
+                    Log.e("[ERRO]", "doLogin(): $mensagemErro")
                     callSnackBar(
                         binding.root,
-                        mensagemErro.toString(),
+                        mensagemErro,
                         Color.RED,
                         Color.WHITE
                     )

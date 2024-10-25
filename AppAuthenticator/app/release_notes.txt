@@ -4,3 +4,4 @@ Add:
     2. Refatorado o projeto, adicionando alguns pacotes e mudando paths. Além disso adicionado o sistema de cadastro
         usando o firebase. Por enquanto apenas email + senha disponíveis.
     3. Adicionando melhorias nos tratamentos de login e email, validação de cpf/cnpj pendentes.
+    4. Adicionado o uso de strings para agrupar mensagens de erro, e uso de log para identificar melhor eles.
