@@ -9,6 +9,7 @@
     <string name="operation_not_allowed">Operação não permitida.</string>
     <string name="campos_vazios">Preencher todos os campos.</string>
     <string name="login_sucesso">Logado com sucesso.</string>
+    <string name="network_request_failed">Erro de conexão, verifique sua internet.</string>
 
     <!--MENSAGENS DE ERRO CADASTRO-->
     <string name="cpf_cnpj_vazio">Campo CPF/CNPJ não pode ser vazio.</string>

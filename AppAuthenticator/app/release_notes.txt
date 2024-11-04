@@ -5,3 +5,4 @@ Add:
         usando o firebase. Por enquanto apenas email + senha disponíveis.
     3. Adicionando melhorias nos tratamentos de login e email, validação de cpf/cnpj pendentes.
     4. Adicionado o uso de strings para agrupar mensagens de erro, e uso de log para identificar melhor eles.
+    5. Atualização da funcao de login, para corresponder corretamente ao erro do usuario ao tentar logar.g

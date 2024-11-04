@@ -9,8 +9,10 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.vvieira.appauthenticator.R
 import com.vvieira.appauthenticator.databinding.ActivityFormCadastroBinding
 import com.vvieira.appauthenticator.databinding.ActivityFormLoginBinding
@@ -140,17 +142,20 @@ class FormLogin : AppCompatActivity() {
             )
         } else {
             auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener {
-                if (it.isSuccessful) {
-                    pass = true
-                } else {
-                    val exception = it.exception as? FirebaseAuthException
-                    var mensagemErro = exception?.errorCode
-                    when (mensagemErro) {
-                        "ERROR_INVALID_CREDENTIAL" -> mensagemErro = getString(R.string.invalid_credential)
-                        "ERROR_USER_NOT_FOUND" -> mensagemErro = getString(R.string.usr_not_found)
-                        "ERROR_USER_DISABLED" -> mensagemErro = getString(R.string.user_disabled)
-                        "ERROR_TOO_MANY_REQUESTS" -> mensagemErro = getString(R.string.too_many_requests)
-                        "ERROR_OPERATION_NOT_ALLOWED" -> mensagemErro = getString(R.string.operation_not_allowed)
+                autenticacao ->
+                    if (autenticacao.isSuccessful) {
+                        pass = true
+                        callSnackBar(
+                            binding.root,
+                            getString(R.string.login_sucesso),
+                            Color.BLUE,
+                            Color.WHITE)
+                    }
+                }.addOnFailureListener { exception ->
+                    var mensagemErro = exception.message
+                    when (exception) {
+                        is FirebaseNetworkException -> mensagemErro = getString(R.string.network_request_failed)
+                        is FirebaseAuthInvalidCredentialsException -> mensagemErro = getString(R.string.invalid_credential)
                         else -> mensagemErro = "Erro desconhecido: $mensagemErro"
                     }
                     Log.e("[ERRO]", "doLogin(): $mensagemErro")
@@ -162,7 +167,6 @@ class FormLogin : AppCompatActivity() {
                     )
                 }
             }
-        }
         return pass
     }
 }

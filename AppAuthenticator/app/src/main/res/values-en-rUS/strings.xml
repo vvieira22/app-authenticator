@@ -9,6 +9,7 @@
     <string name="operation_not_allowed">Operation not allowed.</string>
     <string name="campos_vazios">Fill all fields.</string>
     <string name="login_sucesso">Signed in successfully.</string>
+    <string name="network_request_failed">Connection error, check your internet.</string>
 
     <!--ERROR MESSAGES WHEN SIGN UP-->
     <string name="cpf_cnpj_vazio">Field CPF/CNPJ cannot be empty.</string>
