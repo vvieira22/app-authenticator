@@ -1,15 +1,24 @@
 package com.vvieira.appauthenticator.view.formlogin
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.facebook.AccessToken
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseNetworkException
+import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -18,21 +27,34 @@ import com.vvieira.appauthenticator.databinding.ActivityFormCadastroBinding
 import com.vvieira.appauthenticator.databinding.ActivityFormLoginBinding
 
 lateinit var binding: ActivityFormLoginBinding
+private lateinit var callbackManager: CallbackManager
+
 private var dialogCadastroExibido = false
+var auth : FirebaseAuth? = null
 
 class FormLogin : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        auth = FirebaseAuth.getInstance()
         binding = ActivityFormLoginBinding.inflate(layoutInflater)
 
-        binding.botaoCadastrar.setOnClickListener {
+        callbackManager = CallbackManager.Factory.create()
+
+        binding.facebookLogin.setOnClickListener {
+           loginFacebook(auth!!)
+        }
+
+        binding.textCadastrar.setOnClickListener{
             if (!dialogCadastroExibido) {
-                dialogCadastro(this, binding.root)
+                dialogCadastro(this, binding.root, auth!!)
                 dialogCadastroExibido = true
             }
         }
+
         binding.botaoLogin.setOnClickListener {
-            if (doLogin(binding.emailLogin.text.toString(), binding.senhaLogin.text.toString())) {
+            if (doLogin(binding.emailLogin.text.toString(), binding.senhaLogin.text.toString(),
+                    auth!!
+                )) {
                 callSnackBar(
                     it,
                     getString(R.string.login_sucesso),
@@ -44,8 +66,42 @@ class FormLogin : AppCompatActivity() {
         setContentView(binding.root)
     }
 
-    private fun dialogCadastro(contexto: Context, view: View) {
-        var auth = FirebaseAuth.getInstance()
+    private fun loginFacebook(auth: FirebaseAuth) : Boolean {
+        LoginManager.getInstance().logInWithReadPermissions(this, listOf("public_profile", "email"))
+
+        LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+            override fun onSuccess(result: LoginResult) {
+                Log.d("FacebookLogin", "Login bem-sucedido: ${result.accessToken}")
+                handleFacebookAcessToken(result.accessToken, auth)
+            }
+
+            override fun onCancel() {
+                Log.e("[ERRO]", "handleFacebookAcessToken(): ")
+            }
+
+            override fun onError(error: FacebookException) {
+                Log.e("[ERRO]", "handleFacebookAcessToken(): " + error.message.toString())
+            }
+        })
+        return false
+    }
+
+    private fun handleFacebookAcessToken(loginResult: AccessToken, auth: FirebaseAuth){
+        //get credentials
+        val credential = FacebookAuthProvider.getCredential(loginResult.token)
+        //sign in with credentials
+        auth.signInWithCredential(credential)
+            .addOnSuccessListener {
+                val email = it.user?.email
+                Toast.makeText(this, "Login efetuado com sucesso: " + email, Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e->
+                Log.e("[ERRO]", "handleFacebookAcessToken(): " + e.message.toString())
+                Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun dialogCadastro(contexto: Context, view: View, auth: FirebaseAuth) {
         val binding = ActivityFormCadastroBinding.inflate(LayoutInflater.from(contexto))
         val builder = AlertDialog.Builder(contexto)
             .setView(binding.root)
@@ -129,8 +185,7 @@ class FormLogin : AppCompatActivity() {
         snackbar.show()
     }
 
-    private fun doLogin(email: String, senha: String): Boolean {
-        var auth = FirebaseAuth.getInstance()
+    private fun doLogin(email: String, senha: String, auth: FirebaseAuth): Boolean {
         var pass = false
 
         if (email.isEmpty() || senha.isEmpty()) {
@@ -168,5 +223,10 @@ class FormLogin : AppCompatActivity() {
                 }
             }
         return pass
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        callbackManager.onActivityResult(requestCode, resultCode, data)
     }
 }

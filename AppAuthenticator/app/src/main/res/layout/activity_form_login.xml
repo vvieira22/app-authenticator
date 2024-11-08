@@ -22,9 +22,9 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            android:layout_marginBottom="20dp"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_marginBottom="50dp"
             android:src="@drawable/icon_login" />
 
         <EditText
@@ -52,39 +52,76 @@
             android:textColorHint="@color/white"
             android:textSize="25sp" />
 
+        <TextView
+            android:textStyle="bold"
+            android:id="@+id/recuperar_senha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Esqueceu sua senha?"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_gravity="right"/>
+
         <Button
             android:id="@+id/botao_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="35dp"
             android:backgroundTint="@color/white"
             android:padding="10dp"
             android:text="Entrar"
             android:textColor="#101010"
             android:textSize="25sp" />
 
-        <Button
-            android:id="@+id/botao_cadastrar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="@color/white"
-            android:padding="10dp"
-            android:text="Cadastrar"
-            android:textColor="#000000"
-            android:textSize="25sp" />
-
         <TextView
+            android:textStyle="bold"
+            android:id="@+id/text_cadastrar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Recuperar Senha"
+            android:text="Novo usuário? Cadastre-se aqui"
             android:textColor="@color/white"
-            android:textSize="18sp" />
-    </LinearLayout>
+            android:textSize="20sp"
+            android:layout_marginBottom="50dp"/>
+
+        <RelativeLayout
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textSize="15sp"
+                android:text="Entre de outra Forma"
+                android:textColor="#FFFFFF"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:layout_toLeftOf="@id/tvText"
+                android:background="#FFFFFF"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="16dp"
+                android:layout_toRightOf="@id/tvText"
+                android:background="#FFFFFF"
+                />
+
+        </RelativeLayout>
 
     <LinearLayout
-        android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -92,18 +129,21 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cadastro_linear">
-        
+
         <ImageView
+            android:id="@+id/facebook_login"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_margin="16dp"
             android:src="@drawable/facebook">
         </ImageView>
+
         <ImageView
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_margin="16dp"
             android:src="@drawable/gmail">
         </ImageView>
+    </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

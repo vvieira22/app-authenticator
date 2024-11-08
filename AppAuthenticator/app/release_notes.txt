@@ -5,4 +5,10 @@ Add:
         usando o firebase. Por enquanto apenas email + senha disponíveis.
     3. Adicionando melhorias nos tratamentos de login e email, validação de cpf/cnpj pendentes.
     4. Adicionado o uso de strings para agrupar mensagens de erro, e uso de log para identificar melhor eles.
-    5. Atualização da funcao de login, para corresponder corretamente ao erro do usuario ao tentar logar.g
+    5. Atualização da funcao de login, para corresponder corretamente ao erro do usuario ao tentar logar.
+    6. Inicio da configuração para login facebook, consigo realizar a captação do email do usuário caso login ao facebook seja feito com sucesso.
+        Preciso analisar e validar três situações com firebase + login facebook:
+            1- Clicar e fazer login facebook e esse email não estiver cadastrado.
+            2- Assim que capturar email do facebook, devo autenticar o usuário imediatamente, e como saber o usuário pelo firebase.
+            3- Credenciais do facebook, como escoder e conseguir subir esse projeto ao github publico sem afetar api etc...
+    7. Modificação no layout de login, deixando design mais moderno.
