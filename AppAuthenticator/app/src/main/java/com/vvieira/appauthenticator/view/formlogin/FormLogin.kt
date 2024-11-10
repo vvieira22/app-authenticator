@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.vvieira.appauthenticator.R
 import com.vvieira.appauthenticator.databinding.ActivityFormCadastroBinding
 import com.vvieira.appauthenticator.databinding.ActivityFormLoginBinding
+import com.vvieira.appauthenticator.databinding.ActivityUsuarioAnteriorConectadoBinding
 
 lateinit var binding: ActivityFormLoginBinding
 private lateinit var callbackManager: CallbackManager
@@ -160,12 +161,7 @@ class FormLogin : AppCompatActivity() {
         }
     }
 
-    private fun validarCamposCadastro(
-        nome: String,
-        doc: String,
-        email: String,
-        senha: String
-    ): String {
+    private fun validarCamposCadastro(nome: String, doc: String, email: String, senha: String): String {
         try {
             if (nome.isEmpty()) throw Exception(getString(R.string.nome_vazio))
             else if (doc.isEmpty()) throw Exception(getString(R.string.cpf_cnpj_vazio))
