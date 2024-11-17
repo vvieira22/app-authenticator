@@ -15,3 +15,4 @@ Add:
     8. Criação da subtela para validar usuário anteriormente conectado,
     9. Adicionado telefone na tela de cadastro, pendente de validação de máscara. Adicionado o envio dos dados de cadastro do usuário ao modelo de bancos não relacional
         cloud firestore. Algumas melhorias de layout entre outros.
+    10. Recuperando dados  do usuários, de forma manual e geral.
