@@ -13,3 +13,5 @@ Add:
             3- Credenciais do facebook, como escoder e conseguir subir esse projeto ao github publico sem afetar api etc...
     7. Modificação no layout de login, deixando design mais moderno.
     8. Criação da subtela para validar usuário anteriormente conectado,
+    9. Adicionado telefone na tela de cadastro, pendente de validação de máscara. Adicionado o envio dos dados de cadastro do usuário ao modelo de bancos não relacional
+        cloud firestore. Algumas melhorias de layout entre outros.

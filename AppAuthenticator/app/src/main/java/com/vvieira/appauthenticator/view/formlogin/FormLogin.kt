@@ -23,9 +23,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.vvieira.appauthenticator.R
+import com.vvieira.appauthenticator.Usuario
 import com.vvieira.appauthenticator.databinding.ActivityFormCadastroBinding
 import com.vvieira.appauthenticator.databinding.ActivityFormLoginBinding
-import com.vvieira.appauthenticator.databinding.ActivityUsuarioAnteriorConectadoBinding
 
 lateinit var binding: ActivityFormLoginBinding
 private lateinit var callbackManager: CallbackManager
@@ -42,10 +42,10 @@ class FormLogin : AppCompatActivity() {
         callbackManager = CallbackManager.Factory.create()
 
         binding.facebookLogin.setOnClickListener {
-           loginFacebook(auth!!)
+            loginFacebook(auth!!)
         }
 
-        binding.textCadastrar.setOnClickListener{
+        binding.textCadastrar.setOnClickListener {
             if (!dialogCadastroExibido) {
                 dialogCadastro(this, binding.root, auth!!)
                 dialogCadastroExibido = true
@@ -53,9 +53,11 @@ class FormLogin : AppCompatActivity() {
         }
 
         binding.botaoLogin.setOnClickListener {
-            if (doLogin(binding.emailLogin.text.toString(), binding.senhaLogin.text.toString(),
+            if (doLogin(
+                    binding.emailLogin.text.toString(), binding.senhaLogin.text.toString(),
                     auth!!
-                )) {
+                )
+            ) {
                 callSnackBar(
                     it,
                     getString(R.string.login_sucesso),
@@ -67,36 +69,38 @@ class FormLogin : AppCompatActivity() {
         setContentView(binding.root)
     }
 
-    private fun loginFacebook(auth: FirebaseAuth) : Boolean {
+    private fun loginFacebook(auth: FirebaseAuth): Boolean {
         LoginManager.getInstance().logInWithReadPermissions(this, listOf("public_profile", "email"))
 
-        LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
-            override fun onSuccess(result: LoginResult) {
-                Log.d("FacebookLogin", "Login bem-sucedido: ${result.accessToken}")
-                handleFacebookAcessToken(result.accessToken, auth)
-            }
+        LoginManager.getInstance()
+            .registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+                override fun onSuccess(result: LoginResult) {
+                    Log.d("FacebookLogin", "Login bem-sucedido: ${result.accessToken}")
+                    handleFacebookAcessToken(result.accessToken, auth)
+                }
 
-            override fun onCancel() {
-                Log.e("[ERRO]", "handleFacebookAcessToken(): ")
-            }
+                override fun onCancel() {
+                    Log.e("[ERRO]", "handleFacebookAcessToken(): ")
+                }
 
-            override fun onError(error: FacebookException) {
-                Log.e("[ERRO]", "handleFacebookAcessToken(): " + error.message.toString())
-            }
-        })
+                override fun onError(error: FacebookException) {
+                    Log.e("[ERRO]", "handleFacebookAcessToken(): " + error.message.toString())
+                }
+            })
         return false
     }
 
-    private fun handleFacebookAcessToken(loginResult: AccessToken, auth: FirebaseAuth){
+    private fun handleFacebookAcessToken(loginResult: AccessToken, auth: FirebaseAuth) {
         //get credentials
         val credential = FacebookAuthProvider.getCredential(loginResult.token)
         //sign in with credentials
         auth.signInWithCredential(credential)
             .addOnSuccessListener {
                 val email = it.user?.email
-                Toast.makeText(this, "Login efetuado com sucesso: " + email, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Login efetuado com sucesso: " + email, Toast.LENGTH_SHORT)
+                    .show()
             }
-            .addOnFailureListener { e->
+            .addOnFailureListener { e ->
                 Log.e("[ERRO]", "handleFacebookAcessToken(): " + e.message.toString())
                 Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
             }
@@ -119,13 +123,15 @@ class FormLogin : AppCompatActivity() {
             val doc = binding.documento.text.toString()
             val email = binding.email.text.toString()
             val senha = binding.senhaCadastro.text.toString()
+            val telefone = binding.telefone.text.toString()
 
-            val valCampos = validarCamposCadastro(nome, doc, email, senha)
+            val valCampos = validarCamposCadastro(nome, doc, email, senha, telefone)
 
             if (valCampos.isEmpty()) {
                 auth.createUserWithEmailAndPassword(email, senha)
                     .addOnCompleteListener { cadastro ->
                         if (cadastro.isSuccessful) {
+                            Usuario(nome, doc, email, telefone).salvarDadosUsuario()
                             callSnackBar(
                                 view,
                                 getString(R.string.cadastro_sucesso),
@@ -137,9 +143,15 @@ class FormLogin : AppCompatActivity() {
                             val exception = cadastro.exception as? FirebaseAuthException
                             var mensagemErro = exception?.errorCode
                             when (mensagemErro) {
-                                "ERROR_INVALID_EMAIL" -> mensagemErro = getString(R.string.email_invalido)
-                                "ERROR_WEAK_PASSWORD" -> mensagemErro = getString(R.string.senha_fraca)
-                                "ERROR_EMAIL_ALREADY_IN_USE" -> mensagemErro = getString(R.string.email_em_uso)
+                                "ERROR_INVALID_EMAIL" -> mensagemErro =
+                                    getString(R.string.email_invalido)
+
+                                "ERROR_WEAK_PASSWORD" -> mensagemErro =
+                                    getString(R.string.senha_fraca)
+
+                                "ERROR_EMAIL_ALREADY_IN_USE" -> mensagemErro =
+                                    getString(R.string.email_em_uso)
+
                                 else -> mensagemErro = "Erro desconhecido: $mensagemErro"
                             }
                             callSnackBar(
@@ -161,12 +173,13 @@ class FormLogin : AppCompatActivity() {
         }
     }
 
-    private fun validarCamposCadastro(nome: String, doc: String, email: String, senha: String): String {
+    private fun validarCamposCadastro(nome: String, doc: String, email: String, senha: String, telefone: String): String {
         try {
             if (nome.isEmpty()) throw Exception(getString(R.string.nome_vazio))
             else if (doc.isEmpty()) throw Exception(getString(R.string.cpf_cnpj_vazio))
             else if (email.isEmpty()) throw Exception(getString(R.string.email_vazio))
             else if (senha.isEmpty()) throw Exception(getString(R.string.senha_vazio))
+            else if (telefone.isEmpty()) throw Exception(getString(R.string.telefone_vazio))
             return ""
         } catch (e: Exception) {
             Log.e("[ERRO]", "validarCamposCadastro(): " + e.message.toString())
@@ -192,32 +205,36 @@ class FormLogin : AppCompatActivity() {
                 Color.WHITE
             )
         } else {
-            auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener {
-                autenticacao ->
-                    if (autenticacao.isSuccessful) {
-                        pass = true
-                        callSnackBar(
-                            binding.root,
-                            getString(R.string.login_sucesso),
-                            Color.BLUE,
-                            Color.WHITE)
-                    }
-                }.addOnFailureListener { exception ->
-                    var mensagemErro = exception.message
-                    when (exception) {
-                        is FirebaseNetworkException -> mensagemErro = getString(R.string.network_request_failed)
-                        is FirebaseAuthInvalidCredentialsException -> mensagemErro = getString(R.string.invalid_credential)
-                        else -> mensagemErro = "Erro desconhecido: $mensagemErro"
-                    }
-                    Log.e("[ERRO]", "doLogin(): $mensagemErro")
+            auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener { autenticacao ->
+                if (autenticacao.isSuccessful) {
+                    pass = true
                     callSnackBar(
                         binding.root,
-                        mensagemErro,
-                        Color.RED,
+                        getString(R.string.login_sucesso),
+                        Color.BLUE,
                         Color.WHITE
                     )
                 }
+            }.addOnFailureListener { exception ->
+                var mensagemErro = exception.message
+                when (exception) {
+                    is FirebaseNetworkException -> mensagemErro =
+                        getString(R.string.network_request_failed)
+
+                    is FirebaseAuthInvalidCredentialsException -> mensagemErro =
+                        getString(R.string.invalid_credential)
+
+                    else -> mensagemErro = "Erro desconhecido: $mensagemErro"
+                }
+                Log.e("[ERRO]", "doLogin(): $mensagemErro")
+                callSnackBar(
+                    binding.root,
+                    mensagemErro,
+                    Color.RED,
+                    Color.WHITE
+                )
             }
+        }
         return pass
     }
 
@@ -225,4 +242,26 @@ class FormLogin : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         callbackManager.onActivityResult(requestCode, resultCode, data)
     }
+
+    override fun onStart() {
+        super.onStart()
+        val user = auth?.currentUser
+        if (user != null) {
+            callSnackBar(
+                binding.root,
+                getString(R.string.login_sucesso),
+                Color.BLUE,
+                Color.WHITE
+            )
+            //logar user
+            Log.d("Login", "Usuário logado: ${user.email}")
+        }
+    }
+    private fun deslogar() {
+        auth?.signOut()
+        LoginManager.getInstance().logOut()
+        finish()
+        recreate()
+    }
+
 }

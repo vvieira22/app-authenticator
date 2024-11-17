@@ -16,6 +16,7 @@
     <string name="nome_vazio">Campo CPF/CNPJ não pode ser vazio.</string>
     <string name="email_vazio">Campo CPF/CNPJ não pode ser vazio.</string>
     <string name="senha_vazio">Campo CPF/CNPJ não pode ser vazio.</string>
+    <string name="telefone_vazio">Telefone não pode ser vazio.</string>
     <string name="email_invalido">Email inválido.</string>
     <string name="senha_fraca">Senha fraca.</string>
     <string name="email_em_uso">Email já cadastrado.</string>
