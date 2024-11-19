@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,10 +24,14 @@ import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.vvieira.appauthenticator.CpfCnpjTextWatcher
 import com.vvieira.appauthenticator.R
+import com.vvieira.appauthenticator.TelefoneBrasilTextWatcher
 import com.vvieira.appauthenticator.Usuario
 import com.vvieira.appauthenticator.databinding.ActivityFormCadastroBinding
 import com.vvieira.appauthenticator.databinding.ActivityFormLoginBinding
+import com.vvieira.appauthenticator.utils
+import kotlin.text.replace
 
 lateinit var binding: ActivityFormLoginBinding
 private lateinit var callbackManager: CallbackManager
@@ -58,7 +64,7 @@ class FormLogin : AppCompatActivity() {
                     auth!!
                 )
             ) {
-                callSnackBar(
+                customSnackBar(
                     it,
                     getString(R.string.login_sucesso),
                     Color.BLUE,
@@ -118,6 +124,27 @@ class FormLogin : AppCompatActivity() {
         }
         dialog.show()
 
+        val snackBarValEmail = customSnackBar(binding.root, getString(R.string.email_invalido), Color.RED, Color.WHITE, show = false)
+        binding.telefone.addTextChangedListener(TelefoneBrasilTextWatcher())
+        binding.documento.addTextChangedListener(CpfCnpjTextWatcher())
+        //escolhi deixar o email mostrar a mensagem de erro assim que digita,
+        // poderia deixar passar e validar posteriormente.
+        binding.email.addTextChangedListener(object :
+            TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                if (!validarEmail(s.toString())) {
+                    snackBarValEmail.show()
+                }
+                else {
+                    snackBarValEmail.dismiss()
+                }
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+
         binding.botaoCadastrar.setOnClickListener {
             val nome = binding.nomeCadastro.text.toString()
             val doc = binding.documento.text.toString()
@@ -125,14 +152,14 @@ class FormLogin : AppCompatActivity() {
             val senha = binding.senhaCadastro.text.toString()
             val telefone = binding.telefone.text.toString()
 
-            val valCampos = validarCamposCadastro(nome, doc, email, senha, telefone)
+            val valCampos = validarCampos(nome, doc, email, senha, telefone)
 
             if (valCampos.isEmpty()) {
                 auth.createUserWithEmailAndPassword(email, senha)
                     .addOnCompleteListener { cadastro ->
                         if (cadastro.isSuccessful) {
                             Usuario(nome, doc, email, telefone).salvarDadosUsuario()
-                            callSnackBar(
+                            customSnackBar(
                                 view,
                                 getString(R.string.cadastro_sucesso),
                                 Color.GREEN,
@@ -154,7 +181,7 @@ class FormLogin : AppCompatActivity() {
 
                                 else -> mensagemErro = "Erro desconhecido: $mensagemErro"
                             }
-                            callSnackBar(
+                            customSnackBar(
                                 binding.root,
                                 mensagemErro.toString(),
                                 Color.RED,
@@ -163,7 +190,7 @@ class FormLogin : AppCompatActivity() {
                         }
                     }
             } else {
-                callSnackBar(
+                customSnackBar(
                     binding.root,
                     valCampos,
                     Color.RED,
@@ -173,32 +200,47 @@ class FormLogin : AppCompatActivity() {
         }
     }
 
-    private fun validarCamposCadastro(nome: String, doc: String, email: String, senha: String, telefone: String): String {
+    private fun validarCampos(nome: String, doc: String, email: String, senha: String, telefone: String): String {
         try {
             if (nome.isEmpty()) throw Exception(getString(R.string.nome_vazio))
             else if (doc.isEmpty()) throw Exception(getString(R.string.cpf_cnpj_vazio))
             else if (email.isEmpty()) throw Exception(getString(R.string.email_vazio))
             else if (senha.isEmpty()) throw Exception(getString(R.string.senha_vazio))
             else if (telefone.isEmpty()) throw Exception(getString(R.string.telefone_vazio))
+            else if (!utils.isValidCPF(doc) && !utils.isValidCNPJ(doc)){
+                throw if(doc.length == 14) Exception(getString(R.string.cpf_invalido))
+                else if (doc.length > 14) Exception(getString(R.string.cnpj_invalido))
+                else Exception(getString(R.string.doc_invalido))
+            }
             return ""
         } catch (e: Exception) {
-            Log.e("[ERRO]", "validarCamposCadastro(): " + e.message.toString())
+            Log.e("[ERRO]", "validarCampos(): " + e.message.toString())
             return e.message.toString()
         }
     }
 
-    private fun callSnackBar(view: View, mensagem: String, cor: Int, corTexto: Int) {
-        val snackbar = Snackbar.make(view, mensagem, Snackbar.LENGTH_LONG)
+    private fun validarEmail(email: String): Boolean {
+        val emailRegex = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")
+        return emailRegex.matches(email)
+    }
+
+    private fun customSnackBar(view: View,
+                               mensagem: String,
+                               cor: Int, corTexto: Int,
+                               time : Int = Snackbar.LENGTH_LONG,
+                               show : Boolean = true) : Snackbar {
+        val snackbar = Snackbar.make(view, mensagem, time)
         snackbar.setBackgroundTint(cor)
         snackbar.setTextColor(corTexto)
-        snackbar.show()
+        if (show) snackbar.show()
+        return snackbar
     }
 
     private fun doLogin(email: String, senha: String, auth: FirebaseAuth): Boolean {
         var pass = false
 
         if (email.isEmpty() || senha.isEmpty()) {
-            callSnackBar(
+            customSnackBar(
                 binding.root,
                 getString(R.string.campos_vazios),
                 Color.RED,
@@ -208,7 +250,7 @@ class FormLogin : AppCompatActivity() {
             auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener { autenticacao ->
                 if (autenticacao.isSuccessful) {
                     pass = true
-                    callSnackBar(
+                    customSnackBar(
                         binding.root,
                         getString(R.string.login_sucesso),
                         Color.BLUE,
@@ -227,7 +269,7 @@ class FormLogin : AppCompatActivity() {
                     else -> mensagemErro = "Erro desconhecido: $mensagemErro"
                 }
                 Log.e("[ERRO]", "doLogin(): $mensagemErro")
-                callSnackBar(
+                customSnackBar(
                     binding.root,
                     mensagemErro,
                     Color.RED,
@@ -247,7 +289,7 @@ class FormLogin : AppCompatActivity() {
         super.onStart()
         val user = auth?.currentUser
         if (user != null) {
-            callSnackBar(
+            customSnackBar(
                 binding.root,
                 getString(R.string.login_sucesso),
                 Color.BLUE,

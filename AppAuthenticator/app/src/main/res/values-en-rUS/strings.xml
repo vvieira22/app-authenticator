@@ -16,10 +16,13 @@
     <string name="nome_vazio">Field name cannot be empty.</string>
     <string name="email_vazio">Field email cannot be empty.</string>
     <string name="senha_vazio">Field password cannot be empty.</string>
-    <string name="telefone_vazio">Phone number cannot be empty.</string>
+    <string name="telefone_vazio">Field phone number cannot be empty.</string>
     <string name="email_invalido">Invalid email.</string>
     <string name="senha_fraca">Password is too weak.</string>
     <string name="email_em_uso">Email already in use.</string>
+    <string name="doc_invalido">Invalid document.</string>
+    <string name="cpf_invalido">Invalid CPF.</string>
+    <string name="cnpj_invalido">Invalid CNPJ.</string>
     <string name="cadastro_sucesso">Signed up successfully.</string>
 
 </resources>

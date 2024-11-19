@@ -125,6 +125,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/senha_cadastro"
-        android:layout_marginBottom="5dp"/>
+        android:layout_marginBottom="15dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

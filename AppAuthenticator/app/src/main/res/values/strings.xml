@@ -13,13 +13,16 @@
 
     <!--MENSAGENS DE ERRO CADASTRO-->
     <string name="cpf_cnpj_vazio">Campo CPF/CNPJ não pode ser vazio.</string>
-    <string name="nome_vazio">Campo CPF/CNPJ não pode ser vazio.</string>
-    <string name="email_vazio">Campo CPF/CNPJ não pode ser vazio.</string>
-    <string name="senha_vazio">Campo CPF/CNPJ não pode ser vazio.</string>
-    <string name="telefone_vazio">Telefone não pode ser vazio.</string>
+    <string name="nome_vazio">Campo nome não pode ser vazio.</string>
+    <string name="email_vazio">Campo email não pode ser vazio.</string>
+    <string name="senha_vazio">Campo senha não pode ser vazio.</string>
+    <string name="telefone_vazio">Campo telefone não pode ser vazio.</string>
     <string name="email_invalido">Email inválido.</string>
     <string name="senha_fraca">Senha fraca.</string>
     <string name="email_em_uso">Email já cadastrado.</string>
+    <string name="doc_invalido">Documento inválido.</string>
+    <string name="cpf_invalido">CPF inválido.</string>
+    <string name="cnpj_invalido">CNPJ inválido.</string>
     <string name="cadastro_sucesso">Cadastro realizado com sucesso.</string>
 
 </resources>
