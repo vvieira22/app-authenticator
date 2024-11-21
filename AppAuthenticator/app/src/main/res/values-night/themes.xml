@@ -1,7 +1,21 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.AppAuthenticator" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimaryDark">@color/bluelogin</item>
     </style>
+
+    <style name="Theme.AppAuthenticator" parent="Base.Theme.AppAuthenticator" />
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/icon_login</item>
+        <item name="windowSplashScreenBackground">@color/middleLogin</item>
+        <item name="windowSplashScreenAnimationDuration">200</item>
+
+        <!-- Set the theme of the Activity that directly follows your splash
+        screen. This is required. -->
+        <item name="postSplashScreenTheme">@style/Base.Theme.AppAuthenticator</item>
+    </style>
+
 </resources>

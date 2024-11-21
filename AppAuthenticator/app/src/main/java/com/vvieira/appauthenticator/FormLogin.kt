@@ -1,9 +1,11 @@
-package com.vvieira.appauthenticator.view.formlogin
+package com.vvieira.appauthenticator
 
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -12,6 +14,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -24,14 +27,8 @@ import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.vvieira.appauthenticator.CpfCnpjTextWatcher
-import com.vvieira.appauthenticator.R
-import com.vvieira.appauthenticator.TelefoneBrasilTextWatcher
-import com.vvieira.appauthenticator.Usuario
 import com.vvieira.appauthenticator.databinding.ActivityFormCadastroBinding
 import com.vvieira.appauthenticator.databinding.ActivityFormLoginBinding
-import com.vvieira.appauthenticator.utils
-import kotlin.text.replace
 
 lateinit var binding: ActivityFormLoginBinding
 private lateinit var callbackManager: CallbackManager
@@ -41,7 +38,9 @@ var auth : FirebaseAuth? = null
 
 class FormLogin : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
+
         auth = FirebaseAuth.getInstance()
         binding = ActivityFormLoginBinding.inflate(layoutInflater)
 
@@ -73,6 +72,7 @@ class FormLogin : AppCompatActivity() {
             }
         }
         setContentView(binding.root)
+        window.statusBarColor = getColor(R.color.bluelogin)
     }
 
     private fun loginFacebook(auth: FirebaseAuth): Boolean {

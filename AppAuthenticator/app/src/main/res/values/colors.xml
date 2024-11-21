@@ -3,4 +3,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="bluelogin">#394EC5</color>
+    <color name="middleLogin">#286370</color>
 </resources>

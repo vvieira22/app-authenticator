@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
     implementation("com.facebook.android:facebook-login:latest.release")
+    implementation("androidx.core:core-splashscreen:1.0.0")
 
 //    implementation(libs.firebase.crashlytics)
 
