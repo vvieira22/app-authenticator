@@ -1,6 +1,9 @@
-package com.vvieira.appauthenticator
+package com.vvieira.appauthenticator.util
 
-class utils {
+import android.view.View
+import com.google.android.material.snackbar.Snackbar
+
+class Utils {
     companion object {
         fun isValidCPF(cpf: String): Boolean {
             val cpfClean = cpf.replace(".", "").replace("-", "")
@@ -45,5 +48,28 @@ class utils {
             val remainder = sum % 11
             return if (remainder < 2) 0 else 11 - remainder
         }
+
+         fun customSnackBar(view: View,
+                                   mensagem: String,
+                                   cor: Int, corTexto: Int,
+                                   time: Int = Snackbar.LENGTH_LONG,
+                                   show: Boolean = true
+        ): Snackbar {
+            val snackbar = Snackbar.make(view, mensagem, time)
+            snackbar.setBackgroundTint(cor)
+            snackbar.setTextColor(corTexto)
+            if (show) snackbar.show()
+            return snackbar
+        }
+
+        fun valEmail(email: String): Boolean {
+            val emailRegex = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")
+            return emailRegex.matches(email)
+        }
+
+        fun valPassword(password: String): Boolean {
+            return password.length >= 6
+        }
+
     }
 }

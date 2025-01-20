@@ -1,4 +1,4 @@
-package com.vvieira.appauthenticator
+package com.vvieira.appauthenticator.util
 
 import android.text.Editable
 import android.text.TextWatcher

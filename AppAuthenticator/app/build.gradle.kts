@@ -4,6 +4,9 @@ plugins {
     id("com.google.gms.google-services")//firebase
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("androidx.navigation.safeargs.kotlin")
+    id("com.google.dagger.hilt.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -59,15 +62,21 @@ android {
 }
 
 dependencies {
+    implementation(libs.logging.interceptor)
+    implementation(libs.okhttp)
+//    debugImplementation(libs.squareup.leakcanary.android)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
     //firebase important
     implementation(libs.firebase.bom)
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
-    implementation("com.facebook.android:facebook-login:latest.release")
+//    implementation("com.facebook.android:facebook-login:latest.release")
     implementation("androidx.core:core-splashscreen:1.0.0")
-
+    implementation(libs.converter.gson)
+    implementation(libs.gson)
 //    implementation(libs.firebase.crashlytics)
-
+    implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -82,4 +91,12 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+}
+kapt {
+    javacOptions {
+        // These options are normally set automatically via the Hilt Gradle plugin, but we
+        // set them manually to workaround a bug in the Kotlin 1.5.20
+        option("-Adagger.fastInit=ENABLED")
+        option("-Adagger.hilt.android.internal.disableAndroidSuperclassValidation=true")
+    }
 }

@@ -17,6 +17,9 @@ Add:
         cloud firestore. Algumas melhorias de layout entre outros.
     10. Recuperando dados  do usuários, de forma manual e geral.
     11. Adicionado máscaras e validações para telefone, cpf e cnpj. Incluido também algumas melhorias nas mensagens das snaacksbars.
-    10. Adicionado e modificado tela de entrada do app, agora mostra uma cor intermediária do login, já que o splashscreen nao tem suporte a gradient.
+    12. Adicionado e modificado tela de entrada do app, agora mostra uma cor intermediária do login, já que o splashscreen nao tem suporte a gradient.
          Se atentar que, nosso app está sendo dividido entre 2 temas, padrao e darkmode, entao se atentar em mudar ambos quando for mexer
           com temas e coisa relacionadas.
+    13: Mudança bastante relevante na arquitetura do projeto, em vez de criar modulos separados para login,
+            Resolvi implementar todos eles aqui dentro, retrofit, firebase, tudo no projeto só, assim que finalizar
+            posso pensar em separar eles.
