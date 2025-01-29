@@ -1,11 +1,12 @@
 package com.vvieira.appauthenticator.data
 
-import LoginEndpoint
+import AuthEndPoint
 import android.util.Log
 import com.google.gson.Gson
-import com.google.gson.JsonObject
 import com.vvieira.appauthenticator.domain.model.LoginModelRequest
 import com.vvieira.appauthenticator.domain.model.LoginResponseOk
+import com.vvieira.appauthenticator.domain.model.RegisterModelRequest
+import com.vvieira.appauthenticator.domain.model.RegisterResponseOk
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,11 +19,10 @@ import kotlin.coroutines.suspendCoroutine
 class DataBaseDataSource @Inject constructor(
     clientRetrofit: Retrofit
 ) : LoginDataSource {
-    val clientRetrofitWithRoutes = clientRetrofit.create(LoginEndpoint::class.java)
+    private val clientRetrofitWithRoutes = clientRetrofit.create(AuthEndPoint::class.java)
     override suspend fun loginPassword(user: LoginModelRequest): LoginResponseOk {
         return suspendCoroutine { continuation ->
             var responseLoginPassword = ""
-            Log.d("RESPOSTA-USER", "jsonResponse: $user")
             clientRetrofitWithRoutes.login("password", user).enqueue(
                 object : Callback<ResponseBody> {
                     override fun onResponse(
@@ -31,15 +31,16 @@ class DataBaseDataSource @Inject constructor(
                     ) {
                         if (response.isSuccessful) {
                             val jsonResponse = response.body()?.string() ?: ""
-                            val loginResponse: LoginResponseOk = Gson().fromJson(jsonResponse, LoginResponseOk::class.java)
+                            val loginResponse: LoginResponseOk =
+                                Gson().fromJson(jsonResponse, LoginResponseOk::class.java)
                             continuation.resumeWith(Result.success(loginResponse))
-                        }
-                        else {
+                        } else {
                             val errMsg = response.message()
                             Log.d("RESPOSTA-ELSE", "jsonResponse: $errMsg")
                             continuation.resumeWithException((Exception(errMsg)))
                         }
                     }
+
                     override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                         Log.d("RESPOSTA-FAILURE", "jsonResponse: ${t.message}")
                         responseLoginPassword = t.message.toString()
@@ -49,33 +50,36 @@ class DataBaseDataSource @Inject constructor(
         }
     }
 
-    override suspend fun registerPassword(register: RegisterModel): String {
+    override suspend fun registerPassword(register: RegisterModelRequest): RegisterResponseOk {
         return suspendCoroutine { continuation ->
-            val usuarioJson: JsonObject = Gson().toJsonTree(register).asJsonObject
             var responseRegisterPassword = ""
-
-            clientRetrofitWithRoutes.register("password", usuarioJson).enqueue(
+            clientRetrofitWithRoutes.register("password", register).enqueue(
                 object : Callback<ResponseBody> {
                     override fun onResponse(
                         call: Call<ResponseBody>,
                         response: Response<ResponseBody>
                     ) {
                         if (response.isSuccessful) {
-                            val jsonResponse = response.body()
-                            responseRegisterPassword = jsonResponse.toString()
+                            val jsonResponse = response.body()?.string() ?: ""
+                            val registerResponse: RegisterResponseOk =
+                                Gson().fromJson(jsonResponse, RegisterResponseOk::class.java)
+                            Log.i("RESPOSTA-OK", "jsonResponse: $jsonResponse")
+                            continuation.resumeWith(Result.success(registerResponse))
+                        } else {
+                            val errMsg = response.message()
+                            Log.d("RESPOSTA-ELSE", "jsonResponse: $errMsg")
+                            continuation.resumeWithException((Exception(errMsg)))
                         }
                     }
 
                     override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        Log.i("RESPOSTA-FAILURE", "jsonResponse: ${t.message}")
                         responseRegisterPassword = t.message.toString()
+                        continuation.resumeWith(Result.failure(Exception(responseRegisterPassword)))
                     }
                 })
-            if (responseRegisterPassword != "") {
-                continuation.resumeWith(Result.success(responseRegisterPassword))
-            } else {
-                continuation.resumeWith(Result.failure(Exception("Erro ao fazer login")))
-            }
         }
+
     }
 
 }

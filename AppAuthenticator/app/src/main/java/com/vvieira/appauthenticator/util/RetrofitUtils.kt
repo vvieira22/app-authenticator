@@ -1,6 +1,6 @@
 package com.vvieira.appauthenticator.util
 
-import LoginEndpoint
+import AuthEndPoint
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -13,7 +13,7 @@ class RetrofitUtils {
 //        /** Retorna uma Instância do Client Retrofit para Requisições
 //         * @param path Caminho Principal da API
 //         */
-//        fun getRetrofitInstance(path : String) : LoginEndpoint {
+//        fun getRetrofitInstance(path : String) : AuthEndPoint {
 ////            val logging = HttpLoggingInterceptor()
 ////            logging.setLevel(HttpLoggingInterceptor.Level.BODY)
 //
@@ -26,7 +26,7 @@ class RetrofitUtils {
 //                .client(client)
 //                .addConverterFactory(GsonConverterFactory.create())
 //                .build()
-//            val endpoint = retrofit.create(LoginEndpoint::class.java)
+//            val endpoint = retrofit.create(AuthEndPoint::class.java)
 //            return endpoint
 //        }
 //    }

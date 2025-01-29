@@ -39,7 +39,7 @@
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:textSize="25sp"
-            android:text="vitor123@gmail.com"/>
+            android:text="vito2121dr123@gmail.com"/>
 
         <EditText
             android:id="@+id/senha_login"
@@ -56,8 +56,8 @@
             android:text="senha123"/>
 
         <TextView
-            android:textStyle="bold"
             android:id="@+id/recuperar_senha"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"

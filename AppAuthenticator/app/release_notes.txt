@@ -23,3 +23,6 @@ Add:
     13: Mudança bastante relevante na arquitetura do projeto, em vez de criar modulos separados para login,
             Resolvi implementar todos eles aqui dentro, retrofit, firebase, tudo no projeto só, assim que finalizar
             posso pensar em separar eles.
+
+TODO:
+    1. Fazer uma classe para tratamento de erro, e ter uma mensagem amigável baseado na resposta http e no código.

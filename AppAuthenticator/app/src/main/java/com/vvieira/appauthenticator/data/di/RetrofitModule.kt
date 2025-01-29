@@ -1,5 +1,6 @@
 package com.vvieira.appauthenticator.data.di
 
+import AuthEndPoint
 import com.vvieira.appauthenticator.util.URL_FULL
 import dagger.Module
 import dagger.Provides
@@ -30,11 +31,4 @@ object RetrofitModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
-
-//    @Singleton
-//    @Provides
-//    fun provideLoginEndpoint(): Class<LoginEndpoint> {
-//        return (LoginEndpoint::class.java)
-//    }
-
 }

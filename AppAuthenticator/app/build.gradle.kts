@@ -62,9 +62,14 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.lifecycle.viewmodel.ktx.v261)
+    implementation(libs.androidx.lifecycle.livedata.ktx.v220)
+    implementation (libs.androidx.lifecycle.viewmodel.savedstate)
+
+    implementation(libs.lottie)
     implementation(libs.logging.interceptor)
     implementation(libs.okhttp)
-//    debugImplementation(libs.squareup.leakcanary.android)
+    debugImplementation(libs.squareup.leakcanary.android)
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
     //firebase important
@@ -72,7 +77,7 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
 //    implementation("com.facebook.android:facebook-login:latest.release")
-    implementation("androidx.core:core-splashscreen:1.0.0")
+    implementation("androidx.core:core-splashscreen:1.0.1")
     implementation(libs.converter.gson)
     implementation(libs.gson)
 //    implementation(libs.firebase.crashlytics)
