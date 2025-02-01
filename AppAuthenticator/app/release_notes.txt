@@ -28,3 +28,5 @@ TODO:
     1. Fazer uma classe para tratamento de erro, e ter uma mensagem amigável baseado na resposta http e no código.
     2. Ainda com bug entre livedata quando muda de fragmento e retorna, principalmente login -> erro -> tela cadastro -> login.
         Aparece novamente o erro de login, na view model foi comentado algo para talvez resolver esse problema.
+    3. Hoje o botão de continuar com google, so faz registro, não faz login, da erro se ja tiver cadastrado,
+        validar na api se já existe seria uma opcao e logar sozinho se bater token e as outras inf salvas.
