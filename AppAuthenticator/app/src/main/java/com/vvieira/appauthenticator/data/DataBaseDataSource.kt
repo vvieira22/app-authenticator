@@ -50,23 +50,28 @@ class DataBaseDataSource @Inject constructor(
         }
     }
 
-    override suspend fun registerPassword(register: RegisterModelRequest): RegisterResponseOk {
+    override suspend fun registerUser(
+        register: RegisterModelRequest,
+        type: String
+    ): RegisterResponseOk {
         return suspendCoroutine { continuation ->
-            var responseRegisterPassword = ""
-            clientRetrofitWithRoutes.register("password", register).enqueue(
+            var responseregisterUser = ""
+            clientRetrofitWithRoutes.register(type, register).enqueue(
                 object : Callback<ResponseBody> {
                     override fun onResponse(
                         call: Call<ResponseBody>,
                         response: Response<ResponseBody>
                     ) {
                         if (response.isSuccessful) {
+                            Log.i("RESPOSTA-OK", "${response.code()}")
                             val jsonResponse = response.body()?.string() ?: ""
+                            Log.i("RESPOSTA-OK", "jsonResponse: $jsonResponse")
                             val registerResponse: RegisterResponseOk =
                                 Gson().fromJson(jsonResponse, RegisterResponseOk::class.java)
-                            Log.i("RESPOSTA-OK", "jsonResponse: $jsonResponse")
                             continuation.resumeWith(Result.success(registerResponse))
                         } else {
                             val errMsg = response.message()
+                            Log.i("RESPOSTA-ELSE", " CODE:  ${response.code()}")
                             Log.d("RESPOSTA-ELSE", "jsonResponse: $errMsg")
                             continuation.resumeWithException((Exception(errMsg)))
                         }
@@ -74,12 +79,10 @@ class DataBaseDataSource @Inject constructor(
 
                     override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                         Log.i("RESPOSTA-FAILURE", "jsonResponse: ${t.message}")
-                        responseRegisterPassword = t.message.toString()
-                        continuation.resumeWith(Result.failure(Exception(responseRegisterPassword)))
+                        responseregisterUser = t.message.toString()
+                        continuation.resumeWith(Result.failure(Exception(responseregisterUser)))
                     }
                 })
         }
-
     }
-
 }

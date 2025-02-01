@@ -7,5 +7,5 @@ import com.vvieira.appauthenticator.domain.model.RegisterResponseOk
 
 interface LoginDataSource {
     suspend fun loginPassword(user: LoginModelRequest): LoginResponseOk
-    suspend fun registerPassword(register: RegisterModelRequest): RegisterResponseOk
+    suspend fun registerUser(register: RegisterModelRequest, type: String): RegisterResponseOk
 }

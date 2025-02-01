@@ -16,9 +16,10 @@ android {
     localProperties.load(project.rootProject.file("local.properties").inputStream())
 
     defaultConfig {
-        buildConfigField("String", "FACEBOOK_APP_ID", "\"${localProperties.getProperty("FACEBOOK_APP_ID")}\"")
-        buildConfigField("String", "FB_LOGIN_PROTOCOL_SCHEME", "\"${localProperties.getProperty("FB_LOGIN_PROTOCOL_SCHEME")}\"")
-        buildConfigField("String", "FACEBOOK_CLIENT_TOKEN", "\"${localProperties.getProperty("FACEBOOK_CLIENT_TOKEN")}\"")
+//        buildConfigField("String", "FACEBOOK_APP_ID", "\"${localProperties.getProperty("FACEBOOK_APP_ID")}\"")
+//        buildConfigField("String", "FB_LOGIN_PROTOCOL_SCHEME", "\"${localProperties.getProperty("FB_LOGIN_PROTOCOL_SCHEME")}\"")
+//        buildConfigField("String", "FACEBOOK_CLIENT_TOKEN", "\"${localProperties.getProperty("FACEBOOK_CLIENT_TOKEN")}\"")
+        buildConfigField("String", "GOOGLE_CREDENTIAL_USER", "\"${localProperties.getProperty("GOOGLE_CREDENTIAL_USER")}\"")
 
         applicationId = "com.vvieira.appauthenticator"
         minSdk = 27
@@ -36,6 +37,7 @@ android {
             resValue("string", "FACEBOOK_APP_ID", "\"${localProperties["FACEBOOK_APP_ID"]}\"")
             resValue("string", "FB_LOGIN_PROTOCOL_SCHEME", "\"${localProperties["FB_LOGIN_PROTOCOL_SCHEME"]}\"")
             resValue("string", "FACEBOOK_CLIENT_TOKEN", "\"${localProperties["FACEBOOK_CLIENT_TOKEN"]}\"")
+//            resValue("string", "GOOGLE_CREDENTIAL_USER", "\"${localProperties.getProperty("GOOGLE_CREDENTIAL_USER")}\"")
         }
         release {
             buildConfigField("String", "FACEBOOK_APP_ID", "\"${localProperties["FACEBOOK_APP_ID"]}\"")
@@ -62,6 +64,12 @@ android {
 }
 
 dependencies {
+
+    //Google Authentication
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid.v111)
+
     implementation(libs.androidx.lifecycle.viewmodel.ktx.v261)
     implementation(libs.androidx.lifecycle.livedata.ktx.v220)
     implementation (libs.androidx.lifecycle.viewmodel.savedstate)
@@ -77,6 +85,7 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
 //    implementation("com.facebook.android:facebook-login:latest.release")
+    implementation(libs.firebase.bom.v3380)
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation(libs.converter.gson)
     implementation(libs.gson)

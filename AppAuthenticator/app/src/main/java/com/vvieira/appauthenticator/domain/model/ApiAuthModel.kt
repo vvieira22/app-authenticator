@@ -19,7 +19,7 @@ data class LoginResponseError(
 
 data class RegisterModelRequest(
     @SerializedName("email") val email: String,
-    @SerializedName("password") val password: String,
+    @SerializedName("password") val password: String = "",
     @SerializedName("facebook_id") val facebook_id: String = "",
     @SerializedName("google_sub") val gmail_id: String = "",
     @SerializedName("biometric_data") val biometric_data: String = "",//maybe facebook or google login.

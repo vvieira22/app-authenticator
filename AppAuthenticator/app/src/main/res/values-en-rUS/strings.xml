@@ -25,4 +25,28 @@
     <string name="cnpj_invalido">Invalid CNPJ.</string>
     <string name="cadastro_sucesso">Signed up successfully.</string>
 
+    <!-- Common HTTP errors -->
+    <string name="http_400">Invalid request.</string>
+    <string name="http_401">Incorrect email or password, try again</string>
+    <string name="http_403">Forbidden. You don\'t have permission to access this resource.</string>
+    <string name="http_404">Page not found.</string>
+    <string name="http_405">Method not allowed.</string>
+    <string name="http_408">Request timed out. Please try again later.</string>
+    <string name="http_409">User already registered, please sign in.</string>
+    <string name="http_500">Internal server error. Something went wrong.</string>
+    <string name="http_502">Bad Gateway. The server encountered a problem processing the request.</string>
+    <string name="http_503">Service unavailable. Please try again later.</string>
+    <string name="http_504">Server response timed out. Try again later.</string>
+
+    <!-- Common HTTP sucess -->
+    <string name="http_success_login_200">Login successful!</string>
+    <string name="http_success_signup_201">User registered successfully!</string>
+    <string name="http_success_logout_204">You have successfully logged out.</string>
+    <string name="http_success_profile_update_200">Profile updated successfully.</string>
+    <string name="http_success_password_change_200">Password changed successfully.</string>
+    <string name="http_success_data_saved_200">Data saved successfully.</string>
+    <string name="http_success_action_completed_200">Action completed successfully.</string>
+    <string name="http_success_request_sent_202">Request sent successfully.</string>
+    <string name="http_success_operation_200">Operation performed successfully.</string>
+
 </resources>

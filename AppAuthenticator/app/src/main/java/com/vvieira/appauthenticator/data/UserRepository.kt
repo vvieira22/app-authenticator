@@ -11,6 +11,6 @@ class UserRepository @Inject constructor(
     suspend fun loginPassword(user: LoginModelRequest): LoginResponseOk =
         loginDataSource.loginPassword(user)
 
-    suspend fun registerPassword(user: RegisterModelRequest): RegisterResponseOk =
-        loginDataSource.registerPassword(user)
+    suspend fun registerUser(user: RegisterModelRequest, type: String): RegisterResponseOk =
+        loginDataSource.registerUser(user, type)
 }

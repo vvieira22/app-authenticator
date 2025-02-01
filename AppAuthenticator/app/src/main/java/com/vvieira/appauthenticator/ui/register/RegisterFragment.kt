@@ -9,12 +9,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.lifecycleScope
 import com.vvieira.appauthenticator.R
 import com.vvieira.appauthenticator.databinding.FragmentCadastroBinding
 import com.vvieira.appauthenticator.domain.model.RegisterModelRequest
-import com.vvieira.appauthenticator.ui.login.AuthenticViewModel
+import com.vvieira.appauthenticator.ui.AuthenticViewModel
+import com.vvieira.appauthenticator.util.DEFAUT_AUTH
 import com.vvieira.appauthenticator.util.Utils.Companion.customSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,7 +23,7 @@ class RegisterFragment : Fragment() {
     private var _binding: FragmentCadastroBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: AuthenticViewModel by viewModels() //nao to usando activityViewModels() pra vincular a viewmodel a esse framgneto, quando morrer ja era
+    private val viewModel: AuthenticViewModel by activityViewModels() //nao to usando activityViewModels() pra vincular a viewmodel a esse framgneto, quando morrer ja era
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,7 +62,9 @@ class RegisterFragment : Fragment() {
                     resposta!!,
                     Color.GREEN,
                     Color.WHITE
-                )
+                ).let {
+                    viewModel.userMessageShown()
+                }
             } else {
                 Log.d("REGISTER RESPONSE", resposta.toString())
                 customSnackBar(
@@ -71,7 +72,9 @@ class RegisterFragment : Fragment() {
                     getString(R.string.invalid_credential),
                     Color.RED,
                     Color.WHITE
-                )
+                ).let {
+                    viewModel.userMessageShown()
+                }
             }
         }
     }
@@ -85,14 +88,18 @@ class RegisterFragment : Fragment() {
                     name = binding.nomeCadastro.text.toString(),
                     document = binding.documento.text.toString(),
                     telefone = binding.telefone.text.toString(),
-                )
+                ),
+                DEFAUT_AUTH
             )
+        }
+
+        binding.botaoVoltar.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-
         _binding = null // Limpa o binding para evitar vazamentos de memória
     }
 

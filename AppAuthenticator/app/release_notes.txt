@@ -26,3 +26,5 @@ Add:
 
 TODO:
     1. Fazer uma classe para tratamento de erro, e ter uma mensagem amigável baseado na resposta http e no código.
+    2. Ainda com bug entre livedata quando muda de fragmento e retorna, principalmente login -> erro -> tela cadastro -> login.
+        Aparece novamente o erro de login, na view model foi comentado algo para talvez resolver esse problema.

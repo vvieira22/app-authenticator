@@ -24,6 +24,29 @@
     <string name="cpf_invalido">CPF inválido.</string>
     <string name="cnpj_invalido">CNPJ inválido.</string>
     <string name="cadastro_sucesso">Cadastro realizado com sucesso.</string>
-    <!-- Strings related to login -->
+
+    <!-- Common HTTP errors -->
+    <string name="http_400">Requisição inválida.</string>
+    <string name="http_401">Email ou senha incorretos, tente novamente.</string>
+    <string name="http_403">Acesso proibido. Você não tem permissão para acessar este recurso.</string>
+    <string name="http_404">Página não encontrada.</string>
+    <string name="http_405">Método não permitido.</string>
+    <string name="http_408">Tempo de requisição esgotado. Por favor, tente novamente mais tarde.</string>
+    <string name="http_409">Usuário já cadastrado, por favor faça login.</string>
+    <string name="http_500">Erro interno do servidor. Algo deu errado.</string>
+    <string name="http_502">Bad Gateway. O servidor encontrou um problema ao processar a solicitação.</string>
+    <string name="http_503">Serviço indisponível. Por favor, tente novamente mais tarde.</string>
+    <string name="http_504">Tempo de resposta do servidor esgotado. Tente novamente mais tarde.</string>
+
+    <!-- Common HTTP sucess -->
+    <string name="http_success_login_200">Login realizado com sucesso!</string>
+    <string name="http_success_signup_201">Usuário cadastrado com sucesso!</string>
+    <string name="http_success_logout_204">Você foi desconectado com sucesso.</string>
+    <string name="http_success_profile_update_200">Perfil atualizado com sucesso.</string>
+    <string name="http_success_password_change_200">Senha alterada com sucesso.</string>
+    <string name="http_success_data_saved_200">Dados salvos com sucesso.</string>
+    <string name="http_success_action_completed_200">Ação concluída com sucesso.</string>
+    <string name="http_success_request_sent_202">Solicitação enviada com sucesso.</string>
+    <string name="http_success_operation_200">Operação realizada com sucesso.</string>
 
 </resources>

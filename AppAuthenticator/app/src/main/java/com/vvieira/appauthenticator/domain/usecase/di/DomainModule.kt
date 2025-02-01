@@ -2,8 +2,8 @@ package com.vvieira.appauthenticator.domain.usecase.di
 
 import com.vvieira.appauthenticator.domain.usecase.LoginPasswordUseCase
 import com.vvieira.appauthenticator.domain.usecase.LoginPasswordUseCaseImpl
-import com.vvieira.appauthenticator.domain.usecase.RegisterPasswordUseCase
-import com.vvieira.appauthenticator.domain.usecase.RegisterPasswordUseCaseImpl
+import com.vvieira.appauthenticator.domain.usecase.registerUserUseCase
+import com.vvieira.appauthenticator.domain.usecase.registerUserUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -19,5 +19,5 @@ interface DomainModule {
     //Desde que ela implemente a mesma interface.
 
     @Binds
-    fun bindRegisterPasswordUseCase(useCase: RegisterPasswordUseCaseImpl): RegisterPasswordUseCase
+    fun bindregisterUserUseCase(useCase: registerUserUseCaseImpl): registerUserUseCase
 }
