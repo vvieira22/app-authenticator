@@ -3,6 +3,8 @@
 
     <!--MENSAGENS DE ERRO LOGIN-->
     <string name="invalid_credential">Senha ou Email incorretos.</string>
+    <string name="invalid_email">Email inválido.</string>
+    <string name="password_weak">Senha muito fraca.</string>
     <string name="usr_not_found">Usuário não encontrado.</string>
     <string name="user_disabled">Usuário desabilitado.</string>
     <string name="too_many_requests">Muitas tentativas de login.</string>
@@ -17,13 +19,22 @@
     <string name="email_vazio">Campo email não pode ser vazio.</string>
     <string name="senha_vazio">Campo senha não pode ser vazio.</string>
     <string name="telefone_vazio">Campo telefone não pode ser vazio.</string>
+    <string name="birthday_empty">Data de nascimento não pode ser vazia.</string>
     <string name="email_invalido">Email inválido.</string>
     <string name="senha_fraca">Senha fraca.</string>
     <string name="email_em_uso">Email já cadastrado.</string>
     <string name="doc_invalido">Documento inválido.</string>
     <string name="cpf_invalido">CPF inválido.</string>
     <string name="cnpj_invalido">CNPJ inválido.</string>
+
     <string name="cadastro_sucesso">Cadastro realizado com sucesso.</string>
+
+    <!-- Errors -->
+    <string name="unknown_error">Erro desconhecido, tente novamnete mais tarde.</string>
+
+    <!-- Connection Errors -->
+    <string name="no_internet_found">Sem conexão a internet.</string>
+    <string name="host_out_of_reach">Servidor fora do ar, entre em contato com o suporte.</string>
 
     <!-- Common HTTP errors -->
     <string name="http_400">Requisição inválida.</string>

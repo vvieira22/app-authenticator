@@ -12,6 +12,18 @@ const val GOOGLE_AUTH = "google"
 const val FACEBOOK_AUTH = "facebook"
 const val BIOMETRIC_AUTH = "biometric"
 
+
+//VAL DEFAULT REGISTER FIELDS
+const val EMAIL = "email"
+const val PASSWORD = "password"
+const val NAME = "name"
+const val FACEBOOK_ID = "facebookId"
+const val GMAIL_ID = "gmailId"
+const val BIOMETRIC_DATA = "biometricData"
+const val DOCUMENT = "document"
+const val BIRTHDAY = "birthday"
+const val PHONE = "phone"
+
 object HttpStatusCodes {
     // Sucesso
     const val HTTP_OK = 200

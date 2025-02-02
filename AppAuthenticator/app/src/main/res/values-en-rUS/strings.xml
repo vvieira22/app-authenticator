@@ -3,6 +3,8 @@
 
     <!--ERROR MESSAGES WHEN SIGN IN-->
     <string name="invalid_credential">Password or email is invalid.</string>
+    <string name="invalid_email">Invalid Email.</string>
+    <string name="password_weak">Password is too weak.</string>
     <string name="usr_not_found">User not found.</string>
     <string name="user_disabled">User disabled.</string>
     <string name="too_many_requests">Too many requests to log in.</string>
@@ -17,13 +19,22 @@
     <string name="email_vazio">Field email cannot be empty.</string>
     <string name="senha_vazio">Field password cannot be empty.</string>
     <string name="telefone_vazio">Field phone number cannot be empty.</string>
+    <string name="birthday_empty">Birthday cannot be empty.</string>
     <string name="email_invalido">Invalid email.</string>
     <string name="senha_fraca">Password is too weak.</string>
     <string name="email_em_uso">Email already in use.</string>
     <string name="doc_invalido">Invalid document.</string>
     <string name="cpf_invalido">Invalid CPF.</string>
     <string name="cnpj_invalido">Invalid CNPJ.</string>
+
     <string name="cadastro_sucesso">Signed up successfully.</string>
+
+    <!-- Errors -->
+    <string name="unknown_error">Unknown error, try again later.</string>
+
+    <!-- Connection Errors -->
+    <string name="no_internet_found">No connection found.</string>
+    <string name="host_out_of_reach">Host out of reach, contact the support team.</string>
 
     <!-- Common HTTP errors -->
     <string name="http_400">Invalid request.</string>

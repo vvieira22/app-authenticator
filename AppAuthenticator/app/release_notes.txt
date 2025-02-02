@@ -23,10 +23,10 @@ Add:
     13: Mudança bastante relevante na arquitetura do projeto, em vez de criar modulos separados para login,
             Resolvi implementar todos eles aqui dentro, retrofit, firebase, tudo no projeto só, assim que finalizar
             posso pensar em separar eles.
-
+    14: Alteração do livedata para StateFlow para login e para registro, apenas isso, nao valida os campos ainda, esta no TODO.
+    15: Criação documento para transcrever códigos de erro http para mensagens amigáveis para o usuário.
 TODO:
-    1. Fazer uma classe para tratamento de erro, e ter uma mensagem amigável baseado na resposta http e no código.
-    2. Ainda com bug entre livedata quando muda de fragmento e retorna, principalmente login -> erro -> tela cadastro -> login.
-        Aparece novamente o erro de login, na view model foi comentado algo para talvez resolver esse problema.
-    3. Hoje o botão de continuar com google, so faz registro, não faz login, da erro se ja tiver cadastrado,
-        validar na api se já existe seria uma opcao e logar sozinho se bater token e as outras inf salvas.
+    1. Bug visual quando da algum erro no edittext, vazio ou validacao errada, se eu sair e voltar pro fragmento, deveria resetar e n aparecer mais
+        talvez utilizar StateFlow resolva, validar isso !!
+    2. Hoje o botão de continuar com google, so faz registro, não faz login, da erro se ja tiver cadastrado,
+        validar na api se já existe seria uma opcao e logar sozinho se bater token e as outras inf salvas. Talvez criar um acesso social

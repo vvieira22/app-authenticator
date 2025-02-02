@@ -1,24 +1,32 @@
 package com.vvieira.appauthenticator.ui.register
 
+import android.app.Dialog
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import com.vvieira.appauthenticator.R
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.vvieira.appauthenticator.databinding.FragmentCadastroBinding
-import com.vvieira.appauthenticator.domain.model.RegisterModelRequest
+import com.vvieira.appauthenticator.domain.model.Register
 import com.vvieira.appauthenticator.ui.AuthenticViewModel
 import com.vvieira.appauthenticator.util.DEFAUT_AUTH
+import com.vvieira.appauthenticator.util.Utils
 import com.vvieira.appauthenticator.util.Utils.Companion.customSnackBar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
+
+    private var collectJob: Job? = null
+
+    private var loadingDialog: Dialog? = null
 
     private var _binding: FragmentCadastroBinding? = null
     private val binding get() = _binding!!
@@ -37,6 +45,7 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setListeners()
         observerViewModelEvents()
+        startCollectData()
     }
 
     private fun observerViewModelEvents() {
@@ -46,8 +55,8 @@ class RegisterFragment : Fragment() {
         viewModel.documentField.observe(viewLifecycleOwner) { resposta ->
             binding.documento.error = resposta
         }
-        viewModel.emailField.observe(viewLifecycleOwner) { resposta ->
-            binding.email.error = resposta
+        viewModel.emailRegisterField.observe(viewLifecycleOwner) { resposta ->
+            binding.emailRegister.error = resposta
         }
         viewModel.phoneField.observe(viewLifecycleOwner) { resposta ->
             binding.telefone.error = resposta
@@ -55,42 +64,36 @@ class RegisterFragment : Fragment() {
         viewModel.passwordRegisterField.observe(viewLifecycleOwner) { resposta ->
             binding.senhaCadastro.error = resposta
         }
-        viewModel.registerResponse.observe(viewLifecycleOwner) { resposta ->
-            if (resposta != "") {
+
+        //TODO PARAMETRIZAR COR E CONFIGURACAO DA SNACKBAR PARA DIFERENCIAR EVENTOS.
+        viewModel.registerResponse.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { message ->
                 customSnackBar(
                     binding.root,
-                    resposta!!,
+                    message,
                     Color.GREEN,
                     Color.WHITE
-                ).let {
-                    viewModel.userMessageShown()
-                }
-            } else {
-                Log.d("REGISTER RESPONSE", resposta.toString())
-                customSnackBar(
-                    binding.root,
-                    getString(R.string.invalid_credential),
-                    Color.RED,
-                    Color.WHITE
-                ).let {
-                    viewModel.userMessageShown()
-                }
+                )
             }
         }
     }
 
     private fun setListeners() {
         binding.botaoCadastrar.setOnClickListener {
-            viewModel.registerPass(
-                RegisterModelRequest(
-                    email = binding.email.text.toString(),
-                    password = binding.senhaCadastro.text.toString(),
-                    name = binding.nomeCadastro.text.toString(),
-                    document = binding.documento.text.toString(),
-                    telefone = binding.telefone.text.toString(),
-                ),
-                DEFAUT_AUTH
-            )
+            lifecycleScope.launch {
+                viewModel.registerPass(
+                    Register(
+                        email = binding.emailRegister.text.toString(),
+                        password = binding.senhaCadastro.text.toString(),
+                        name = binding.nomeCadastro.text.toString(),
+                        document = binding.documento.text.toString(),
+                        phone = binding.telefone.text.toString(),
+//                        birthDate = binding.dataNascimento.text.toString(),
+                        type = DEFAUT_AUTH
+                    ),
+                    requireContext()
+                )
+            }
         }
 
         binding.botaoVoltar.setOnClickListener {
@@ -98,9 +101,34 @@ class RegisterFragment : Fragment() {
         }
     }
 
+    private fun startCollectData() {
+        collectJob = viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.registerFormState.collect { valor ->
+                    if (valor.isLoading) {
+                        showLoading()
+                    } else {
+                        hideLoading()
+                    }
+                }
+            }
+        }
+    }
+
     override fun onDestroyView() {
+        binding.documento.error = null
         super.onDestroyView()
+        collectJob?.cancel() // Importante: Cancelar a coleta para evitar vazamentos
+        collectJob = null
         _binding = null // Limpa o binding para evitar vazamentos de memória
     }
 
+    private fun hideLoading() {
+        loadingDialog?.let { if (it.isShowing) it.cancel() }
+    }
+
+    private fun showLoading() {
+        hideLoading()
+        loadingDialog = Utils.showLoadingDialog(requireActivity())
+    }
 }

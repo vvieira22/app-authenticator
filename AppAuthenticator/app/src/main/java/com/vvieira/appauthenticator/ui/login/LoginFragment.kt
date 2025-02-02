@@ -4,37 +4,31 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.CredentialManager
-import androidx.credentials.GetCredentialRequest
-import androidx.credentials.exceptions.GetCredentialException
-import androidx.credentials.exceptions.NoCredentialException
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
-import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
-import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
-import com.vvieira.appauthenticator.BuildConfig
 import com.vvieira.appauthenticator.R
 import com.vvieira.appauthenticator.databinding.FragmentLoginBinding
-import com.vvieira.appauthenticator.domain.model.RegisterModelRequest
+import com.vvieira.appauthenticator.domain.model.Login
 import com.vvieira.appauthenticator.ui.AuthenticViewModel
-import com.vvieira.appauthenticator.util.GOOGLE_AUTH
+import com.vvieira.appauthenticator.util.DEFAUT_AUTH
 import com.vvieira.appauthenticator.util.Utils
 import com.vvieira.appauthenticator.util.Utils.Companion.customSnackBar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
     private lateinit var credentialManager: CredentialManager
+    private var collectJob: Job? = null
 
     private var loadingDialog: Dialog? = null
 
@@ -47,7 +41,6 @@ class LoginFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         credentialManager = CredentialManager.create(context)
-
     }
 
     override fun onCreateView(
@@ -66,17 +59,23 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setListeners()
         observerViewModelEvents()
+        startCollectData()
     }
 
     private fun setListeners() {
         binding.botaoLogin.setOnClickListener {
-            showLoading()
+//            showLoading()
             lifecycleScope.launch {
                 viewModel.loginPassword(
-                    binding.loginField.text.toString(),
-                    binding.senhaLogin.text.toString()
-                ).join()// Aguarda a conclusão do Job
-                hideLoading()
+                    Login(
+                        email = binding.loginField.text.toString(),
+                        password = binding.senhaLogin.text.toString(),
+                        type = DEFAUT_AUTH
+                    ),
+                    requireContext()
+                )
+//                ).join()// Aguarda a conclusão do Job
+//                hideLoading()
             }
         }
 
@@ -86,81 +85,81 @@ class LoginFragment : Fragment() {
 //                hideLoading()
 //            }, 5000)
 //        }
-        binding.gmailLogin.setOnClickListener {
-            lifecycleScope.launch {
-                try {
-                    val googleIdOption: GetSignInWithGoogleOption =
-                        GetSignInWithGoogleOption.Builder(BuildConfig.GOOGLE_CREDENTIAL_USER)
-                            .build()
-                    val request = GetCredentialRequest.Builder()
-                        .addCredentialOption(googleIdOption)
-                        .build()
-
-                    val credentialManager = CredentialManager.create(requireContext())
-                    val response = credentialManager.getCredential(requireContext(), request)
-
-                    when (val result = response.credential) {
-                        is GoogleIdTokenCredential -> {
-                            val id = result.id
-                            Log.i("GOOGLE-ID", id)
-                            val displayName = result.displayName.toString()
-                            Log.i("GOOGLE-NAME", displayName.toString())
-                            val photoUri = result.profilePictureUri
-                            Log.i("GOOGLE-PHOTO", photoUri.toString())
-                            val token = result.idToken
-                            Log.i("GOOGLE-TOKEN", token)
-
-                            try {
-                                val user = RegisterModelRequest(
-                                    email = id,
-                                    name = displayName,
-                                    gmail_id = result.idToken
-                                )
-                                viewModel.registerWithGoogle(user, GOOGLE_AUTH)
-                                credentialManager.clearCredentialState(ClearCredentialStateRequest())
-                            } catch (e: Exception) {
-                                Log.d("Erro AuthenticViewModel: ", e.message.toString())
-                            }
-                            credentialManager.clearCredentialState(ClearCredentialStateRequest())
-                        }
-
-                        else -> {
-                            // Catch any unrecognized credential type here.
-                            Log.i("GOOGLE", "Unexpected type of credential")
-                        }
-                    }
-                } catch (e: GetCredentialException) {
-                    when (e) {
-                        is NoCredentialException -> {
-                            Log.e("NoCredentialException", "No matching credential found.")
-                        }
-
-                        else -> {
-                            Log.e("Exception", e.localizedMessage ?: "Unknown error")
-                        }
-                    }
-                }
-                viewModel.userMessageShown()
-            }
-        }
+//        binding.gmailLogin.setOnClickListener {
+//            lifecycleScope.launch {
+//                try {
+//                    val googleIdOption: GetSignInWithGoogleOption =
+//                        GetSignInWithGoogleOption.Builder(BuildConfig.GOOGLE_CREDENTIAL_USER)
+//                            .build()
+//                    val request = GetCredentialRequest.Builder()
+//                        .addCredentialOption(googleIdOption)
+//                        .build()
+//
+//                    val credentialManager = CredentialManager.create(requireContext())
+//                    val response = credentialManager.getCredential(requireContext(), request)
+//
+//                    when (val result = response.credential) {
+//                        is GoogleIdTokenCredential -> {
+//                            val id = result.id
+//                            Log.i("GOOGLE-ID", id)
+//                            val displayName = result.displayName.toString()
+//                            Log.i("GOOGLE-NAME", displayName.toString())
+//                            val photoUri = result.profilePictureUri
+//                            Log.i("GOOGLE-PHOTO", photoUri.toString())
+//                            val token = result.idToken
+//                            Log.i("GOOGLE-TOKEN", token)
+//
+//                            try {
+//                                val user = RegisterModelRequest(
+//                                    email = id,
+//                                    name = displayName,
+//                                    gmail_id = result.idToken
+//                                )
+//                                viewModel.registerWithGoogle(user, GOOGLE_AUTH)
+//                                credentialManager.clearCredentialState(ClearCredentialStateRequest())
+//                            } catch (e: Exception) {
+//                                Log.d("Erro AuthenticViewModel: ", e.message.toString())
+//                            }
+//                            credentialManager.clearCredentialState(ClearCredentialStateRequest())
+//                        }
+//
+//                        else -> {
+//                            // Catch any unrecognized credential type here.
+//                            Log.i("GOOGLE", "Unexpected type of credential")
+//                        }
+//                    }
+//                } catch (e: GetCredentialException) {
+//                    when (e) {
+//                        is NoCredentialException -> {
+//                            Log.e("NoCredentialException", "No matching credential found.")
+//                        }
+//
+//                        else -> {
+//                            Log.e("Exception", e.localizedMessage ?: "Unknown error")
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 
     private fun observerViewModelEvents() {
+        viewModel.emaiLoginField.observe(viewLifecycleOwner) { resposta ->
+            binding.loginField.error = resposta
+        }
+        viewModel.passwordLoginField.observe(viewLifecycleOwner) { resposta ->
+            binding.senhaLogin.error = resposta
+        }
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect { uiState ->
-                    if (uiState.teste == "caralho") {
-                        customSnackBar(
-                            binding.root,
-                            uiState.teste,
-                            Color.RED,
-                            Color.WHITE
-                        ).let{
-                            viewModel.userMessageShown()
-                        }
-                    }
-                }
+        //TODO PARAMETRIZAR COR E CONFIGURACAO DA SNACKBAR PARA DIFERENCIAR EVENTOS.
+        viewModel.loginResponse.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { message ->
+                    customSnackBar(
+                        binding.root,
+                        message,
+                        Color.GREEN,
+                        Color.WHITE
+                    )
             }
         }
 //
@@ -215,11 +214,29 @@ class LoginFragment : Fragment() {
 //        }
     }
 
+    //AQUI BOTAMOS PARA CHAMAR LOADING, MAS POSSO PEGAR DADOS E IR PARA OUTRA ACTIVITY DEPOIS DO LOGIN.
+    private fun startCollectData() {
+        collectJob = viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.loginFormState.collect { valor ->
+                    if (valor.isLoading) {
+                        showLoading()
+                    } else {
+                        hideLoading()
+                    }
+                }
+            }
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
+        collectJob?.cancel() // Importante: Cancelar a coleta para evitar vazamentos
+        collectJob = null
         _binding = null // Limpa o binding para evitar vazamentos de memória
     }
 
+    //TODO TALVEZ COLOCAR NA BASEFRAGMENT showLoading e hideLoading..
     private fun hideLoading() {
         loadingDialog?.let { if (it.isShowing) it.cancel() }
     }
