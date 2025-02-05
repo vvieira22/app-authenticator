@@ -2,15 +2,18 @@ package com.vvieira.appauthenticator.util
 
 import android.app.Dialog
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Color
 import android.view.View
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat.getString
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.text.isDigitsOnly
 import com.google.android.material.snackbar.Snackbar
 import com.vvieira.appauthenticator.R
+import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.ALREADY_DEFAULT_REGISTERED
+import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.ALREADY_FACEBOOK_AND_DEFAULT_REGISTERED
+import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.ALREADY_FACEBOOK_REGISTERED
+import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.ALREADY_GOOGLE_AND_DEFAULT_REGISTERED
+import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.ALREADY_GOOGLE_REGISTERED
+import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.NOT_REGISTERED_YET
 import java.util.Locale
 
 class Utils {
@@ -99,24 +102,72 @@ class Utils {
             }
         }
 
-        fun convertErroToTextMessage(response: String, context: Context): String {
+        fun convertErroToTextMessage(
+            response: String,
+            context: Context,
+            needMoreInformation: String = "" //TODO Maybe add what type information need (isAuthLoginInvolved like), to transcribe correctly the inf.
+        ): String {
             if (response.isDigitsOnly()) {
                 val codigo = response.toInt()
-                return when (codigo) {
-                    400 -> context.getString(R.string.http_400)
-                    401 -> context.getString(R.string.http_401)
-                    403 -> context.getString(R.string.http_403)
-                    404 -> context.getString(R.string.http_404)
-                    500 -> context.getString(R.string.http_500)
-                    502 -> context.getString(R.string.http_502)
-                    503 -> context.getString(R.string.http_503)
-                    504 -> context.getString(R.string.http_504)
-                    200 -> context.getString(R.string.http_success_login_200)
-                    201 -> context.getString(R.string.http_success_signup_201)
-                    204 -> context.getString(R.string.http_success_logout_204)
-                    202 -> context.getString(R.string.http_success_request_sent_202)
+                when (codigo) {
+                    400 -> {
+                        return context.getString(R.string.http_400)
+                    }
+
+                    401 -> {
+                        return context.getString(R.string.http_401)
+                    }
+
+                    403 -> {
+                        return context.getString(R.string.http_403)
+                    }
+
+                    404 -> {
+                        if (needMoreInformation.isNotEmpty()) { //TODO For now, continue like string to maybe in future pass type of needMoreInformation
+                            return isAuthLoginInvolved(response).toString()
+                        } else {
+                            return context.getString(R.string.http_404)
+                        }
+                    }
+
+                    500 -> {
+                        return context.getString(R.string.http_500)
+                    }
+
+                    502 -> {
+                        return context.getString(R.string.http_502)
+                    }
+
+                    503 -> {
+                        return context.getString(R.string.http_503)
+                    }
+
+                    504 -> {
+                        return context.getString(R.string.http_504)
+                    }
+
+                    200 -> {
+                        if (needMoreInformation.isNotEmpty()) { //TODO For now, continue like string to maybe in future pass type of needMoreInformation
+                            return isAuthLoginInvolved(response).toString() //200 for socialAuth() and need know of user type is social authenticated.
+                        } else {
+                            return context.getString(R.string.http_success_login_200)
+                        }
+                    }
+
+                    201 -> {
+                        return context.getString(R.string.http_success_signup_201)
+                    }
+
+                    204 -> {
+                        return context.getString(R.string.http_success_logout_204)
+                    }
+
+                    202 -> {
+                        return context.getString(R.string.http_success_request_sent_202)
+                    }
+
                     else -> {
-                        context.getString(R.string.unknown_error)
+                        return context.getString(R.string.unknown_error)
                     }
                 }
             } else {
@@ -133,10 +184,22 @@ class Utils {
         }
 
         private fun isErrorConnection(response: String): Boolean {
-            //TODO Maybe check if is there a function to find connection or failed together with less words
+            //TODO Maybe check if is there a function to find (connection && failed) together with less words
             val regex =
                 Regex(".*\\b(connect|connection|connecting|conectar|conexão)\\b.*\\b(failed|failure|failing|falhou|falha)\\b.*|.*\\b(failed|failure|failing|falhou|falha)\\b.*\\b(connect|connection|connecting|conectar|conexão)\\b.*")
             return regex.matches(response.lowercase(Locale.getDefault()))
+        }
+
+        private fun isAuthLoginInvolved(response: String): String? {
+            return when {
+                (response.matches(Regex(NOT_REGISTERED_YET))) -> NOT_REGISTERED_YET
+                (response.matches(Regex(ALREADY_GOOGLE_REGISTERED))) -> ALREADY_GOOGLE_REGISTERED
+                (response.matches(Regex(ALREADY_GOOGLE_AND_DEFAULT_REGISTERED))) -> ALREADY_GOOGLE_AND_DEFAULT_REGISTERED
+                (response.matches(Regex(ALREADY_FACEBOOK_REGISTERED))) -> ALREADY_FACEBOOK_REGISTERED
+                (response.matches(Regex(ALREADY_FACEBOOK_AND_DEFAULT_REGISTERED))) -> ALREADY_FACEBOOK_AND_DEFAULT_REGISTERED
+                (response.matches(Regex(ALREADY_DEFAULT_REGISTERED))) -> ALREADY_DEFAULT_REGISTERED
+                else -> null
+            }
         }
     }
 }

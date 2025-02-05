@@ -30,10 +30,21 @@ data class RegisterModelRequest(
     @SerializedName("telefone") val telefone: String = ""
 )
 
+data class OkResponse(
+    @SerializedName("detail") val message: String,
+    val code: Int
+)
+
 data class RegisterResponseOk(
     @SerializedName("message") val message: String
 )
 
 data class RegisterResponseError(
     @SerializedName("detail") val error: String
+)
+
+data class ResultRequest(
+    val statusCode: Int?,
+    val okResponse: OkResponse?,
+    val errorMessage: String? = null
 )

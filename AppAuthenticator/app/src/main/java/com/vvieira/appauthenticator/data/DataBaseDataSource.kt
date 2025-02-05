@@ -5,8 +5,11 @@ import android.util.Log
 import com.google.gson.Gson
 import com.vvieira.appauthenticator.domain.model.LoginModelRequest
 import com.vvieira.appauthenticator.domain.model.LoginResponseOk
+import com.vvieira.appauthenticator.domain.model.OkResponse
 import com.vvieira.appauthenticator.domain.model.RegisterModelRequest
 import com.vvieira.appauthenticator.domain.model.RegisterResponseOk
+import com.vvieira.appauthenticator.domain.model.ResultRequest
+import kotlinx.coroutines.suspendCancellableCoroutine
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -81,6 +84,39 @@ class DataBaseDataSource @Inject constructor(
                         Log.i("RESPOSTA-FAILURE", "jsonResponse: ${t.message}")
                         responseregisterUser = t.message.toString()
                         continuation.resumeWith(Result.failure(Exception(responseregisterUser)))
+                    }
+                })
+        }
+    }
+
+    override suspend fun checkSocialAuthentic(user: LoginModelRequest, type: String): ResultRequest {
+        return suspendCoroutine  { continuation ->
+            var responseOk = ""
+            clientRetrofitWithRoutes.checkSocialAuthentic(user).enqueue(
+                object : Callback<ResponseBody> {
+                    override fun onResponse(
+                        call: Call<ResponseBody>,
+                        response: Response<ResponseBody>
+                    ) {
+                        if (response.isSuccessful) {
+                            val jsonResponse = response.body()?.string()
+                            val checkResponse: OkResponse =
+                                Gson().fromJson(jsonResponse, OkResponse::class.java)
+                            val request = ResultRequest(response.code(), checkResponse)
+
+                            continuation.resumeWith(Result.success(request))
+                        } else {
+                            val errBody = response.errorBody()?.string()
+                            val checkResponse: OkResponse = Gson().fromJson(errBody, OkResponse::class.java)
+                            val request = ResultRequest(response.code(), checkResponse)
+                            continuation.resumeWithException(Exception(request.toString()))
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        Log.d("RESPOSTA-FAILURE", "jsonResponse: ${t.message}")
+                        responseOk = t.message.toString()
+                        continuation.resumeWith(Result.failure(Exception(responseOk)))
                     }
                 })
         }

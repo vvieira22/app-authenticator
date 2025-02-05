@@ -4,6 +4,7 @@ import retrofit2.http.POST
 import com.vvieira.appauthenticator.domain.model.LoginModelRequest
 import com.vvieira.appauthenticator.domain.model.RegisterModelRequest
 import com.vvieira.appauthenticator.util.CADASTRO
+import com.vvieira.appauthenticator.util.CHECK_SOCIAL_AUTHENTIC
 import com.vvieira.appauthenticator.util.LOGIN
 import okhttp3.ResponseBody
 import retrofit2.http.Path
@@ -15,4 +16,7 @@ interface AuthEndPoint {
 
     @POST(LOGIN)
     fun login(@Path("type") type: String, @Body usr: LoginModelRequest): Call<ResponseBody>
+
+    @POST(CHECK_SOCIAL_AUTHENTIC)
+    fun checkSocialAuthentic(@Body usr: LoginModelRequest): Call<ResponseBody>
 }

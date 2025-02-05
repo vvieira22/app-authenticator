@@ -1,5 +1,7 @@
 package com.vvieira.appauthenticator.domain.usecase.di
 
+import com.vvieira.appauthenticator.domain.usecase.CheckSocialAuthenticUseCase
+import com.vvieira.appauthenticator.domain.usecase.CheckSocialAuthenticUseCaseImpl
 import com.vvieira.appauthenticator.domain.usecase.LoginPasswordUseCase
 import com.vvieira.appauthenticator.domain.usecase.LoginPasswordUseCaseImpl
 import com.vvieira.appauthenticator.domain.usecase.registerUserUseCase
@@ -20,4 +22,7 @@ interface DomainModule {
 
     @Binds
     fun bindregisterUserUseCase(useCase: registerUserUseCaseImpl): registerUserUseCase
+
+    @Binds
+    fun bindCheckSocialAuthenticUseCase(useCase: CheckSocialAuthenticUseCaseImpl): CheckSocialAuthenticUseCase
 }

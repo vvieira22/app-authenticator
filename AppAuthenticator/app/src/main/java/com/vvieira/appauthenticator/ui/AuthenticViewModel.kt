@@ -2,7 +2,6 @@ package com.vvieira.appauthenticator.ui
 
 import Event
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,6 +12,7 @@ import com.vvieira.appauthenticator.domain.model.LoginFormState
 import com.vvieira.appauthenticator.domain.model.LoginModelRequest
 import com.vvieira.appauthenticator.domain.model.Register
 import com.vvieira.appauthenticator.domain.model.RegisterModelRequest
+import com.vvieira.appauthenticator.domain.usecase.CheckSocialAuthenticUseCase
 import com.vvieira.appauthenticator.domain.usecase.LoginPasswordUseCase
 import com.vvieira.appauthenticator.domain.usecase.registerUserUseCase
 import com.vvieira.appauthenticator.util.BIRTHDAY
@@ -26,6 +26,10 @@ import com.vvieira.appauthenticator.util.GOOGLE_AUTH
 import com.vvieira.appauthenticator.util.NAME
 import com.vvieira.appauthenticator.util.PASSWORD
 import com.vvieira.appauthenticator.util.PHONE
+import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.ALREADY_DEFAULT_REGISTERED
+import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.ALREADY_FACEBOOK_REGISTERED
+import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.ALREADY_GOOGLE_REGISTERED
+import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.NOT_REGISTERED_YET
 import com.vvieira.appauthenticator.util.Utils
 import com.vvieira.appauthenticator.util.Utils.Companion.convertErroToTextMessage
 import com.vvieira.appauthenticator.util.Utils.Companion.isCpf
@@ -40,14 +44,14 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthenticViewModel @Inject constructor(
     private val loginPassword: LoginPasswordUseCase,
-    private val registerUser: registerUserUseCase
+    private val registerUser: registerUserUseCase,
+    private val checkSocialAuthentic: CheckSocialAuthenticUseCase
 ) : ViewModel() {
 
     private var isFormValid = false
 
     // StateFlow: + moderno e mais interessante que usar LiveData :)
     //https://developer.android.com/topic/architecture/ui-layer/events#views_1
-
 
     //-----------------------------------------LOGIN----------------------------------------------//
     private val _loginFormState = MutableStateFlow(LoginFormState())
@@ -107,6 +111,88 @@ class AuthenticViewModel @Inject constructor(
     val biometricDataRegisterField: LiveData<String?> = _biometricDataRegisterFieldMutableData
 
 
+    /////////////////////////////////////////SOCIAL LOGIN///////////////////////////////////////////
+    private val _socialFormState = MutableStateFlow(LoginFormState())
+    val socialFormState: StateFlow<LoginFormState> = _socialFormState
+
+    private val _socialAuthMutableData = MutableLiveData<Register>()
+    val socialAuth: LiveData<Register> = _socialAuthMutableData
+
+    private val _socialResult = MutableLiveData<Event<String>>()
+    val socialResult: LiveData<Event<String>> = _socialResult
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    //TODO AUTHENTICATE SOCIAL, TRY LOGIN, IF FAIL, REGISTER., INTERNAL AT API.
+    fun socialAuth(user: Register, context: Context) = viewModelScope.launch {
+        isFormValid = true
+        val type = user.type.toString()
+        val email = user.email.toString()
+        val password = user.password.toString()
+        val name = user.name.toString()
+        var id_token = ""
+
+        if (type == GOOGLE_AUTH) {
+            id_token = user.gmailId.toString()
+        } else if (type == FACEBOOK_AUTH) {
+            id_token = user.facebookId.toString()
+        } else {
+            isFormValid = false
+        }
+
+        if (isFormValid) {
+            try {
+                //Start of loading
+                _socialFormState.value = _socialFormState.value.copy(
+                    isLoading = true,
+                    error = null
+                )
+                val userModel = LoginModelRequest(
+                    email = email, password = "", id_token = id_token, biometric_data = ""
+                )
+                val response = checkSocialAuthentic(userModel, type)
+                _socialFormState.value =
+                    _socialFormState.value.copy(isLoading = false, error = null)
+                var result = (response?.okResponse?.message) //e.g: {"message":"User not registered yet."}
+                if (result != null) {
+                    result = convertErroToTextMessage(
+                        response = result,
+                        context = context,
+                        needMoreInformation = type //tanto faz o type, so pra ativar mensagens do bloco de authUser (404)
+                    )
+                }
+                when {
+                    (result == NOT_REGISTERED_YET) -> {
+                        //TODO, USUARIO AINDA NAO CRIADO, PASSAR OS DADOS PARA UMA OUTRA TELA, E FAZER O ACEITA DO CADASTRO.
+                    }
+
+                    (result == ALREADY_GOOGLE_REGISTERED && type == GOOGLE_AUTH) -> {
+                        //TODO DO LOGIN
+                    }
+
+                    (result == ALREADY_FACEBOOK_REGISTERED && type == FACEBOOK_AUTH) -> {
+                        //TODO DO LOGIN
+                    }
+
+                    (result == ALREADY_DEFAULT_REGISTERED) -> {
+                        //TODO PERGUNTAR SE DESEJA VINCULAR A CONTA A REDE SOCIAL PARA FAZER LOGIN.
+                        //TODO VER SE E SECURO FAZER ESSA PERGUNTA, OU MANDAR ELE ENTRAR COM EMAIL E SENHA E ELE APERTAR EM VINCULAR
+                    }
+//                    else -> {_socialFormState.value = _socialFormState.value.copy(isLoading = false, error = null)}
+                }
+                //TODO VALIDAR PQ ELE TA CAINDO AQUI QUANDO
+            } catch (e: Exception) {
+                //TODO ELE TA DESCENDO AQUI QUANDO DA ERRO, NEGATIVAR A API E SO DEIXAR OK QUANDO METODO DE LOGIN EXISTIR PARA O USR
+                //TALVEZ TEREMOS QUE REFAZER O METODO DA datasource para retornar nesse formato de erro de registro, ta maneirinho.
+                val errorMsg = convertErroToTextMessage(e.message.toString(), context)
+                _socialFormState.value =
+                    _socialFormState.value.copy(isLoading = false, error = e.message.toString())
+                _socialResult.value = Event(errorMsg)
+            }
+        }
+    }
+
     fun loginPassword(login: Login, context: Context) = viewModelScope.launch {
         isFormValid = true
         val type = login.type.toString()
@@ -134,7 +220,10 @@ class AuthenticViewModel @Inject constructor(
 
         if (isFormValid) {
             _loginFormState.value =
-                _loginFormState.value.copy(isLoading = true, error = null) // Inicio Carregamento
+                _loginFormState.value.copy(
+                    isLoading = true,
+                    error = null
+                ) // Inicio Carregamento
             try {
                 val response = loginPassword(LoginModelRequest(email, password))
                 _loginFormState.value = _loginFormState.value.copy(isLoading = false, error = null)
@@ -148,45 +237,64 @@ class AuthenticViewModel @Inject constructor(
         }
 //        _loginFormState.value = _loginFormState.value.copy(isLoading = false, error = null)
     }
+
     fun registerPass(user: Register, context: Context) = viewModelScope.launch {
         isFormValid = true
 
-        val type = user.type ; val name = user.name.toString()
-        val document = user.document.toString() ; val email = user.email.toString()
-        val phone = user.phone.toString() ; val password = user.password.toString()
-        val birthDate = user.birthDate.toString() ; val facebookId = user.facebookId.toString()
+        val type = user.type
+        val name = user.name.toString()
+        val document = user.document.toString()
+        val email = user.email.toString()
+        val phone = user.phone.toString()
+        val password = user.password.toString()
+        val birthDate = user.birthDate.toString()
+        val facebookId = user.facebookId.toString()
         val gmailId = user.gmailId.toString()
 
         if (type == DEFAUT_AUTH) {
-            _emailRegisterFieldMutableData.value = valRegisterFields(context, field = EMAIL, value = email)
-            _passwordRegisterFieldMutableData.value = valRegisterFields(context, field = PASSWORD, value = password)
+            _emailRegisterFieldMutableData.value =
+                valRegisterFields(context, field = EMAIL, value = email)
+            _passwordRegisterFieldMutableData.value =
+                valRegisterFields(context, field = PASSWORD, value = password)
             _nameFieldMutableData.value = valRegisterFields(context, field = NAME, value = name)
-            _documentFieldMutableData.value = valRegisterFields(context, field = DOCUMENT, value = document)
-            _phoneFieldMutableData.value = valRegisterFields(context, field = PHONE, value = phone)
+            _documentFieldMutableData.value =
+                valRegisterFields(context, field = DOCUMENT, value = document)
+            _phoneFieldMutableData.value =
+                valRegisterFields(context, field = PHONE, value = phone)
 //            _dataNascimentoFieldMutableData.value = fieldStringError(usuario.data_nascimento) //TODO
 
         } else if (type == GOOGLE_AUTH) {
-            _gmailIdRegisterFieldMutableData.value = valRegisterFields(context, field = GMAIL_ID, value = gmailId)
+            _gmailIdRegisterFieldMutableData.value =
+                valRegisterFields(context, field = GMAIL_ID, value = gmailId)
 //        } else if (type == FACEBOOK_AUTH) {
 //            _facebookIdRegisterFieldMutableData.value = fieldStringError(usuario.facebook_id)
 //        } else if (type == BIOMETRIC_AUTH) {
 //        }
-        }else {//TODO, VER SE VALE A PENA RETORNAR ERRO AQUI JA, OU SO DAR FALSE E ELE CONTINUAR A EXECUCAO. >>> TALVEZ NEM PRECISE DESSE ELSE, PQ QUEM CHAMA SEMPRE TEM UM TYPE !!!!
+        } else {//TODO, VER SE VALE A PENA RETORNAR ERRO AQUI JA, OU SO DAR FALSE E ELE CONTINUAR A EXECUCAO. >>> TALVEZ NEM PRECISE DESSE ELSE, PQ QUEM CHAMA SEMPRE TEM UM TYPE !!!!
         }
 
         if (isFormValid) {
-            _registerFormState.value = _registerFormState.value.copy(isLoading = true, error = null) // Inicio Carregamento
+            _registerFormState.value = _registerFormState.value.copy(
+                isLoading = true,
+                error = null
+            ) // Inicio Carregamento
             try {
-                val userModel = RegisterModelRequest(email = email, password = password, name = name,
+                val userModel = RegisterModelRequest(
+                    email = email, password = password, name = name,
                     document = document, data_nascimento = birthDate,
-                    facebook_id = facebookId, gmail_id = gmailId, telefone = phone)
+                    facebook_id = facebookId, gmail_id = gmailId, telefone = phone
+                )
                 val response = registerUser(userModel, type)
-                _registerFormState.value = registerFormState.value.copy(isLoading = false, error = null)
+                _registerFormState.value =
+                    registerFormState.value.copy(isLoading = false, error = null)
                 _registerResult.value = Event(response.toString())
             } catch (e: Exception) {
                 val errorMsg = convertErroToTextMessage(e.message.toString(), context)
                 _registerFormState.value =
-                    _registerFormState.value.copy(isLoading = false, error = e.message.toString())
+                    _registerFormState.value.copy(
+                        isLoading = false,
+                        error = e.message.toString()
+                    )
                 _registerResult.value = Event(errorMsg)
             }
         }
@@ -246,6 +354,7 @@ class AuthenticViewModel @Inject constructor(
                     return context.getString(R.string.password_weak)
                 } else null
             }
+
             (field == PASSWORD) -> {
                 if (value.isEmpty()) {
                     isFormValid = false
@@ -255,12 +364,14 @@ class AuthenticViewModel @Inject constructor(
                     return context.getString(R.string.password_weak)
                 } else null
             }
+
             (field == NAME) -> {
                 if (value.isEmpty()) {
                     isFormValid = false
                     return context.getString(R.string.nome_vazio)
                 } else null
             }
+
             (field == DOCUMENT) -> {
                 if (value.isEmpty()) {
                     isFormValid = false
@@ -279,6 +390,7 @@ class AuthenticViewModel @Inject constructor(
                     null
                 }
             }
+
             (field == PHONE) -> {
                 if (value.isEmpty()) {
                     isFormValid = false
@@ -297,12 +409,14 @@ class AuthenticViewModel @Inject constructor(
                     return context.getString(R.string.campos_vazios)
                 } else null
             }
+
             (field == GMAIL_ID) -> {
                 if (value.isEmpty()) {
                     isFormValid = false
                     return context.getString(R.string.campos_vazios)
                 } else null
             }
+
             else -> null
         }
     }
@@ -313,4 +427,4 @@ class AuthenticViewModel @Inject constructor(
 //            test.copy(null,null,null,null,null,null)
 //        }
 //    }
-    }
+}

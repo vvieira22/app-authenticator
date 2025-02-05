@@ -1,9 +1,11 @@
 package com.vvieira.appauthenticator.data
-import javax.inject.Inject
+
 import com.vvieira.appauthenticator.domain.model.LoginModelRequest
 import com.vvieira.appauthenticator.domain.model.LoginResponseOk
 import com.vvieira.appauthenticator.domain.model.RegisterModelRequest
 import com.vvieira.appauthenticator.domain.model.RegisterResponseOk
+import com.vvieira.appauthenticator.domain.model.ResultRequest
+import javax.inject.Inject
 
 class UserRepository @Inject constructor(
     private val loginDataSource: LoginDataSource
@@ -13,4 +15,7 @@ class UserRepository @Inject constructor(
 
     suspend fun registerUser(user: RegisterModelRequest, type: String): RegisterResponseOk =
         loginDataSource.registerUser(user, type)
+
+    suspend fun checkSocialAuthentic(user: LoginModelRequest, type: String): ResultRequest =
+        loginDataSource.checkSocialAuthentic(user, type)
 }

@@ -6,12 +6,12 @@ const val URL_FULL = "$URL_API$API_PORT"
 
 const val LOGIN = "$URL_FULL/user/login/{type}"
 const val CADASTRO = "$URL_FULL/user/register/{type}"
+const val CHECK_SOCIAL_AUTHENTIC = "$URL_FULL/user/checkSocialAuth"
 
 const val DEFAUT_AUTH = "password"
 const val GOOGLE_AUTH = "google"
 const val FACEBOOK_AUTH = "facebook"
 const val BIOMETRIC_AUTH = "biometric"
-
 
 //VAL DEFAULT REGISTER FIELDS
 const val EMAIL = "email"
@@ -63,4 +63,14 @@ object HttpStatusCodes {
     const val HTTP_SERVICE_UNAVAILABLE = 503
     const val HTTP_GATEWAY_TIMEOUT = 504
     const val HTTP_HTTP_VERSION_NOT_SUPPORTED = 505
+}
+
+//SOCIAL LOGIN ERROS
+object SOCIAL_AUTH_ERROS {
+    const val NOT_REGISTERED_YET = "User not registered yet."
+    const val ALREADY_GOOGLE_REGISTERED = "User registered with google."
+    const val ALREADY_GOOGLE_AND_DEFAULT_REGISTERED = "User registered with google and password."
+    const val ALREADY_FACEBOOK_REGISTERED = "User registered with facebook."
+    const val ALREADY_FACEBOOK_AND_DEFAULT_REGISTERED = "User registered with facebook and password."
+    const val ALREADY_DEFAULT_REGISTERED = "User already registered with defaultLogin."
 }
