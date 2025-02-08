@@ -25,6 +25,7 @@ Add:
             posso pensar em separar eles.
     14: Alteração do livedata para StateFlow para login e para registro, apenas isso, nao valida os campos ainda, esta no TODO.
     15: Criação documento para transcrever códigos de erro http para mensagens amigáveis para o usuário.
+    16: Criado fragmento do termo de aceite.
 TODO:
     2. Hoje o botão de continuar com google, so faz registro, não faz login, da erro se ja tiver cadastrado,
         validar na api se já existe seria uma opcao e logar sozinho se bater token e as outras inf salvas. Talvez criar um acesso social
@@ -33,3 +34,5 @@ TODO:
         ou algo como terminar cadastro mais tarde., mas o termo de aceite é necessário.
     3. Talvez o foco da proxima tarefa seja a questão de erros da api, como tratar e traduzir erros para a linguagem define no projeto. Hoje ta marretado em constante
         isso é beeeem ruim.
+    4. Seria interessante colocar o termo de aceite obrigatorio, ao se cadastrar voce automaticamente concorda com o termo de uso, algo assim.
+        Pensar como poderia fazer para fazer login com rede social, precisa mostrar esse termo!.

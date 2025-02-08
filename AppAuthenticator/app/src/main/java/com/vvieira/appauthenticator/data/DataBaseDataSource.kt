@@ -108,8 +108,12 @@ class DataBaseDataSource @Inject constructor(
                         } else {
                             val errBody = response.errorBody()?.string()
                             val checkResponse: OkResponse = Gson().fromJson(errBody, OkResponse::class.java)
-                            val request = ResultRequest(response.code(), checkResponse)
-                            continuation.resumeWithException(Exception(request.toString()))
+
+                            //TODO ESSA É UMA TENTATIVA DE RETORNAR CODIGO + BODY NO ERRO, ONDE SO DA PRA PASSAR STRING
+                            //ATE DARIA PRA RETORNAR O OBJETO COMPLETO DO ERRO, MAS DA MUITO TRABALHO E TALVEZ NAO FACA SENTIDO.
+//                            val request = ResultRequest(response.code(), checkResponse)
+//                            val request = ResultRequest(errorMessage = errBody)
+                            continuation.resumeWithException(Exception(checkResponse.message))
                         }
                     }
 

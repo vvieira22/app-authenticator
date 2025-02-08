@@ -4,4 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="bluelogin">#394EC5</color>
     <color name="middleLogin">#286370</color>
+    <color name="LoginBottom">#1A7528</color>
+
 </resources>

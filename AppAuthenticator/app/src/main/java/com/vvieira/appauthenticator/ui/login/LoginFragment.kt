@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.enableEdgeToEdge
 import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
@@ -155,12 +156,18 @@ class LoginFragment : Fragment() {
                 }
             }
         }
+
+        binding.recuperarSenha.setOnClickListener{
+            val navController = it.findNavController()
+            navController.navigate(R.id.action_loginFragment_to_acceptTermsFragment)
+        }
     }
 
     private fun observerViewModelEvents() {
         viewModel.emaiLoginField.observe(viewLifecycleOwner) { resposta ->
             binding.loginField.error = resposta
         }
+
         viewModel.passwordLoginField.observe(viewLifecycleOwner) { resposta ->
             binding.senhaLogin.error = resposta
         }
@@ -201,7 +208,16 @@ class LoginFragment : Fragment() {
                 }
             }
         }
-//
+
+        viewModel.socialAuthInformations.observe(viewLifecycleOwner){ loginInf ->
+            customSnackBar(
+                binding.root,
+                "CADASTRAR!",
+                Color.GREEN,
+                Color.WHITE
+            )
+        }
+
 //        viewModel.userField.observe(viewLifecycleOwner) { resposta ->
 //            binding.loginField.error = resposta
 //        }

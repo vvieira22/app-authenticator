@@ -14,6 +14,8 @@ import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.ALREADY_FACEBOOK_REGI
 import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.ALREADY_GOOGLE_AND_DEFAULT_REGISTERED
 import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.ALREADY_GOOGLE_REGISTERED
 import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.NOT_REGISTERED_YET
+import com.vvieira.appauthenticator.util.SpecificMsgTypes.AUTH_SOCIAL_ERRORS
+import com.vvieira.appauthenticator.util.SpecificMsgTypes.DEFAULT_ERROS
 import java.util.Locale
 
 class Utils {
@@ -102,86 +104,52 @@ class Utils {
             }
         }
 
-        fun convertErroToTextMessage(
+        fun getMessageFromResponse(
             response: String,
             context: Context,
-            needMoreInformation: String = "" //TODO Maybe add what type information need (isAuthLoginInvolved like), to transcribe correctly the inf.
+            specificMsg: SpecificMsgTypes = DEFAULT_ERROS //TODO Maybe add what type information need (isAuthLoginInvolved like), to transcribe correctly the inf.
         ): String {
-            if (response.isDigitsOnly()) {
-                val codigo = response.toInt()
-                when (codigo) {
-                    400 -> {
-                        return context.getString(R.string.http_400)
-                    }
 
-                    401 -> {
-                        return context.getString(R.string.http_401)
-                    }
-
-                    403 -> {
-                        return context.getString(R.string.http_403)
-                    }
-
-                    404 -> {
-                        if (needMoreInformation.isNotEmpty()) { //TODO For now, continue like string to maybe in future pass type of needMoreInformation
-                            return isAuthLoginInvolved(response).toString()
-                        } else {
-                            return context.getString(R.string.http_404)
-                        }
-                    }
-
-                    500 -> {
-                        return context.getString(R.string.http_500)
-                    }
-
-                    502 -> {
-                        return context.getString(R.string.http_502)
-                    }
-
-                    503 -> {
-                        return context.getString(R.string.http_503)
-                    }
-
-                    504 -> {
-                        return context.getString(R.string.http_504)
-                    }
-
-                    200 -> {
-                        if (needMoreInformation.isNotEmpty()) { //TODO For now, continue like string to maybe in future pass type of needMoreInformation
-                            return isAuthLoginInvolved(response).toString() //200 for socialAuth() and need know of user type is social authenticated.
-                        } else {
-                            return context.getString(R.string.http_success_login_200)
-                        }
-                    }
-
-                    201 -> {
-                        return context.getString(R.string.http_success_signup_201)
-                    }
-
-                    204 -> {
-                        return context.getString(R.string.http_success_logout_204)
-                    }
-
-                    202 -> {
-                        return context.getString(R.string.http_success_request_sent_202)
-                    }
-
-                    else -> {
-                        return context.getString(R.string.unknown_error)
-                    }
+            when (specificMsg) {
+                AUTH_SOCIAL_ERRORS -> {
+                    return socialAuthResponses(response, context).toString()
                 }
-            } else {
-                if (response != "") {
-                    return when {
-                        isErrorConnection(response) -> context.getString(R.string.host_out_of_reach)
-                        else -> {
-                            context.getString(R.string.unknown_error)
+
+                DEFAULT_ERROS -> {
+                    if (response.isDigitsOnly()) {
+                        return when (response.toInt()) {
+                            400 -> context.getString(R.string.http_400)
+                            401 -> context.getString(R.string.http_401)
+                            403 -> context.getString(R.string.http_403)
+                            404 -> context.getString(R.string.http_404)
+                            500 -> context.getString(R.string.http_500)
+                            502 -> context.getString(R.string.http_502)
+                            503 -> context.getString(R.string.http_503)
+                            504 -> context.getString(R.string.http_504)
+                            200 -> context.getString(R.string.http_success_login_200)
+                            201 -> context.getString(R.string.http_success_signup_201)
+                            204 -> context.getString(R.string.http_success_logout_204)
+                            202 -> context.getString(R.string.http_success_request_sent_202)
+
+                            else -> context.getString(R.string.unknown_error)
+                        }
+                        //THIS IS FEATURE BELOW IS A CATCH MATCHED MSG ERROR WHEN CODE IS NOT PROVIDE
+                        //THIS FEATURE IS A EXPERIMENTAL, ALL ERROS NEED TO BE A TRACEABLE, MAYBE THINK ABOUT IT LATER.
+                    } else {
+                        if (response != "") {
+                            return when {
+                                isErrorConnection(response) -> context.getString(R.string.host_out_of_reach)
+                                else -> {
+                                    context.getString(R.string.unknown_error)
+                                }
+                            }
                         }
                     }
                 }
             }
             return context.getString(R.string.unknown_error)
         }
+
 
         private fun isErrorConnection(response: String): Boolean {
             //TODO Maybe check if is there a function to find (connection && failed) together with less words
@@ -190,14 +158,20 @@ class Utils {
             return regex.matches(response.lowercase(Locale.getDefault()))
         }
 
-        private fun isAuthLoginInvolved(response: String): String? {
+        private fun socialAuthResponses(response: String, context: Context): String? {
             return when {
-                (response.matches(Regex(NOT_REGISTERED_YET))) -> NOT_REGISTERED_YET
-                (response.matches(Regex(ALREADY_GOOGLE_REGISTERED))) -> ALREADY_GOOGLE_REGISTERED
-                (response.matches(Regex(ALREADY_GOOGLE_AND_DEFAULT_REGISTERED))) -> ALREADY_GOOGLE_AND_DEFAULT_REGISTERED
-                (response.matches(Regex(ALREADY_FACEBOOK_REGISTERED))) -> ALREADY_FACEBOOK_REGISTERED
-                (response.matches(Regex(ALREADY_FACEBOOK_AND_DEFAULT_REGISTERED))) -> ALREADY_FACEBOOK_AND_DEFAULT_REGISTERED
-                (response.matches(Regex(ALREADY_DEFAULT_REGISTERED))) -> ALREADY_DEFAULT_REGISTERED
+                (response.contains(Regex(NOT_REGISTERED_YET))) -> (context.getString(R.string.social_auth_not_registered_yet))
+                (response.contains(Regex(ALREADY_GOOGLE_REGISTERED))) -> (context.getString(R.string.social_auth_already_google_registered))
+                (response.contains(Regex(ALREADY_GOOGLE_AND_DEFAULT_REGISTERED))) -> (context.getString(
+                    R.string.social_auth_already_google_and_default_registered
+                ))
+
+                (response.contains(Regex(ALREADY_FACEBOOK_REGISTERED))) -> (context.getString(R.string.social_auth_already_facebook_registered))
+                (response.contains(Regex(ALREADY_FACEBOOK_AND_DEFAULT_REGISTERED))) -> (context.getString(
+                    R.string.social_auth_already_facebook_and_default_registered
+                ))
+
+                (response.contains(Regex(ALREADY_DEFAULT_REGISTERED))) -> (context.getString(R.string.social_auth_already_default_registered))
                 else -> null
             }
         }

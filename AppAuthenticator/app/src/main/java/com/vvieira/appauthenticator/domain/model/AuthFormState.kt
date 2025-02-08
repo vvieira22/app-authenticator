@@ -26,8 +26,3 @@ data class LoginFormState(
     val isLoading: Boolean = false,
     val error: String? = null
 )
-
-data class AuthFormState(
-    val isLoading: Boolean = false,
-    val error: String? = null
-)

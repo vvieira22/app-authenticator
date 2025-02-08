@@ -30,8 +30,9 @@ import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.ALREADY_DEFAULT_REGIS
 import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.ALREADY_FACEBOOK_REGISTERED
 import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.ALREADY_GOOGLE_REGISTERED
 import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.NOT_REGISTERED_YET
+import com.vvieira.appauthenticator.util.SpecificMsgTypes.AUTH_SOCIAL_ERRORS
 import com.vvieira.appauthenticator.util.Utils
-import com.vvieira.appauthenticator.util.Utils.Companion.convertErroToTextMessage
+import com.vvieira.appauthenticator.util.Utils.Companion.getMessageFromResponse
 import com.vvieira.appauthenticator.util.Utils.Companion.isCpf
 import com.vvieira.appauthenticator.util.Utils.Companion.isValidCNPJ
 import com.vvieira.appauthenticator.util.Utils.Companion.isValidCPF
@@ -121,17 +122,20 @@ class AuthenticViewModel @Inject constructor(
     private val _socialResult = MutableLiveData<Event<String>>()
     val socialResult: LiveData<Event<String>> = _socialResult
 
+    private val _socialAuthInformations = MutableLiveData<Register>()
+    val socialAuthInformations: LiveData<Register> = _socialAuthInformations
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    //TODO AUTHENTICATE SOCIAL, TRY LOGIN, IF FAIL, REGISTER., INTERNAL AT API.
+    //TODO: AUTHENTICATE SOCIAL -> IF HAS REGISTERED WITH SOCIAL SELECTED BTN -> SIGN IN, ISN'T? -> GO TO REGISTER SCREEN.
     fun socialAuth(user: Register, context: Context) = viewModelScope.launch {
-        isFormValid = true
+        isFormValid = true //TODO VALIDAR SE CONSEGUIU FAZER LOGIN, E PEGAR OS DADOS FACEBOOK OR GOOGLE. LIKE THAT
         val type = user.type.toString()
         val email = user.email.toString()
         val password = user.password.toString()
         val name = user.name.toString()
         var id_token = ""
+        var result = ""
 
         if (type == GOOGLE_AUTH) {
             id_token = user.gmailId.toString()
@@ -154,28 +158,32 @@ class AuthenticViewModel @Inject constructor(
                 val response = checkSocialAuthentic(userModel, type)
                 _socialFormState.value =
                     _socialFormState.value.copy(isLoading = false, error = null)
-                var result = (response?.okResponse?.message) //e.g: {"message":"User not registered yet."}
-                if (result != null) {
-                    result = convertErroToTextMessage(
-                        response = result,
+                var resultRaw =
+                    (response?.okResponse?.message) //e.g: {"detail":"User not registered yet."}
+                if (resultRaw != null) {
+                    result = getMessageFromResponse(
+                        response = resultRaw,
                         context = context,
-                        needMoreInformation = type //tanto faz o type, so pra ativar mensagens do bloco de authUser (404)
+                        specificMsg = AUTH_SOCIAL_ERRORS
                     )
                 }
                 when {
-                    (result == NOT_REGISTERED_YET) -> {
-                        //TODO, USUARIO AINDA NAO CRIADO, PASSAR OS DADOS PARA UMA OUTRA TELA, E FAZER O ACEITA DO CADASTRO.
+                    (resultRaw == NOT_REGISTERED_YET) -> {
+                        _socialAuthInformations.value = user
                     }
 
-                    (result == ALREADY_GOOGLE_REGISTERED && type == GOOGLE_AUTH) -> {
+                    (resultRaw == ALREADY_GOOGLE_REGISTERED && type == GOOGLE_AUTH) -> {
+                        try{
+
+                        }catch (e: Exception){}
+                    }
+
+                    (resultRaw == ALREADY_FACEBOOK_REGISTERED && type == FACEBOOK_AUTH) -> {
                         //TODO DO LOGIN
                     }
 
-                    (result == ALREADY_FACEBOOK_REGISTERED && type == FACEBOOK_AUTH) -> {
-                        //TODO DO LOGIN
-                    }
-
-                    (result == ALREADY_DEFAULT_REGISTERED) -> {
+                    (resultRaw == ALREADY_DEFAULT_REGISTERED) -> {
+                        _socialResult.value = Event(result)
                         //TODO PERGUNTAR SE DESEJA VINCULAR A CONTA A REDE SOCIAL PARA FAZER LOGIN.
                         //TODO VER SE E SECURO FAZER ESSA PERGUNTA, OU MANDAR ELE ENTRAR COM EMAIL E SENHA E ELE APERTAR EM VINCULAR
                     }
@@ -183,12 +191,16 @@ class AuthenticViewModel @Inject constructor(
                 }
                 //TODO VALIDAR PQ ELE TA CAINDO AQUI QUANDO
             } catch (e: Exception) {
-                //TODO ELE TA DESCENDO AQUI QUANDO DA ERRO, NEGATIVAR A API E SO DEIXAR OK QUANDO METODO DE LOGIN EXISTIR PARA O USR
-                //TALVEZ TEREMOS QUE REFAZER O METODO DA datasource para retornar nesse formato de erro de registro, ta maneirinho.
-                val errorMsg = convertErroToTextMessage(e.message.toString(), context)
-                _socialFormState.value =
-                    _socialFormState.value.copy(isLoading = false, error = e.message.toString())
-                _socialResult.value = Event(errorMsg)
+                var resultRaw = (e.message)
+                if(resultRaw == NOT_REGISTERED_YET) {
+                    _socialAuthInformations.value = user
+                }
+                else {
+                    val errorMsg = getMessageFromResponse(e.message.toString(), context)
+                    _socialFormState.value =
+                        _socialFormState.value.copy(isLoading = false, error = e.message.toString())
+                    _socialResult.value = Event(errorMsg)
+                }
             }
         }
     }
@@ -229,7 +241,7 @@ class AuthenticViewModel @Inject constructor(
                 _loginFormState.value = _loginFormState.value.copy(isLoading = false, error = null)
                 _loginResult.value = Event(response?.token ?: "")
             } catch (e: Exception) {
-                val errorMsg = convertErroToTextMessage(e.message.toString(), context)
+                val errorMsg = getMessageFromResponse(e.message.toString(), context)
                 _loginFormState.value =
                     _loginFormState.value.copy(isLoading = false, error = e.message.toString())
                 _loginResult.value = Event(errorMsg)
@@ -289,7 +301,7 @@ class AuthenticViewModel @Inject constructor(
                     registerFormState.value.copy(isLoading = false, error = null)
                 _registerResult.value = Event(response.toString())
             } catch (e: Exception) {
-                val errorMsg = convertErroToTextMessage(e.message.toString(), context)
+                val errorMsg = getMessageFromResponse(e.message.toString(), context)
                 _registerFormState.value =
                     _registerFormState.value.copy(
                         isLoading = false,

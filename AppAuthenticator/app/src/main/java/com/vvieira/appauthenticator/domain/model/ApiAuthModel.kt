@@ -44,7 +44,7 @@ data class RegisterResponseError(
 )
 
 data class ResultRequest(
-    val statusCode: Int?,
-    val okResponse: OkResponse?,
+    val statusCode: Int? = null,
+    val okResponse: OkResponse? = null,
     val errorMessage: String? = null
 )

@@ -71,6 +71,12 @@ object SOCIAL_AUTH_ERROS {
     const val ALREADY_GOOGLE_REGISTERED = "User registered with google."
     const val ALREADY_GOOGLE_AND_DEFAULT_REGISTERED = "User registered with google and password."
     const val ALREADY_FACEBOOK_REGISTERED = "User registered with facebook."
-    const val ALREADY_FACEBOOK_AND_DEFAULT_REGISTERED = "User registered with facebook and password."
-    const val ALREADY_DEFAULT_REGISTERED = "User already registered with defaultLogin."
+    const val ALREADY_FACEBOOK_AND_DEFAULT_REGISTERED =
+        "User registered with facebook and password."
+    const val ALREADY_DEFAULT_REGISTERED = "User registered with password."
+}
+
+enum class SpecificMsgTypes {
+    AUTH_SOCIAL_ERRORS,
+    DEFAULT_ERROS
 }

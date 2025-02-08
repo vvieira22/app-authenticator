@@ -49,6 +49,14 @@
     <string name="http_503">Serviço indisponível. Por favor, tente novamente mais tarde.</string>
     <string name="http_504">Tempo de resposta do servidor esgotado. Tente novamente mais tarde.</string>
 
+    <!-- SOCIAL AUTH ERRORS -->
+    <string name="social_auth_not_registered_yet">Usuário ainda não cadastrado.</string>
+    <string name="social_auth_already_google_registered">Usuário cadastrado com o Google.</string>
+    <string name="social_auth_already_google_and_default_registered">Usuário cadastrado com o Google e senha.</string>
+    <string name="social_auth_already_facebook_registered">Usuário cadastrado com o Facebook.</string>
+    <string name="social_auth_already_facebook_and_default_registered">Usuário cadastrado com o Facebook e senha.</string>
+    <string name="social_auth_already_default_registered">Usuário cadastrado via email, por favor realizar login com email e senha.</string>
+
     <!-- Common HTTP sucess -->
     <string name="http_success_login_200">Login realizado com sucesso!</string>
     <string name="http_success_signup_201">Usuário cadastrado com sucesso!</string>
@@ -59,5 +67,63 @@
     <string name="http_success_action_completed_200">Ação concluída com sucesso.</string>
     <string name="http_success_request_sent_202">Solicitação enviada com sucesso.</string>
     <string name="http_success_operation_200">Operação realizada com sucesso.</string>
+
+
+
+    <!--Termos de uso-->
+    <string name="clause_1">1. Aceitação dos Termos</string>
+    <string name="clause_1_text">Ao baixar, instalar e usar este aplicativo, você concorda em
+        cumprir e estar legalmente vinculado aos termos e condições aqui estabelecidos. Se você não
+        concorda com estes termos, não deve usar o aplicativo.</string>
+
+    <string name="clause_2">2. Uso Adequado</string>
+    <string name="clause_2_text">Você concorda em usar o aplicativo apenas para fins legais e de
+        acordo com os termos estabelecidos. Você não deve usar o aplicativo de qualquer maneira que
+        possa causar danos ao aplicativo ou a terceiros, ou que possa interferir com a utilização
+        normal do aplicativo por outros usuários.</string>
+
+    <string name="clause_3">3. Conta do Usuário</string>
+    <string name="clause_3_text">Para acessar certas funcionalidades do aplicativo, você pode ser
+        solicitado a criar uma conta de usuário. Você concorda em fornecer informações verdadeiras,
+        precisas e completas ao criar sua conta. Você é responsável por manter a confidencialidade
+        das credenciais da sua conta e por todas as atividades que ocorram sob a sua conta.</string>
+
+    <string name="clause_4">4. Privacidade</string>
+    <string name="clause_4_text">Nós respeitamos sua privacidade e estamos comprometidos em proteger
+        suas informações pessoais. A nossa Política de Privacidade descreve como coletamos, usamos e
+        compartilhamossuas informações. Ao usar o aplicativo, você concorda com a coleta e o uso de
+        informações de acordo com a nossa Política de Privacidade.</string>
+
+    <string name="clause_5">5. Direitos de Propriedade Intelectual</string>
+    <string name="clause_5_text">Todos os direitos de propriedade intelectual relacionados ao
+        aplicativo e seu conteúdo são de nossa propriedade ou licenciados para nós. Você não deve
+        copiar, modificar, distribuir, vender ou alugar qualquer parte do aplicativo ou do seu
+        conteúdo sem nossa permissão explícita por escrito.</string>
+
+    <string name="clause_6">6. Conteúdo Gerado pelo Usuário</string>
+    <string name="clause_6_text">Você é responsável por qualquer conteúdo que enviar, postar ou
+        compartilhar através do aplicativo. Ao enviar conteúdo, você garante que possui todos os
+        direitos sobre o conteúdo e que não está infringindo os direitos de terceiros.</string>
+
+    <string name="clause_7">7. Responsabilidade e Garantias</string>
+    <string name="clause_7_text">O aplicativo é fornecido "como está", sem garantias de qualquer
+        tipo, expressas ou implícitas. Não garantimos que o aplicativo estará disponível
+        ininterruptamente ou isento de erros. Você usa o aplicativo por sua própria conta e risco.
+    </string>
+
+    <string name="clause_8">8. Limitação de Responsabilidade</string>
+    <string name="clause_8_text">Na máxima extensão permitida pela lei, nós não seremos responsáveis
+        por quaisquer danos indiretos, incidentais, consequenciais ou punitivos decorrentes do uso
+        ou da incapacidade de usar o aplicativo.</string>
+
+    <string name="clause_9">9. Alterações nos Termos</string>
+    <string name="clause_9_text">Reservamo-nos o direito de modificar estes termos a qualquer
+        momento. Quaisquer alterações serão publicadas no aplicativo e entrarão em vigor
+        imediatamente após a publicação. O uso contínuo do aplicativo após a publicação das
+        alterações constitui sua aceitação dos termos modificados.</string>
+
+    <string name="clause_10">10. Contato</string>
+    <string name="clause_10_text">Se você tiver dúvidas ou preocupações sobre estes termos, entre em
+        contato conosco através do nosso suporte ao cliente.</string>
 
 </resources>

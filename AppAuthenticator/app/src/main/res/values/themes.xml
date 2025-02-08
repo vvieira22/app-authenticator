@@ -6,16 +6,4 @@
         <item name="colorPrimaryDark">@color/bluelogin</item>
     </style>
 
-    <style name="Theme.AppAuthenticator" parent="Base.Theme.AppAuthenticator" />
-
-    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenAnimatedIcon">@drawable/icon_login</item>
-        <item name="windowSplashScreenBackground">@color/middleLogin</item>
-        <item name="windowSplashScreenAnimationDuration">2000</item>
-
-        <!-- Set the theme of the Activity that directly follows your splash
-        screen. This is required. -->
-        <item name="postSplashScreenTheme">@style/Base.Theme.AppAuthenticator</item>
-    </style>
-
 </resources>
