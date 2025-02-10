@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vvieira.appauthenticator.R
+import com.vvieira.appauthenticator.domain.model.ApiException
+import com.vvieira.appauthenticator.domain.model.HttpCodeAndMesage
 import com.vvieira.appauthenticator.domain.model.Login
 import com.vvieira.appauthenticator.domain.model.LoginFormState
 import com.vvieira.appauthenticator.domain.model.LoginModelRequest
@@ -14,7 +16,7 @@ import com.vvieira.appauthenticator.domain.model.Register
 import com.vvieira.appauthenticator.domain.model.RegisterModelRequest
 import com.vvieira.appauthenticator.domain.usecase.CheckSocialAuthenticUseCase
 import com.vvieira.appauthenticator.domain.usecase.LoginPasswordUseCase
-import com.vvieira.appauthenticator.domain.usecase.registerUserUseCase
+import com.vvieira.appauthenticator.domain.usecase.RegisterUserUseCase
 import com.vvieira.appauthenticator.util.BIRTHDAY
 import com.vvieira.appauthenticator.util.DEFAUT_AUTH
 import com.vvieira.appauthenticator.util.DOCUMENT
@@ -45,9 +47,13 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthenticViewModel @Inject constructor(
     private val loginPassword: LoginPasswordUseCase,
-    private val registerUser: registerUserUseCase,
+    private val registerUser: RegisterUserUseCase,
     private val checkSocialAuthentic: CheckSocialAuthenticUseCase
 ) : ViewModel() {
+    //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxTESTE INTERNO WELCOME SCREENxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx//
+    private val _dataLoginWelcome = MutableLiveData<String>()
+    val dataLoginWelcome: LiveData<String> get() = _dataLoginWelcome
+    //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx//
 
     private var isFormValid = false
 
@@ -59,9 +65,8 @@ class AuthenticViewModel @Inject constructor(
     val loginFormState: StateFlow<LoginFormState> = _loginFormState
 
     //Tem que ser evento, pra n chamar mais de uma vez se eu for pro cadastro e depois voltar p.exp.
-    private val _loginResult = MutableLiveData<Event<String>>()
-    val loginResponse: LiveData<Event<String>> = _loginResult
-
+    private val _loginResult = MutableLiveData<Event<HttpCodeAndMesage>>()
+    val loginResponse: LiveData<Event<HttpCodeAndMesage>> = _loginResult
 
     //FIELDS
     private val _emailLoginFieldMutableData = MutableLiveData<String?>()
@@ -77,8 +82,8 @@ class AuthenticViewModel @Inject constructor(
     val registerFormState: StateFlow<LoginFormState> = _registerFormState
 
     //Tem que ser evento, pra n chamar mais de uma vez se eu for pro cadastro e depois voltar p.exp.
-    private val _registerResult = MutableLiveData<Event<String>>()
-    val registerResponse: LiveData<Event<String>> = _registerResult
+    private val _registerResult = MutableLiveData<Event<HttpCodeAndMesage>>()
+    val registerResponse: LiveData<Event<HttpCodeAndMesage>> = _registerResult
 
     //FIELDS
     private val _emailRegisterFieldMutableData = MutableLiveData<String?>()
@@ -239,12 +244,16 @@ class AuthenticViewModel @Inject constructor(
             try {
                 val response = loginPassword(LoginModelRequest(email, password))
                 _loginFormState.value = _loginFormState.value.copy(isLoading = false, error = null)
-                _loginResult.value = Event(response?.token ?: "")
-            } catch (e: Exception) {
-                val errorMsg = getMessageFromResponse(e.message.toString(), context)
-                _loginFormState.value =
-                    _loginFormState.value.copy(isLoading = false, error = e.message.toString())
-                _loginResult.value = Event(errorMsg)
+                _dataLoginWelcome.value = email
+                _loginResult.value = Event(HttpCodeAndMesage(response.MessageResponse.toString(), response.statusCode!!))
+            } catch (e: ApiException) {
+                val errorMsg = getMessageFromResponse(e.errorCode.toString(), context)
+                _registerFormState.value =
+                    _registerFormState.value.copy(
+                        isLoading = false,
+                        error = e.message.toString()
+                    )
+                _registerResult.value = Event(HttpCodeAndMesage(errorMsg,e.errorCode))
             }
         }
 //        _loginFormState.value = _loginFormState.value.copy(isLoading = false, error = null)
@@ -299,15 +308,15 @@ class AuthenticViewModel @Inject constructor(
                 val response = registerUser(userModel, type)
                 _registerFormState.value =
                     registerFormState.value.copy(isLoading = false, error = null)
-                _registerResult.value = Event(response.toString())
-            } catch (e: Exception) {
-                val errorMsg = getMessageFromResponse(e.message.toString(), context)
+                    _registerResult.value = Event(HttpCodeAndMesage(response.MessageResponse.toString(), response.statusCode!!))
+            } catch (e: ApiException) {
+                val errorMsg = getMessageFromResponse(e.errorCode.toString(), context)
                 _registerFormState.value =
                     _registerFormState.value.copy(
                         isLoading = false,
                         error = e.message.toString()
                     )
-                _registerResult.value = Event(errorMsg)
+                _registerResult.value = Event(HttpCodeAndMesage(errorMsg,e.errorCode))
             }
         }
     }

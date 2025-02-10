@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_loginFragment_to_acceptTermsFragment"
             app:destination="@id/acceptTermsFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_welcomeFragment"
+            app:destination="@id/welcomeFragment" />
     </fragment>
 
     <fragment
@@ -24,8 +27,8 @@
         android:label="CadastroFragment"
         tools:layout="@layout/fragment_cadastro">
         <action
-            android:id="@+id/action_cadastroFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            android:id="@+id/action_cadastroFragment_to_acceptTermsFragment"
+            app:destination="@id/acceptTermsFragment" />
     </fragment>
 
     <fragment
@@ -33,6 +36,15 @@
         android:name="com.vvieira.appauthenticator.ui.AcceptTermsFragment"
         android:label="AcceptTermsFragment"
         tools:layout="@layout/fragment_accept_terms">
+        <action
+            android:id="@+id/action_acceptTermsFragment_to_welcomeFragment"
+            app:destination="@id/welcomeFragment" />
     </fragment>
 
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="com.vvieira.appauthenticator.ui.WelcomeFragment"
+        android:label="WelcomeFragment"
+        tools:layout="@layout/fragment_welcome">
+    </fragment>
 </navigation>

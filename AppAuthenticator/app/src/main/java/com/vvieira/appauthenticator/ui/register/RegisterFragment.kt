@@ -67,13 +67,29 @@ class RegisterFragment : Fragment() {
 
         //TODO PARAMETRIZAR COR E CONFIGURACAO DA SNACKBAR PARA DIFERENCIAR EVENTOS.
         viewModel.registerResponse.observe(viewLifecycleOwner) { event ->
-            event.getContentIfNotHandled()?.let { message ->
-                customSnackBar(
-                    binding.root,
-                    message,
-                    Color.GREEN,
-                    Color.WHITE
-                )
+            event.getContentIfNotHandled()?.let { response ->
+                when (response.code) {
+                    in 200..299 -> customSnackBar(
+                        binding.root,
+                        response.message,
+                        Color.GREEN,
+                        Color.WHITE
+                    )
+
+                    in 400..499 -> customSnackBar(
+                        binding.root,
+                        response.message,
+                        Color.RED,
+                        Color.BLACK
+                    )
+
+                    else -> customSnackBar(
+                        binding.root,
+                        response.message,
+                        Color.RED,
+                        Color.WHITE
+                    )
+                }
             }
         }
     }

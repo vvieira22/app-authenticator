@@ -46,5 +46,16 @@ data class RegisterResponseError(
 data class ResultRequest(
     val statusCode: Int? = null,
     val okResponse: OkResponse? = null,
-    val errorMessage: String? = null
+    val MessageResponse: String? = null
 )
+
+data class HttpCodeAndMesage(
+    val message: String,
+    val code: Int
+)
+
+class ApiException(val responseMessage: String, val errorCode: Int) : Exception(responseMessage) {
+    override fun toString(): String {
+        return "ApiException(errorCode=$errorCode, message=${responseMessage})"
+    }
+}

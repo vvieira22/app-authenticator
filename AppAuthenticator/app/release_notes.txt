@@ -26,13 +26,30 @@ Add:
     14: Alteração do livedata para StateFlow para login e para registro, apenas isso, nao valida os campos ainda, esta no TODO.
     15: Criação documento para transcrever códigos de erro http para mensagens amigáveis para o usuário.
     16: Criado fragmento do termo de aceite.
-TODO:
-    2. Hoje o botão de continuar com google, so faz registro, não faz login, da erro se ja tiver cadastrado,
-        validar na api se já existe seria uma opcao e logar sozinho se bater token e as outras inf salvas. Talvez criar um acesso social
-    3. Conforme validado anteriormente, precisamos na ponta validar o botao de google, para saber se ele ja tem conta e fazer login, ou nao tem conta e ir para
-        tela de registro (pendente), ela vai ser meio diferente da tradicional, nao contem password, podemos deixar essa tela opcional, e dar update caso seja preenchido
-        ou algo como terminar cadastro mais tarde., mas o termo de aceite é necessário.
-    3. Talvez o foco da proxima tarefa seja a questão de erros da api, como tratar e traduzir erros para a linguagem define no projeto. Hoje ta marretado em constante
-        isso é beeeem ruim.
-    4. Seria interessante colocar o termo de aceite obrigatorio, ao se cadastrar voce automaticamente concorda com o termo de uso, algo assim.
-        Pensar como poderia fazer para fazer login com rede social, precisa mostrar esse termo!.
+    17: Layout e fragmento da "tela de login" criada, apenas para receber dados de login, simular uma tela de welcome, algo assim.
+
+TODO + BUGS (POR ORDEM DE PRIORIDADE !):
+    (Níveis, I, II E III e IV, a prioridade máxima sempre será a I, e conforme aumentando os números a prioridade diminui.)
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    I:
+        ->Em funções que chamam o retrofit, como a viewmodel de login, ao ocorrer exceptions como servidor fora do ar etc..
+              Não sabemos tratar e crasha a aplicação, isso se deve ao fato de estarmos lendo apenas exceptions do tipo apiException
+              com msg e código de retorno da api, isso é Gravíssimo e deve ser corrigido imediamente!
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    II:
+        ->Talvez o foco da proxima tarefa seja a questão de erros da api, como tratar e traduzir erros para a linguagem define no projeto. Hoje ta marretado em constante
+            isso é beeeem ruim.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    III:
+        ->Hoje o botão de continuar com google, so faz registro, não faz login, da erro se ja tiver cadastrado,
+            validar na api se já existe seria uma opcao e logar sozinho se bater token e as outras inf salvas. Talvez criar um acesso social
+
+        ->Conforme validado anteriormente, precisamos na ponta validar o botao de google, para saber se ele ja tem conta e fazer login, ou nao tem conta e ir para
+            tela de registro (pendente), ela vai ser meio diferente da tradicional, nao contem password, podemos deixar essa tela opcional, e dar update caso seja preenchido
+            ou algo como terminar cadastro mais tarde., mas o termo de aceite é necessário.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    IV:
+        ->Seria interessante colocar o termo de aceite obrigatorio, ao se cadastrar voce automaticamente concorda com o termo de uso, algo assim.
+            Pensar como poderia fazer para fazer login com rede social, precisa mostrar esse termo!.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

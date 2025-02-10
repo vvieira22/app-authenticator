@@ -58,7 +58,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/icon_cadastro"
-        android:text="teste@gmail.com"/>
+        android:text="teste@gmail.com"
+        android:maxLines="1"/>
 
     <EditText
         android:id="@+id/documento"
@@ -74,7 +75,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nome_cadastro"
-        android:text="1224727738"/>
+        android:text="12256122760"
+        android:maxLines="1"/>
 
     <EditText
         android:id="@+id/email_register"
@@ -108,7 +110,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email_register"
-        android:text="2197744374"/>
+        android:text="2197744374"
+        android:maxLines="1"/>
 
 
     <EditText
@@ -127,7 +130,8 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/telefone"
-        android:text="senha123"/>
+        android:text="senha123"
+        android:maxLines="1"/>
 
     <Button
         android:id="@+id/botao_cadastrar"

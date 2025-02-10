@@ -3,6 +3,7 @@ package com.vvieira.appauthenticator.data
 import AuthEndPoint
 import android.util.Log
 import com.google.gson.Gson
+import com.vvieira.appauthenticator.domain.model.ApiException
 import com.vvieira.appauthenticator.domain.model.LoginModelRequest
 import com.vvieira.appauthenticator.domain.model.LoginResponseOk
 import com.vvieira.appauthenticator.domain.model.OkResponse
@@ -23,7 +24,7 @@ class DataBaseDataSource @Inject constructor(
     clientRetrofit: Retrofit
 ) : LoginDataSource {
     private val clientRetrofitWithRoutes = clientRetrofit.create(AuthEndPoint::class.java)
-    override suspend fun loginPassword(user: LoginModelRequest): LoginResponseOk {
+    override suspend fun loginPassword(user: LoginModelRequest): ResultRequest {
         return suspendCoroutine { continuation ->
             var responseLoginPassword = ""
             clientRetrofitWithRoutes.login("password", user).enqueue(
@@ -33,14 +34,20 @@ class DataBaseDataSource @Inject constructor(
                         response: Response<ResponseBody>
                     ) {
                         if (response.isSuccessful) {
-                            val jsonResponse = response.body()?.string() ?: ""
-                            val loginResponse: LoginResponseOk =
-                                Gson().fromJson(jsonResponse, LoginResponseOk::class.java)
-                            continuation.resumeWith(Result.success(loginResponse))
+                            val jsonResponse = response.body()?.string()
+                            val loginResponse: OkResponse =
+                                Gson().fromJson(jsonResponse, OkResponse::class.java)
+                            val request = ResultRequest(response.code(), loginResponse)
+                            continuation.resumeWith(Result.success(request))
                         } else {
-                            val errMsg = response.message()
-                            Log.d("RESPOSTA-ELSE", "jsonResponse: $errMsg")
-                            continuation.resumeWithException((Exception(errMsg)))
+                            val errCode = response.code()
+                            val responseMessage = response.message()
+                            val errBody = response.errorBody()?.string()
+                            val checkResponse: OkResponse = Gson().fromJson(errBody, OkResponse::class.java)
+                            Log.d("RESPOSTA-ELSE", "jsonResponse: $responseMessage")
+                            Log.i("registerUser-ELSE", "errBody:  $errBody")
+                            Log.d("registerUser-ELSE", "jsonResponse: $checkResponse")
+                            continuation.resumeWithException((ApiException(responseMessage, errCode)))
                         }
                     }
 
@@ -56,7 +63,7 @@ class DataBaseDataSource @Inject constructor(
     override suspend fun registerUser(
         register: RegisterModelRequest,
         type: String
-    ): RegisterResponseOk {
+    ): ResultRequest {
         return suspendCoroutine { continuation ->
             var responseregisterUser = ""
             clientRetrofitWithRoutes.register(type, register).enqueue(
@@ -66,19 +73,31 @@ class DataBaseDataSource @Inject constructor(
                         response: Response<ResponseBody>
                     ) {
                         if (response.isSuccessful) {
-                            Log.i("RESPOSTA-OK", "${response.code()}")
-                            val jsonResponse = response.body()?.string() ?: ""
-                            Log.i("RESPOSTA-OK", "jsonResponse: $jsonResponse")
-                            val registerResponse: RegisterResponseOk =
-                                Gson().fromJson(jsonResponse, RegisterResponseOk::class.java)
-                            continuation.resumeWith(Result.success(registerResponse))
+//                            Log.i("RESPOSTA-OK", "${response.code()}")
+//                            val jsonResponse = response.body()?.string() ?: ""
+//                            Log.i("RESPOSTA-OK", "jsonResponse: $jsonResponse")
+//                            val registerResponse: RegisterResponseOk =
+//                                Gson().fromJson(jsonResponse, RegisterResponseOk::class.java)
+//                            continuation.resumeWith(Result.success(registerResponse))
+
+                            val jsonResponse = response.body()?.string()
+                            val checkResponse: OkResponse =
+                                Gson().fromJson(jsonResponse, OkResponse::class.java)
+                            val request = ResultRequest(response.code(), checkResponse)
+
+                            continuation.resumeWith(Result.success(request))
+
                         } else {
-                            val errMsg = response.message()
-                            Log.i("RESPOSTA-ELSE", " CODE:  ${response.code()}")
-                            Log.d("RESPOSTA-ELSE", "jsonResponse: $errMsg")
-                            continuation.resumeWithException((Exception(errMsg)))
+                            val errCode = response.code()
+                            val responseMessage = response.message()
+                            val errBody = response.errorBody()?.string()
+                            val checkResponse: OkResponse = Gson().fromJson(errBody, OkResponse::class.java)
+                            Log.i("registerUser-ELSE", "errBody:  $errBody")
+                            Log.d("registerUser-ELSE", "jsonResponse: $checkResponse")
+                            continuation.resumeWithException((ApiException(responseMessage, errCode)))
                         }
                     }
+
 
                     override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                         Log.i("RESPOSTA-FAILURE", "jsonResponse: ${t.message}")
@@ -112,7 +131,7 @@ class DataBaseDataSource @Inject constructor(
                             //TODO ESSA É UMA TENTATIVA DE RETORNAR CODIGO + BODY NO ERRO, ONDE SO DA PRA PASSAR STRING
                             //ATE DARIA PRA RETORNAR O OBJETO COMPLETO DO ERRO, MAS DA MUITO TRABALHO E TALVEZ NAO FACA SENTIDO.
 //                            val request = ResultRequest(response.code(), checkResponse)
-//                            val request = ResultRequest(errorMessage = errBody)
+//                            val request = ResultRequest(MessageResponse = errBody)
                             continuation.resumeWithException(Exception(checkResponse.message))
                         }
                     }

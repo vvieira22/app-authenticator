@@ -10,10 +10,10 @@ import javax.inject.Inject
 class UserRepository @Inject constructor(
     private val loginDataSource: LoginDataSource
 ) {
-    suspend fun loginPassword(user: LoginModelRequest): LoginResponseOk =
+    suspend fun loginPassword(user: LoginModelRequest): ResultRequest =
         loginDataSource.loginPassword(user)
 
-    suspend fun registerUser(user: RegisterModelRequest, type: String): RegisterResponseOk =
+    suspend fun registerUser(user: RegisterModelRequest, type: String): ResultRequest =
         loginDataSource.registerUser(user, type)
 
     suspend fun checkSocialAuthentic(user: LoginModelRequest, type: String): ResultRequest =

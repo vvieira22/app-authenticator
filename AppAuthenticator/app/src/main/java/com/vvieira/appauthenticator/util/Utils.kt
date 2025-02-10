@@ -122,6 +122,7 @@ class Utils {
                             401 -> context.getString(R.string.http_401)
                             403 -> context.getString(R.string.http_403)
                             404 -> context.getString(R.string.http_404)
+                            409 -> context.getString(R.string.http_409)
                             500 -> context.getString(R.string.http_500)
                             502 -> context.getString(R.string.http_502)
                             503 -> context.getString(R.string.http_503)

@@ -4,8 +4,8 @@ import com.vvieira.appauthenticator.domain.usecase.CheckSocialAuthenticUseCase
 import com.vvieira.appauthenticator.domain.usecase.CheckSocialAuthenticUseCaseImpl
 import com.vvieira.appauthenticator.domain.usecase.LoginPasswordUseCase
 import com.vvieira.appauthenticator.domain.usecase.LoginPasswordUseCaseImpl
-import com.vvieira.appauthenticator.domain.usecase.registerUserUseCase
-import com.vvieira.appauthenticator.domain.usecase.registerUserUseCaseImpl
+import com.vvieira.appauthenticator.domain.usecase.RegisterUserUseCase
+import com.vvieira.appauthenticator.domain.usecase.RegisterUserUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -21,7 +21,7 @@ interface DomainModule {
     //Desde que ela implemente a mesma interface.
 
     @Binds
-    fun bindregisterUserUseCase(useCase: registerUserUseCaseImpl): registerUserUseCase
+    fun bindRegisterUserUseCase(useCase: RegisterUserUseCaseImpl): RegisterUserUseCase
 
     @Binds
     fun bindCheckSocialAuthenticUseCase(useCase: CheckSocialAuthenticUseCaseImpl): CheckSocialAuthenticUseCase

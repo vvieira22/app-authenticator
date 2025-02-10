@@ -172,15 +172,20 @@ class LoginFragment : Fragment() {
             binding.senhaLogin.error = resposta
         }
 
-        //TODO PARAMETRIZAR COR E CONFIGURACAO DA SNACKBAR PARA DIFERENCIAR EVENTOS.
         viewModel.loginResponse.observe(viewLifecycleOwner) { event ->
-            event.getContentIfNotHandled()?.let { message ->
-                customSnackBar(
-                    binding.root,
-                    message,
-                    Color.GREEN,
-                    Color.WHITE
-                )
+            event.getContentIfNotHandled()?.let { response ->
+                when(response.code) {
+                    in 200..299 -> {
+                        val navController = requireView().findNavController()
+                        navController.navigate(R.id.action_loginFragment_to_welcomeFragment)
+                    }
+                    else -> customSnackBar(
+                        binding.root,
+                        response.message,
+                        Color.RED,
+                        Color.WHITE
+                    )
+                }
             }
         }
 
