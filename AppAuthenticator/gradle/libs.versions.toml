@@ -1,5 +1,5 @@
 [versions]
-agp = "8.6.0"
+agp = "8.8.0"
 credentials = "1.3.0"
 firebaseBomVersion = "33.8.0"
 fragmentKtx = "1.8.5"

@@ -11,10 +11,8 @@ class RegisterUserUseCaseImpl @Inject constructor(
 ) :
     RegisterUserUseCase {
     override suspend fun invoke(user: RegisterModelRequest, type: String): ResultRequest {
-        return try {
-            userRepository.registerUser(user, type)
-        } catch (e: ApiException) {
-            throw ApiException(e.responseMessage, e.errorCode)
-        }
+        return try { userRepository.registerUser(user, type) }
+        catch (e: ApiException) { throw ApiException(e.responseMessage, e.errorCode) }
+        catch(e: Exception) { throw Exception(e.message)}
     }
 }

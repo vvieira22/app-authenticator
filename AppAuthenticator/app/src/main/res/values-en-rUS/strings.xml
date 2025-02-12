@@ -40,7 +40,7 @@
     <string name="http_400">Invalid request.</string>
     <string name="http_401">Incorrect email or password, try again</string>
     <string name="http_403">Forbidden. You don\'t have permission to access this resource.</string>
-    <string name="http_404">Page not found.</string>
+    <string name="http_404">Service unavailable. Please try again later.</string>
     <string name="http_405">Method not allowed.</string>
     <string name="http_408">Request timed out. Please try again later.</string>
     <string name="http_409">User already registered, please sign in.</string>

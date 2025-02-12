@@ -134,7 +134,7 @@ class AuthenticViewModel @Inject constructor(
 
     //TODO: AUTHENTICATE SOCIAL -> IF HAS REGISTERED WITH SOCIAL SELECTED BTN -> SIGN IN, ISN'T? -> GO TO REGISTER SCREEN.
     fun socialAuth(user: Register, context: Context) = viewModelScope.launch {
-        isFormValid = true //TODO VALIDAR SE CONSEGUIU FAZER LOGIN, E PEGAR OS DADOS FACEBOOK OR GOOGLE. LIKE THAT
+        isFormValid = true
         val type = user.type.toString()
         val email = user.email.toString()
         val password = user.password.toString()
@@ -161,10 +161,7 @@ class AuthenticViewModel @Inject constructor(
                     email = email, password = "", id_token = id_token, biometric_data = ""
                 )
                 val response = checkSocialAuthentic(userModel, type)
-                _socialFormState.value =
-                    _socialFormState.value.copy(isLoading = false, error = null)
-                var resultRaw =
-                    (response?.okResponse?.message) //e.g: {"detail":"User not registered yet."}
+                var resultRaw = (response?.okResponse?.message) //e.g: {"detail":"User not registered yet."}
                 if (resultRaw != null) {
                     result = getMessageFromResponse(
                         response = resultRaw,
@@ -178,9 +175,10 @@ class AuthenticViewModel @Inject constructor(
                     }
 
                     (resultRaw == ALREADY_GOOGLE_REGISTERED && type == GOOGLE_AUTH) -> {
-                        try{
+                        try {
 
-                        }catch (e: Exception){}
+                        } catch (e: Exception) {
+                        }
                     }
 
                     (resultRaw == ALREADY_FACEBOOK_REGISTERED && type == FACEBOOK_AUTH) -> {
@@ -197,10 +195,9 @@ class AuthenticViewModel @Inject constructor(
                 //TODO VALIDAR PQ ELE TA CAINDO AQUI QUANDO
             } catch (e: Exception) {
                 var resultRaw = (e.message)
-                if(resultRaw == NOT_REGISTERED_YET) {
+                if (resultRaw == NOT_REGISTERED_YET) {
                     _socialAuthInformations.value = user
-                }
-                else {
+                } else {
                     val errorMsg = getMessageFromResponse(e.message.toString(), context)
                     _socialFormState.value =
                         _socialFormState.value.copy(isLoading = false, error = e.message.toString())
@@ -245,16 +242,30 @@ class AuthenticViewModel @Inject constructor(
                 val response = loginPassword(LoginModelRequest(email, password))
                 _loginFormState.value = _loginFormState.value.copy(isLoading = false, error = null)
                 _dataLoginWelcome.value = email
-                _loginResult.value = Event(HttpCodeAndMesage(response.MessageResponse.toString(), response.statusCode!!))
+                _loginResult.value = Event(
+                    HttpCodeAndMesage(
+                        response.MessageResponse.toString(),
+                        response.statusCode!!
+                    )
+                )
             } catch (e: ApiException) {
                 val errorMsg = getMessageFromResponse(e.errorCode.toString(), context)
-                _registerFormState.value =
-                    _registerFormState.value.copy(
+                _loginFormState.value =
+                    _loginFormState.value.copy(
                         isLoading = false,
                         error = e.message.toString()
                     )
-                _registerResult.value = Event(HttpCodeAndMesage(errorMsg,e.errorCode))
+                _loginResult.value = Event(HttpCodeAndMesage(errorMsg, e.errorCode))
+            } catch (e: Exception) {
+                val errorMsg = getMessageFromResponse(404.toString(), context)
+                _loginFormState.value =
+                    _loginFormState.value.copy(
+                        isLoading = false,
+                        error = e.message.toString()
+                    )
+                _loginResult.value = Event(HttpCodeAndMesage(errorMsg, 404))
             }
+
         }
 //        _loginFormState.value = _loginFormState.value.copy(isLoading = false, error = null)
     }
@@ -308,7 +319,12 @@ class AuthenticViewModel @Inject constructor(
                 val response = registerUser(userModel, type)
                 _registerFormState.value =
                     registerFormState.value.copy(isLoading = false, error = null)
-                    _registerResult.value = Event(HttpCodeAndMesage(response.MessageResponse.toString(), response.statusCode!!))
+                _registerResult.value = Event(
+                    HttpCodeAndMesage(
+                        response.MessageResponse.toString(),
+                        response.statusCode!!
+                    )
+                )
             } catch (e: ApiException) {
                 val errorMsg = getMessageFromResponse(e.errorCode.toString(), context)
                 _registerFormState.value =
@@ -316,7 +332,16 @@ class AuthenticViewModel @Inject constructor(
                         isLoading = false,
                         error = e.message.toString()
                     )
-                _registerResult.value = Event(HttpCodeAndMesage(errorMsg,e.errorCode))
+                _registerResult.value = Event(HttpCodeAndMesage(errorMsg, e.errorCode))
+            }
+            catch (e: Exception) {
+                val errorMsg = getMessageFromResponse(404.toString(), context)
+                _registerFormState.value =
+                    _registerFormState.value.copy(
+                        isLoading = false,
+                        error = e.message.toString()
+                    )
+                _registerResult.value = Event(HttpCodeAndMesage(errorMsg, 404))
             }
         }
     }

@@ -40,7 +40,7 @@
     <string name="http_400">Requisição inválida.</string>
     <string name="http_401">Email ou senha incorretos, tente novamente.</string>
     <string name="http_403">Acesso proibido. Você não tem permissão para acessar este recurso.</string>
-    <string name="http_404">Página não encontrada.</string>
+    <string name="http_404">Serviço indisponível. Por favor, tente novamente mais tarde.</string>
     <string name="http_405">Método não permitido.</string>
     <string name="http_408">Tempo de requisição esgotado. Por favor, tente novamente mais tarde.</string>
     <string name="http_409">Usuário já cadastrado, por favor faça login.</string>

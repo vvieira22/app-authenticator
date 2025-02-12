@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.enableEdgeToEdge
 import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
@@ -157,7 +156,7 @@ class LoginFragment : Fragment() {
             }
         }
 
-        binding.recuperarSenha.setOnClickListener{
+        binding.recuperarSenha.setOnClickListener {
             val navController = it.findNavController()
             navController.navigate(R.id.action_loginFragment_to_acceptTermsFragment)
         }
@@ -174,11 +173,12 @@ class LoginFragment : Fragment() {
 
         viewModel.loginResponse.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let { response ->
-                when(response.code) {
+                when (response.code) {
                     in 200..299 -> {
                         val navController = requireView().findNavController()
                         navController.navigate(R.id.action_loginFragment_to_welcomeFragment)
                     }
+
                     else -> customSnackBar(
                         binding.root,
                         response.message,
@@ -195,26 +195,32 @@ class LoginFragment : Fragment() {
                     NOT_REGISTERED_YET -> {
                         //TODO FAZER CADASTRAMENTO, INDO PARA OUTRO FRAGMENTO COM INFORMACOES E FALANDO PRA ELE LER TERMO DE USO.
                     }
+
                     ALREADY_GOOGLE_REGISTERED -> {
                         //TODO, REALIZAR LOGIN.
                     }
+
                     ALREADY_FACEBOOK_REGISTERED -> {
                         //TODO, REALIZAR LOGIN.
                     }
+
                     (ALREADY_GOOGLE_REGISTERED + ALREADY_FACEBOOK_REGISTERED) -> {
                         //TODO FALAR QUE A CONTA JA ESTA VINCULADA A UM EMAIL E SENHA, FAZER LOGIN ACIMA. ALGO ASSIM
                     }
-                    else -> {customSnackBar(
-                        binding.root,
-                        message,
-                        Color.RED,
-                        Color.WHITE
-                    )}
+
+                    else -> {
+                        customSnackBar(
+                            binding.root,
+                            message,
+                            Color.RED,
+                            Color.WHITE
+                        )
+                    }
                 }
             }
         }
 
-        viewModel.socialAuthInformations.observe(viewLifecycleOwner){ loginInf ->
+        viewModel.socialAuthInformations.observe(viewLifecycleOwner) { loginInf ->
             customSnackBar(
                 binding.root,
                 "CADASTRAR!",
@@ -278,11 +284,22 @@ class LoginFragment : Fragment() {
     private fun startCollectData() {
         collectJob = viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.loginFormState.collect { valor ->
-                    if (valor.isLoading) {
-                        showLoading()
-                    } else {
-                        hideLoading()
+                launch {
+                    viewModel.loginFormState.collect { valor ->
+                        if (valor.isLoading) {
+                            showLoading()
+                        } else {
+                            hideLoading()
+                        }
+                    }
+                }
+                launch {
+                    viewModel.socialFormState.collect { valor ->
+                        if (valor.isLoading) {
+                            showLoading()
+                        } else {
+                            hideLoading()
+                        }
                     }
                 }
             }

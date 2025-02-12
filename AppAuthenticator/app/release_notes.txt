@@ -27,19 +27,17 @@ Add:
     15: Criação documento para transcrever códigos de erro http para mensagens amigáveis para o usuário.
     16: Criado fragmento do termo de aceite.
     17: Layout e fragmento da "tela de login" criada, apenas para receber dados de login, simular uma tela de welcome, algo assim.
+    18: Corrigido problema de loading para login via google.
 
 TODO + BUGS (POR ORDEM DE PRIORIDADE !):
     (Níveis, I, II E III e IV, a prioridade máxima sempre será a I, e conforme aumentando os números a prioridade diminui.)
-
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     I:
-        ->Em funções que chamam o retrofit, como a viewmodel de login, ao ocorrer exceptions como servidor fora do ar etc..
-              Não sabemos tratar e crasha a aplicação, isso se deve ao fato de estarmos lendo apenas exceptions do tipo apiException
-              com msg e código de retorno da api, isso é Gravíssimo e deve ser corrigido imediamente!
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     II:
         ->Talvez o foco da proxima tarefa seja a questão de erros da api, como tratar e traduzir erros para a linguagem define no projeto. Hoje ta marretado em constante
             isso é beeeem ruim.
+        ->Para login/cadastro social, é preciso melhorar os erros e entender o fluxo certo, se devo fazer login ou cadastrar o usuário.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     III:
         ->Hoje o botão de continuar com google, so faz registro, não faz login, da erro se ja tiver cadastrado,
