@@ -1,0 +1,53 @@
+[UNRELEASED VERSION]
+Add:
+    1. Primeiro commit, adicionando a primeira versão da aplicação.
+    2. Refatorado o projeto, adicionando alguns pacotes e mudando paths. Além disso adicionado o sistema de cadastro
+        usando o firebase. Por enquanto apenas email + senha disponíveis.
+    3. Adicionando melhorias nos tratamentos de login e email, validação de cpf/cnpj pendentes.
+    4. Adicionado o uso de strings para agrupar mensagens de erro, e uso de log para identificar melhor eles.
+    5. Atualização da funcao de login, para corresponder corretamente ao erro do usuario ao tentar logar.
+    6. Inicio da configuração para login facebook, consigo realizar a captação do email do usuário caso login ao facebook seja feito com sucesso.
+        Preciso analisar e validar três situações com firebase + login facebook:
+            1- Clicar e fazer login facebook e esse email não estiver cadastrado.
+            2- Assim que capturar email do facebook, devo autenticar o usuário imediatamente, e como saber o usuário pelo firebase.
+            3- Credenciais do facebook, como escoder e conseguir subir esse projeto ao github publico sem afetar api etc...
+    7. Modificação no layout de login, deixando design mais moderno.
+    8. Criação da subtela para validar usuário anteriormente conectado,
+    9. Adicionado telefone na tela de cadastro, pendente de validação de máscara. Adicionado o envio dos dados de cadastro do usuário ao modelo de bancos não relacional
+        cloud firestore. Algumas melhorias de layout entre outros.
+    10. Recuperando dados  do usuários, de forma manual e geral.
+    11. Adicionado máscaras e validações para telefone, cpf e cnpj. Incluido também algumas melhorias nas mensagens das snaacksbars.
+    12. Adicionado e modificado tela de entrada do app, agora mostra uma cor intermediária do login, já que o splashscreen nao tem suporte a gradient.
+         Se atentar que, nosso app está sendo dividido entre 2 temas, padrao e darkmode, entao se atentar em mudar ambos quando for mexer
+          com temas e coisa relacionadas.
+    13: Mudança bastante relevante na arquitetura do projeto, em vez de criar modulos separados para login,
+            Resolvi implementar todos eles aqui dentro, retrofit, firebase, tudo no projeto só, assim que finalizar
+            posso pensar em separar eles.
+    14: Alteração do livedata para StateFlow para login e para registro, apenas isso, nao valida os campos ainda, esta no TODO.
+    15: Criação documento para transcrever códigos de erro http para mensagens amigáveis para o usuário.
+    16: Criado fragmento do termo de aceite.
+    17: Layout e fragmento da "tela de login" criada, apenas para receber dados de login, simular uma tela de welcome, algo assim.
+    18: Corrigido problema de loading para login via google.
+
+TODO + BUGS (POR ORDEM DE PRIORIDADE !):
+    (Níveis, I, II E III e IV, a prioridade máxima sempre será a I, e conforme aumentando os números a prioridade diminui.)
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    I:
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    II:
+        ->Talvez o foco da proxima tarefa seja a questão de erros da api, como tratar e traduzir erros para a linguagem define no projeto. Hoje ta marretado em constante
+            isso é beeeem ruim.
+        ->Para login/cadastro social, é preciso melhorar os erros e entender o fluxo certo, se devo fazer login ou cadastrar o usuário.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    III:
+        ->Hoje o botão de continuar com google, so faz registro, não faz login, da erro se ja tiver cadastrado,
+            validar na api se já existe seria uma opcao e logar sozinho se bater token e as outras inf salvas. Talvez criar um acesso social
+
+        ->Conforme validado anteriormente, precisamos na ponta validar o botao de google, para saber se ele ja tem conta e fazer login, ou nao tem conta e ir para
+            tela de registro (pendente), ela vai ser meio diferente da tradicional, nao contem password, podemos deixar essa tela opcional, e dar update caso seja preenchido
+            ou algo como terminar cadastro mais tarde., mas o termo de aceite é necessário.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    IV:
+        ->Seria interessante colocar o termo de aceite obrigatorio, ao se cadastrar voce automaticamente concorda com o termo de uso, algo assim.
+            Pensar como poderia fazer para fazer login com rede social, precisa mostrar esse termo!.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

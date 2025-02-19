@@ -1,0 +1,130 @@
+<resources>
+    <string name="app_name">AppAuthenticator</string>
+
+    <!--ERROR MESSAGES WHEN SIGN IN-->
+    <string name="invalid_credential">Password or email is invalid.</string>
+    <string name="invalid_email">Invalid Email.</string>
+    <string name="password_weak">Password is too weak.</string>
+    <string name="usr_not_found">User not found.</string>
+    <string name="user_disabled">User disabled.</string>
+    <string name="too_many_requests">Too many requests to log in.</string>
+    <string name="operation_not_allowed">Operation not allowed.</string>
+    <string name="campos_vazios">Fill all fields.</string>
+    <string name="login_sucesso">Signed in successfully.</string>
+    <string name="network_request_failed">Connection error, check your internet.</string>
+
+    <!--ERROR MESSAGES WHEN SIGN UP-->
+    <string name="cpf_cnpj_vazio">Field CPF/CNPJ cannot be empty.</string>
+    <string name="nome_vazio">Field name cannot be empty.</string>
+    <string name="email_vazio">Field email cannot be empty.</string>
+    <string name="senha_vazio">Field password cannot be empty.</string>
+    <string name="telefone_vazio">Field phone number cannot be empty.</string>
+    <string name="birthday_empty">Birthday cannot be empty.</string>
+    <string name="email_invalido">Invalid email.</string>
+    <string name="senha_fraca">Password is too weak.</string>
+    <string name="email_em_uso">Email already in use.</string>
+    <string name="doc_invalido">Invalid document.</string>
+    <string name="cpf_invalido">Invalid CPF.</string>
+    <string name="cnpj_invalido">Invalid CNPJ.</string>
+
+    <string name="cadastro_sucesso">Signed up successfully.</string>
+
+    <!-- Errors -->
+    <string name="unknown_error">Unknown error, try again later.</string>
+
+    <!-- Connection Errors -->
+    <string name="no_internet_found">No connection found.</string>
+    <string name="host_out_of_reach">Host out of reach, contact the support team.</string>
+
+    <!-- Common HTTP errors -->
+    <string name="http_400">Invalid request.</string>
+    <string name="http_401">Incorrect email or password, try again</string>
+    <string name="http_403">Forbidden. You don\'t have permission to access this resource.</string>
+    <string name="http_404">Service unavailable. Please try again later.</string>
+    <string name="http_405">Method not allowed.</string>
+    <string name="http_408">Request timed out. Please try again later.</string>
+    <string name="http_409">User already registered, please sign in.</string>
+    <string name="http_500">Internal server error. Something went wrong.</string>
+    <string name="http_502">Bad Gateway. The server encountered a problem processing the request.
+    </string>
+    <string name="http_503">Service unavailable. Please try again later.</string>
+    <string name="http_504">Server response timed out. Try again later.</string>
+
+    <!-- SOCIAL AUTH ERRORS -->
+    <string name="social_auth_not_registered_yet">User not registered yet.</string>
+    <string name="social_auth_already_google_registered">User registered with Google.</string>
+    <string name="social_auth_already_google_and_default_registered">User registered with Google and
+        password.</string>
+    <string name="social_auth_already_facebook_registered">User registered with Facebook.</string>
+    <string name="social_auth_already_facebook_and_default_registered">User registered with Facebook
+        and password.</string>
+    <string name="social_auth_already_default_registered">User already registered with email, please
+        sign in with email and password.</string>
+
+    <!-- Common HTTP sucess -->
+    <string name="http_success_login_200">Login successful!</string>
+    <string name="http_success_signup_201">User registered successfully!</string>
+    <string name="http_success_logout_204">You have successfully logged out.</string>
+    <string name="http_success_profile_update_200">Profile updated successfully.</string>
+    <string name="http_success_password_change_200">Password changed successfully.</string>
+    <string name="http_success_data_saved_200">Data saved successfully.</string>
+    <string name="http_success_action_completed_200">Action completed successfully.</string>
+    <string name="http_success_request_sent_202">Request sent successfully.</string>
+    <string name="http_success_operation_200">Operation performed successfully.</string>
+
+    <!--Terms of use-->
+    <string name="clause_1">1. Acceptance of Terms</string>
+    <string name="clause_1_text">By downloading, installing, and using this application, you agree
+        to comply with and be legally bound by the terms and conditions set forth herein. If you do
+        not agree with these terms, you should not use the application.</string>
+
+    <string name="clause_2">2. Proper Use</string>
+    <string name="clause_2_text">You agree to use the application only for lawful purposes and in
+        accordance with the terms herein. You must not use the application in any way that may cause
+        damage to the application or to third parties, or that may interfere with the normal use of
+        the application by other users.</string>
+
+    <string name="clause_3">3. User Account</string>
+    <string name="clause_3_text">To access certain features of the application, you may be required
+        to create a user account. You agree to provide true, accurate, and complete information when
+        creating your account. You are responsible for maintaining the confidentiality of your
+        account credentials and for all activities that occur under your account.</string>
+
+    <string name="clause_4">4. Privacy</string>
+    <string name="clause_4_text">We respect your privacy and are committed to protecting your
+        personal information. Our Privacy Policy describes how we collect, use, and share your
+        information. By using the application, you agree to the collection and use of information in
+        accordance with our Privacy Policy.</string>
+
+    <string name="clause_5">5. Intellectual Property Rights</string>
+    <string name="clause_5_text">All intellectual property rights related to the application and its
+        content are owned by us or licensed to us. You must not copy, modify, distribute, sell, or
+        rent any part of the application or its content without our explicit written permission.
+    </string>
+
+    <string name="clause_6">6. User-Generated Content</string>
+    <string name="clause_6_text">You are responsible for any content that you submit, post, or share
+        through the application. By submitting content, you represent that you have all rights to
+        the content and that you are not infringing the rights of third parties.</string>
+
+    <string name="clause_7">7. Responsibility and Warranties</string>
+    <string name="clause_7_text">The application is provided "as is" without warranties of any kind,
+        either express or implied. We do not warrant that the application will be available
+        uninterruptedly or error-free. You use the application at your own risk.</string>
+
+    <string name="clause_8">8. Limitation of Liability</string>
+    <string name="clause_8_text">To the maximum extent permitted by law, we will not be liable for
+        any indirect, incidental, consequential, or punitive damages arising out of or related to
+        your use of or inability to use the application.</string>
+
+    <string name="clause_9">9. Changes to Terms</string>
+    <string name="clause_9_text">We reserve the right to modify these terms at any time. Any changes
+        will be published in the application and will take effect immediately upon publication. Your
+        continued use of the application following the publication of changes constitutes your
+        acceptance of the modified terms.</string>
+
+    <string name="clause_10">10. Contact</string>
+    <string name="clause_10_text">If you have any questions or concerns about these terms, please
+        contact us through our customer support.</string>
+
+</resources>

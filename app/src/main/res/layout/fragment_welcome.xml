@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@drawable/login_background">
+
+    <LinearLayout
+        android:id="@+id/cadastro_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:text="Bem-vindo"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="60dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cadastro_linear">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:clickable="false"
+                android:focusable="false"
+                android:hint="Nome"
+                android:inputType="none"
+                android:textAlignment="center"
+                android:textSize="30dp" />
+
+            <!-- EditText Não Editável -->
+            <TextView
+                android:id="@+id/nome"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="3"
+                android:background="@drawable/rounded_corner"
+                android:clickable="false"
+                android:focusable="false"
+                android:inputType="none"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="30dp"
+                tools:text="Maicon Douglas" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cadastro_linear">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:clickable="false"
+                android:focusable="false"
+                android:hint="Email"
+                android:inputType="none"
+                android:textAlignment="center"
+                android:textSize="30dp" />
+
+            <!-- EditText Não Editável -->
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="3"
+                android:background="@drawable/rounded_corner"
+                android:clickable="false"
+                android:focusable="false"
+                android:inputType="none"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                tools:text="vkosokd@gmail.com" />
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="60dp">
+
+            <TextView
+                android:id="@+id/edt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:height="40dp"
+                android:background="@null"
+                android:clickable="false"
+                android:focusable="false"
+                android:inputType="none"
+                android:text="Dados Brutos:"
+                android:textAlignment="center"
+                android:textSize="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ScrollView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edt">
+
+                <EditText
+                    android:id="@+id/editTextNotepad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints=""
+                    android:background="@null"
+                    android:gravity="top"
+                    android:hint="USR:XXXXXXXXXXXX/SENHA:XXXXXXXXXXXXXXX/EMAIL:XXXXXXXXXX"
+                    android:inputType="textMultiLine|textNoSuggestions"
+                    android:maxLines="10"
+                    android:overScrollMode="always"
+                    android:scrollbars="vertical"
+                    android:textColor="#ffffff"
+                    android:textSize="25sp"
+                    tools:ignore="HardcodedText" />
+            </ScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/botao_voltar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="75dp"
+            android:backgroundTint="#F3ADAD"
+            android:padding="10dp"
+            android:text="Voltar/Sair"
+            android:textColor="#101010"
+            android:textSize="25sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cadastro_linear" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
