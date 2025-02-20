@@ -26,7 +26,7 @@
 18. **Correção do problema de loading para login via Google**.
 19. **Reestruturação do projeto para 1 nível anterior, antes estavamos dentro de uma pasta, isso possibilitou
       a migração do release_notes para o readme, que agora está sendo feito, para facilitar geração de versões entre outros.**
-20. 
+20. **Refatoração do login com google, precisei colocar uma validação para customCredentials e refazer o firebase todo, se atentar no clienteid e google-services.json novos.**
 ## TODO + BUGS (POR ORDEM DE PRIORIDADE!):
 
 (Níveis I, II, III e IV, sendo a prioridade máxima o nível I. Conforme aumenta o número, a prioridade diminui.)
