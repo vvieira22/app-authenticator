@@ -56,8 +56,6 @@
 Este aplicativo Android oferece uma solução completa de autenticação de usuários, permitindo cadastro, login com senha e e-mail, e login social com Google e Facebook. 
 Ele se integra a uma API externa [auth-android-api](https://github.com/vvieira22/auth-android-api) desenvolvida em FastAPI.
 
-&nbsp;
-&nbsp;
 ## Funcionalidades
 
 - **Cadastro de Usuário**: Permite que novos usuários criem uma conta no aplicativo, fornecendo informações como nome, e-mail e senha.
