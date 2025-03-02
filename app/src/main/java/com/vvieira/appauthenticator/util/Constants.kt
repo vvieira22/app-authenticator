@@ -73,6 +73,6 @@ object SOCIAL_AUTH_ERROS {
 }
 
 enum class SpecificMsgTypes {
-    AUTH_SOCIAL_ERRORS,
+    AUTH_SOCIAL_RESPONSES,
     DEFAULT_ERROS
 }

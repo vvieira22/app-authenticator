@@ -37,7 +37,6 @@
 
 Níveis I, II, III e IV, quanto **menor** o número **maior** a prioridade.
 ### I
->- Ao ir para qualquer ela e voltar para login, ele ativa evento de socialLogin, validar se ta usando evento único!
 >- Validar tela de confirmação de termo de uso, e criar uma tela de continuar/finalizzar cadastro a partir disso.
 ---
 ### II

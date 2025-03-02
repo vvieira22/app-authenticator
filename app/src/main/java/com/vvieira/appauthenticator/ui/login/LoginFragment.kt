@@ -228,10 +228,13 @@ class LoginFragment : Fragment() {
             event.getContentIfNotHandled()?.let { message ->
                 when (message) {
                     NOT_REGISTERED_YET -> {
-                        //TODO FAZER CADASTRAMENTO, INDO PARA OUTRO FRAGMENTO COM INFORMACOES E FALANDO PRA ELE LER TERMO DE USO.
+                        customSnackBar(
+                            binding.root,
+                            "Ir para tela de termo de aceite.",
+                            Color.GREEN,
+                            Color.WHITE
+                        )
                     }
-
-
 
                     else -> {
                         customSnackBar(
@@ -245,15 +248,15 @@ class LoginFragment : Fragment() {
             }
         }
 
-        viewModel.socialAuthInformations.observe(viewLifecycleOwner) { loginInf ->
-            Log.d("Social", loginInf.name!!)
-            customSnackBar(
-                binding.root,
-                "CADASTRAR!",
-                Color.GREEN,
-                Color.WHITE
-            )
-        }
+//        viewModel.socialAuthInformations.observe(viewLifecycleOwner) { loginInf ->
+//            Log.d("Social", loginInf.name!!)
+//            customSnackBar(
+//                binding.root,
+//                "CADASTRAR!",
+//                Color.GREEN,
+//                Color.WHITE
+//            )
+//        }
 
 //        viewModel.userField.observe(viewLifecycleOwner) { resposta ->
 //            binding.loginField.error = resposta

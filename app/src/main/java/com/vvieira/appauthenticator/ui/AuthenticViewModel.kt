@@ -23,13 +23,12 @@ import com.vvieira.appauthenticator.util.DOCUMENT
 import com.vvieira.appauthenticator.util.EMAIL
 import com.vvieira.appauthenticator.util.FACEBOOK_AUTH
 import com.vvieira.appauthenticator.util.FACEBOOK_ID
-import com.vvieira.appauthenticator.util.GOOGLE_ID
 import com.vvieira.appauthenticator.util.GOOGLE_AUTH
+import com.vvieira.appauthenticator.util.GOOGLE_ID
 import com.vvieira.appauthenticator.util.NAME
 import com.vvieira.appauthenticator.util.PASSWORD
 import com.vvieira.appauthenticator.util.PHONE
-import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.NOT_REGISTERED_YET
-import com.vvieira.appauthenticator.util.SpecificMsgTypes.AUTH_SOCIAL_ERRORS
+import com.vvieira.appauthenticator.util.SpecificMsgTypes.AUTH_SOCIAL_RESPONSES
 import com.vvieira.appauthenticator.util.Utils
 import com.vvieira.appauthenticator.util.Utils.Companion.getMessageFromResponse
 import com.vvieira.appauthenticator.util.Utils.Companion.isCpf
@@ -153,32 +152,23 @@ class AuthenticViewModel @Inject constructor(
                     error = null
                 )
 
+                val responseLogin = login(LoginModelRequest(email, "", id_token, ""), type)
 
-                val responseLogin = login(LoginModelRequest("", "", id_token, ""), type)
-
-                var resultRaw = (responseLogin?.okResponse?.message) //e.g: {"detail":"User not registered yet."}
+                var resultRaw =
+                    (responseLogin.okResponse?.message) //e.g: {"detail":"User not registered yet."}
                 if (resultRaw != null) {
                     result = getMessageFromResponse(
                         response = resultRaw,
                         context = context,
-                        specificMsg = AUTH_SOCIAL_ERRORS
+                        specificMsg = AUTH_SOCIAL_RESPONSES
                     )
                 }
-
-                //TODO VALIDAR PQ ELE TA CAINDO AQUI QUANDO
             } catch (e: Exception) {
                 _socialFormState.value =
                     _socialFormState.value.copy(isLoading = false, error = e.message.toString())
                 var resultRaw = (e.message)
-                if (resultRaw == NOT_REGISTERED_YET) {
-                    _socialAuthInformations.value = user
-
-                } else {
-                    val errorMsg = getMessageFromResponse(e.message.toString(), context)
-                    _socialFormState.value =
-                        _socialFormState.value.copy(isLoading = false, error = e.message.toString())
-                    _socialResult.value = Event(errorMsg)
-                }
+                val errorMsg = getMessageFromResponse(resultRaw.toString(), context, AUTH_SOCIAL_RESPONSES)
+                _socialResult.value = Event(errorMsg)
             }
         }
     }

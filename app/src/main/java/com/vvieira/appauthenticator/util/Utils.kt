@@ -11,7 +11,7 @@ import com.vvieira.appauthenticator.R
 import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.ALREADY_REGISTERED_NOT_FACEBOOK
 import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.ALREADY_REGISTERED_NOT_GOOGLE
 import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.NOT_REGISTERED_YET
-import com.vvieira.appauthenticator.util.SpecificMsgTypes.AUTH_SOCIAL_ERRORS
+import com.vvieira.appauthenticator.util.SpecificMsgTypes.AUTH_SOCIAL_RESPONSES
 import com.vvieira.appauthenticator.util.SpecificMsgTypes.DEFAULT_ERROS
 import java.util.Locale
 
@@ -108,7 +108,7 @@ class Utils {
         ): String {
 
             when (specificMsg) {
-                AUTH_SOCIAL_ERRORS -> {
+                AUTH_SOCIAL_RESPONSES -> {
                     return socialAuthResponses(response, context).toString()
                 }
 
