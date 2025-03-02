@@ -23,7 +23,6 @@ import androidx.navigation.findNavController
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
-import com.google.firebase.auth.GoogleAuthProvider
 import com.vvieira.appauthenticator.BuildConfig
 import com.vvieira.appauthenticator.R
 import com.vvieira.appauthenticator.databinding.FragmentLoginBinding
@@ -32,8 +31,6 @@ import com.vvieira.appauthenticator.domain.model.Register
 import com.vvieira.appauthenticator.ui.AuthenticViewModel
 import com.vvieira.appauthenticator.util.DEFAUT_AUTH
 import com.vvieira.appauthenticator.util.GOOGLE_AUTH
-import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.ALREADY_FACEBOOK_REGISTERED
-import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.ALREADY_GOOGLE_REGISTERED
 import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.NOT_REGISTERED_YET
 import com.vvieira.appauthenticator.util.Utils
 import com.vvieira.appauthenticator.util.Utils.Companion.customSnackBar
@@ -82,7 +79,7 @@ class LoginFragment : Fragment() {
         binding.botaoLogin.setOnClickListener {
 //            showLoading()
             lifecycleScope.launch {
-                viewModel.loginPassword(
+                viewModel.login(
                     Login(
                         email = binding.loginField.text.toString(),
                         password = binding.senhaLogin.text.toString(),
@@ -101,7 +98,7 @@ class LoginFragment : Fragment() {
 //                hideLoading()
 //            }, 5000)
 //        }
-        binding.gmailLogin.setOnClickListener {
+        binding.googleLogin.setOnClickListener {
             lifecycleScope.launch {
                 try {
                     val googleIdOption: GetSignInWithGoogleOption =
@@ -113,8 +110,7 @@ class LoginFragment : Fragment() {
 
                     val credentialManager = CredentialManager.create(requireContext())
                     val response = credentialManager.getCredential(requireContext(), request)
-                    val credential = response.credential
-                    when (credential) {
+                    when (val credential = response.credential) {
                         is CustomCredential -> {
                             if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
                                 try {
@@ -122,16 +118,26 @@ class LoginFragment : Fragment() {
                                     // authenticate on your server.
                                     val googleIdTokenCredential = GoogleIdTokenCredential
                                         .createFrom(credential.data)
-                                    val googleTokenId = googleIdTokenCredential.idToken
-                                    val name = googleIdTokenCredential.displayName
+                                    val name = googleIdTokenCredential.displayName.toString()
                                     val email = googleIdTokenCredential.id
-                                    val authCredential = GoogleAuthProvider.getCredential(googleTokenId,null)
-                                    Log.i("googleTokenId", googleTokenId)
-                                    Log.i("authCredential", authCredential.toString())
-                                    Log.i("name", name.toString())
-
+                                    val googleTokenId = googleIdTokenCredential.idToken
+//                                    val authCredential = GoogleAuthProvider.getCredential(googleTokenId,null)
+//                                    Log.i("authCredential", authCredential.toString())
+                                    viewModel.socialAuth(
+                                        Register(
+                                            email = email,
+                                            name = name,
+                                            googleId = googleTokenId,
+                                            type = GOOGLE_AUTH
+                                        ),
+                                        requireContext()
+                                    )
                                 } catch (e: GoogleIdTokenParsingException) {
-                                    Log.e("GOOGLE", "Received an invalid google id token response", e)
+                                    Log.e(
+                                        "GOOGLE",
+                                        "Received an invalid google id token response",
+                                        e
+                                    )
                                 }
                             } else {
                                 // Catch any unrecognized custom credential type here.
@@ -154,7 +160,7 @@ class LoginFragment : Fragment() {
                                 val user = Register(
                                     email = id,
                                     name = displayName,
-                                    gmailId = credential.idToken,
+                                    googleId = credential.idToken,
                                     type = GOOGLE_AUTH
                                 )
                                 viewModel.socialAuth(user, requireContext())
@@ -225,17 +231,7 @@ class LoginFragment : Fragment() {
                         //TODO FAZER CADASTRAMENTO, INDO PARA OUTRO FRAGMENTO COM INFORMACOES E FALANDO PRA ELE LER TERMO DE USO.
                     }
 
-                    ALREADY_GOOGLE_REGISTERED -> {
-                        //TODO, REALIZAR LOGIN.
-                    }
 
-                    ALREADY_FACEBOOK_REGISTERED -> {
-                        //TODO, REALIZAR LOGIN.
-                    }
-
-                    (ALREADY_GOOGLE_REGISTERED + ALREADY_FACEBOOK_REGISTERED) -> {
-                        //TODO FALAR QUE A CONTA JA ESTA VINCULADA A UM EMAIL E SENHA, FAZER LOGIN ACIMA. ALGO ASSIM
-                    }
 
                     else -> {
                         customSnackBar(
@@ -250,6 +246,7 @@ class LoginFragment : Fragment() {
         }
 
         viewModel.socialAuthInformations.observe(viewLifecycleOwner) { loginInf ->
+            Log.d("Social", loginInf.name!!)
             customSnackBar(
                 binding.root,
                 "CADASTRAR!",

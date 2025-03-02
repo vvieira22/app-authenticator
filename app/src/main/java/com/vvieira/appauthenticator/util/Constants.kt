@@ -18,7 +18,7 @@ const val EMAIL = "email"
 const val PASSWORD = "password"
 const val NAME = "name"
 const val FACEBOOK_ID = "facebookId"
-const val GMAIL_ID = "gmailId"
+const val GOOGLE_ID = "googleId"
 const val BIOMETRIC_DATA = "biometricData"
 const val DOCUMENT = "document"
 const val BIRTHDAY = "birthday"
@@ -68,12 +68,8 @@ object HttpStatusCodes {
 //SOCIAL LOGIN ERROS
 object SOCIAL_AUTH_ERROS {
     const val NOT_REGISTERED_YET = "User not registered yet."
-    const val ALREADY_GOOGLE_REGISTERED = "User registered with google."
-    const val ALREADY_GOOGLE_AND_DEFAULT_REGISTERED = "User registered with google and password."
-    const val ALREADY_FACEBOOK_REGISTERED = "User registered with facebook."
-    const val ALREADY_FACEBOOK_AND_DEFAULT_REGISTERED =
-        "User registered with facebook and password."
-    const val ALREADY_DEFAULT_REGISTERED = "User registered with password."
+    const val ALREADY_REGISTERED_NOT_GOOGLE = "User registered but not with google."
+    const val ALREADY_REGISTERED_NOT_FACEBOOK = "User registered but not with google."
 }
 
 enum class SpecificMsgTypes {

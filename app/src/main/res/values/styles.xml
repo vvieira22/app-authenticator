@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="CancelButtonStyle" parent="Widget.Material3.Button.ElevatedButton">
+        <item name="strokeColor">@color/cancel_red</item>
+        <item name="android:textColor">@color/white</item>
+        <item name ="android:backgroundTint">@color/cancel_red_dark</item>
+    </style>
+
+    <style name="AcceptButtonStyle" parent="Widget.Material3.Button.ElevatedButton">
+        <item name="strokeColor">@color/cancel_red</item>
+        <item name="android:textColor">@color/white</item>
+        <item name ="android:backgroundTint">@color/LoginBottom</item>
+    </style>
+
+</resources>

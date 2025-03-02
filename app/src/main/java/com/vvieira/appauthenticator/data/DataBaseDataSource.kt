@@ -21,10 +21,10 @@ class DataBaseDataSource @Inject constructor(
     clientRetrofit: Retrofit
 ) : LoginDataSource {
     private val clientRetrofitWithRoutes = clientRetrofit.create(AuthEndPoint::class.java)
-    override suspend fun loginPassword(user: LoginModelRequest): ResultRequest {
+    override suspend fun login(user: LoginModelRequest, type: String): ResultRequest {
         return suspendCoroutine { continuation ->
             var responseLoginPassword = ""
-            clientRetrofitWithRoutes.login("password", user).enqueue(
+            clientRetrofitWithRoutes.login(type, user).enqueue(
                 object : Callback<ResponseBody> {
                     override fun onResponse(
                         call: Call<ResponseBody>,
@@ -40,13 +40,13 @@ class DataBaseDataSource @Inject constructor(
                             } else {
                                 val errCode = response.code()
                                 val responseMessage = response.message()
-//                                val errBody = response.errorBody()?.string()
-//                                val checkResponse: OkResponse =
-//                                    Gson().fromJson(errBody, OkResponse::class.java)
+                                val errBody = response.errorBody()?.string()
+                                val checkResponse: OkResponse =
+                                    Gson().fromJson(errBody, OkResponse::class.java)
 
                                 continuation.resumeWithException(
                                     (ApiException(
-                                        responseMessage,
+                                        checkResponse.message,
                                         errCode
                                     ))
                                 )

@@ -10,8 +10,8 @@ class LoginPasswordUseCaseImpl @Inject constructor(
     private val userRepository: UserRepository
 ) :
     LoginPasswordUseCase {
-    override suspend fun invoke(user: LoginModelRequest): ResultRequest {
-        return try { userRepository.loginPassword(user) }
+    override suspend fun invoke(user: LoginModelRequest, type: String): ResultRequest {
+        return try { userRepository.login(user, type) }
         catch (e: ApiException) { throw ApiException(e.responseMessage, e.errorCode) }
         catch(e: Exception) { throw Exception(e.message) }
     }

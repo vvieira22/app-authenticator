@@ -16,7 +16,7 @@ import dagger.hilt.android.components.ViewModelComponent
 interface DomainModule {
     @Binds
     fun bindLoginPasswordUseCase(useCase: LoginPasswordUseCaseImpl): LoginPasswordUseCase
-    //quando alguem precisar da dependencia loginPasswordUseCase forneça loginPasswordUseCaseImpl
+    //quando alguem precisar da dependencia loginUseCase forneça loginUseCaseImpl
     //Se no futuro voce criar um nova implementacao para essa interface, so abrir o modulo do dagger e trocar a implementacao.
     //Desde que ela implemente a mesma interface.
 

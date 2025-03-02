@@ -8,11 +8,8 @@ import androidx.core.graphics.drawable.toDrawable
 import androidx.core.text.isDigitsOnly
 import com.google.android.material.snackbar.Snackbar
 import com.vvieira.appauthenticator.R
-import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.ALREADY_DEFAULT_REGISTERED
-import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.ALREADY_FACEBOOK_AND_DEFAULT_REGISTERED
-import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.ALREADY_FACEBOOK_REGISTERED
-import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.ALREADY_GOOGLE_AND_DEFAULT_REGISTERED
-import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.ALREADY_GOOGLE_REGISTERED
+import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.ALREADY_REGISTERED_NOT_FACEBOOK
+import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.ALREADY_REGISTERED_NOT_GOOGLE
 import com.vvieira.appauthenticator.util.SOCIAL_AUTH_ERROS.NOT_REGISTERED_YET
 import com.vvieira.appauthenticator.util.SpecificMsgTypes.AUTH_SOCIAL_ERRORS
 import com.vvieira.appauthenticator.util.SpecificMsgTypes.DEFAULT_ERROS
@@ -159,21 +156,13 @@ class Utils {
             return regex.matches(response.lowercase(Locale.getDefault()))
         }
 
-        private fun socialAuthResponses(response: String, context: Context): String? {
+        private fun socialAuthResponses(response: String, context: Context): String {
             return when {
-                (response.contains(Regex(NOT_REGISTERED_YET))) -> (context.getString(R.string.social_auth_not_registered_yet))
-                (response.contains(Regex(ALREADY_GOOGLE_REGISTERED))) -> (context.getString(R.string.social_auth_already_google_registered))
-                (response.contains(Regex(ALREADY_GOOGLE_AND_DEFAULT_REGISTERED))) -> (context.getString(
-                    R.string.social_auth_already_google_and_default_registered
-                ))
+                (response == NOT_REGISTERED_YET) -> (NOT_REGISTERED_YET)
+                (response == ALREADY_REGISTERED_NOT_GOOGLE) -> (context.getString(R.string.registered_but_not_with_this_social_method))
+                (response == ALREADY_REGISTERED_NOT_FACEBOOK) -> (context.getString(R.string.registered_but_not_with_this_social_method))
 
-                (response.contains(Regex(ALREADY_FACEBOOK_REGISTERED))) -> (context.getString(R.string.social_auth_already_facebook_registered))
-                (response.contains(Regex(ALREADY_FACEBOOK_AND_DEFAULT_REGISTERED))) -> (context.getString(
-                    R.string.social_auth_already_facebook_and_default_registered
-                ))
-
-                (response.contains(Regex(ALREADY_DEFAULT_REGISTERED))) -> (context.getString(R.string.social_auth_already_default_registered))
-                else -> null
+                else -> (context.getString(R.string.generic_error_social_auth))
             }
         }
     }

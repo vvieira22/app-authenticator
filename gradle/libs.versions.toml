@@ -27,6 +27,7 @@ firebaseCrashlytics = "18.4.3"
 firebaseAuth= "23.0.0"
 firebaseFirestoreKtx = "25.1.1"
 navigationFragmentKtx = "2.8.4"
+navigationSafeArgsGradlePlugin = "2.8.8"
 navigationUiKtx = "2.8.4"
 annotation = "1.9.1"
 lifecycleLivedataKtx = "2.8.6"
@@ -46,6 +47,7 @@ androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref
 androidx-lifecycle-livedata-ktx-v220 = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtxVersion" }
 androidx-lifecycle-viewmodel-ktx-v261 = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtxVersion" }
 androidx-lifecycle-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "lifecycleViewmodelSavedstate" }
+androidx-navigation-safe-args-gradle-plugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigationSafeArgsGradlePlugin" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-analytics = {  module = "com.google.firebase:firebase-bom", version.ref = "firebaseAnalytics"}

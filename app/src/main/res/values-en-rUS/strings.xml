@@ -51,15 +51,8 @@
     <string name="http_504">Server response timed out. Try again later.</string>
 
     <!-- SOCIAL AUTH ERRORS -->
-    <string name="social_auth_not_registered_yet">User not registered yet.</string>
-    <string name="social_auth_already_google_registered">User registered with Google.</string>
-    <string name="social_auth_already_google_and_default_registered">User registered with Google and
-        password.</string>
-    <string name="social_auth_already_facebook_registered">User registered with Facebook.</string>
-    <string name="social_auth_already_facebook_and_default_registered">User registered with Facebook
-        and password.</string>
-    <string name="social_auth_already_default_registered">User already registered with email, please
-        sign in with email and password.</string>
+    <string name="generic_error_social_auth">An error occurred when trying access, please try again or use another method to access.</string>
+    <string name="registered_but_not_with_this_social_method">Your account is registered with another login method, please use it to access.</string>
 
     <!-- Common HTTP sucess -->
     <string name="http_success_login_200">Login successful!</string>

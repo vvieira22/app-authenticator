@@ -50,12 +50,8 @@
     <string name="http_504">Tempo de resposta do servidor esgotado. Tente novamente mais tarde.</string>
 
     <!-- SOCIAL AUTH ERRORS -->
-    <string name="social_auth_not_registered_yet">Usuário ainda não cadastrado.</string>
-    <string name="social_auth_already_google_registered">Usuário cadastrado com o Google.</string>
-    <string name="social_auth_already_google_and_default_registered">Usuário cadastrado com o Google e senha.</string>
-    <string name="social_auth_already_facebook_registered">Usuário cadastrado com o Facebook.</string>
-    <string name="social_auth_already_facebook_and_default_registered">Usuário cadastrado com o Facebook e senha.</string>
-    <string name="social_auth_already_default_registered">Usuário cadastrado via email, por favor realizar login com email e senha.</string>
+    <string name="generic_error_social_auth">Um erro ocorreu utilizando esse método de acesso, por favor tente novamente ou utilize outro método de acesso.</string>
+    <string name="registered_but_not_with_this_social_method">Sua conta foi cadastrada por outro método de login, por favor o utilize para acessar.</string>
 
     <!-- Common HTTP sucess -->
     <string name="http_success_login_200">Login realizado com sucesso!</string>
