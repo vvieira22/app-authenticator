@@ -6,13 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.vvieira.appauthenticator.databinding.FragmentWelcomeBinding
+import com.vvieira.appautenticator.utils.CpfCnpjTextWatcher
+import com.vvieira.appauthenticator.databinding.FragmentFinishRegisterBinding
+import com.vvieira.appauthenticator.util.MyMaskGeneric
+import com.vvieira.appauthenticator.util.TelefoneBrasilTextWatcher
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class WelcomeFragment : Fragment() {
+class FinishRegisterFragment : Fragment() {
 
-    private var _binding: FragmentWelcomeBinding? = null
+    private var _binding: FragmentFinishRegisterBinding? = null
     private val binding get() = _binding!!
     private val viewModel: AuthenticViewModel by activityViewModels()
 
@@ -22,7 +25,7 @@ class WelcomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 //        requireActivity().enableEdgeToEdge() //acho que n precisa desse cara se ja ta ativado na activity que chamou ele.
-        _binding = FragmentWelcomeBinding.inflate(inflater, container, false)
+        _binding = FragmentFinishRegisterBinding.inflate(inflater, container, false)
         binding.botaoVoltar.setOnClickListener {
             requireActivity().finish()
         }
@@ -32,29 +35,12 @@ class WelcomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.dataLoginWelcome.observe(viewLifecycleOwner) { data ->
-            binding.email.text = data.toString()
+            binding.email.setText(data.toString())
         }
+        binding.telefone.addTextChangedListener(MyMaskGeneric(binding.telefone, "(##)#####-####"))
+        binding.dataNascimento.addTextChangedListener(MyMaskGeneric(binding.dataNascimento, "##/##/####"))
+        binding.documento.addTextChangedListener(CpfCnpjTextWatcher())
     }
-//
-//    //RESPEITAR PADDING.
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//
-//        ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
-//            val systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-//            val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
-//
-//            // Ajuste o padding considerando os system bars e o IME (teclado)
-//            v.setPadding(
-//                systemBarsInsets.left,
-//                0,
-//                systemBarsInsets.right,
-//                systemBarsInsets.bottom + imeInsets.bottom
-//            )
-//
-//            WindowInsetsCompat.CONSUMED
-//        }
-//    }
 
     override fun onDestroyView() {
 //        activity?.recreate()

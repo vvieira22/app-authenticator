@@ -199,11 +199,11 @@ class LoginFragment : Fragment() {
 
     private fun observerViewModelEvents() {
         viewModel.emaiLoginField.observe(viewLifecycleOwner) { resposta ->
-            binding.loginField.error = resposta
+            binding.loginFieldLyt.error = resposta
         }
 
         viewModel.passwordLoginField.observe(viewLifecycleOwner) { resposta ->
-            binding.senhaLogin.error = resposta
+            binding.senhaLoginLyt.error = resposta
         }
 
         viewModel.loginResponse.observe(viewLifecycleOwner) { event ->
@@ -211,7 +211,7 @@ class LoginFragment : Fragment() {
                 when (response.code) {
                     in 200..299 -> {
                         val navController = requireView().findNavController()
-                        navController.navigate(R.id.action_loginFragment_to_welcomeFragment)
+                        navController.navigate(R.id.action_loginFragment_to_FinishRegisterFragment)
                     }
 
                     else -> customSnackBar(
@@ -228,12 +228,8 @@ class LoginFragment : Fragment() {
             event.getContentIfNotHandled()?.let { message ->
                 when (message) {
                     NOT_REGISTERED_YET -> {
-                        customSnackBar(
-                            binding.root,
-                            "Ir para tela de termo de aceite.",
-                            Color.GREEN,
-                            Color.WHITE
-                        )
+                        val navController = requireView().findNavController()
+                        navController.navigate(R.id.action_loginFragment_to_acceptTermsFragment)
                     }
 
                     else -> {

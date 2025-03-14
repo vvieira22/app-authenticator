@@ -45,10 +45,19 @@ class AcceptTermsFragment : Fragment() {
 
             WindowInsetsCompat.CONSUMED
         }
+        setListeners()
+    }
+
+    private fun setListeners() {
+        binding.btnLeft.setOnClickListener {
+            val intent = requireActivity().intent
+            requireActivity().finish()
+            startActivity(intent)
+        }
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         _binding = null // Limpa o binding para evitar vazamentos de memória
+        super.onDestroyView()
     }
 }

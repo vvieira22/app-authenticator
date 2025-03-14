@@ -1,11 +1,11 @@
 # [UNRELEASED VERSION]
 
 ## Março 2025
->1. **Refatoração do login com google**: Precisei colocar uma validação para customCredentials e refazer o firebase todo, se atentar no clienteid e google-services.json novos.**
->2. **Adicionando check para validar se o usuário com login social já tem email cadastrado.**
->3. **Alteração de algumas respostas para tentativa de login social.**
+>1. **Refatoração do login com google**: Precisei colocar uma validação para customCredentials e refazer o firebase todo, se atentar no clienteid e google-services.json novos
+>2. **Adicionando check para validar se o usuário com login social já tem email cadastrado**
+>3. **Alteração de algumas respostas para tentativa de login social**
 >4. **Melhorias no readme.**
-
+>5. **Refatoração Layout:** Adição de ícones e mudança de edittext para textinputlayout do material3, entre outras melhorias no design do app.
 
 ## Janeiro & Fevereiro 2025
 > Add:
@@ -37,6 +37,7 @@
 
 Níveis I, II, III e IV, quanto **menor** o número **maior** a prioridade.
 ### I
+>- Customizar a cor do edittext quando tem um erro setado, hoje ta meio vermelinho, estranho, precisa ser todo vermelho em tudo.
 >- Validar tela de confirmação de termo de uso, e criar uma tela de continuar/finalizzar cadastro a partir disso.
 ---
 ### II

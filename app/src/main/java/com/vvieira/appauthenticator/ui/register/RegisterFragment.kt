@@ -50,19 +50,19 @@ class RegisterFragment : Fragment() {
 
     private fun observerViewModelEvents() {
         viewModel.nameField.observe(viewLifecycleOwner) { resposta ->
-            binding.nomeCadastro.error = resposta
+            binding.nomeCadastroLyt.error = resposta
         }
         viewModel.documentField.observe(viewLifecycleOwner) { resposta ->
-            binding.documento.error = resposta
+            binding.documentoLyt.error = resposta
         }
         viewModel.emailRegisterField.observe(viewLifecycleOwner) { resposta ->
-            binding.emailRegister.error = resposta
+            binding.emailRegisterLyt.error = resposta
         }
         viewModel.phoneField.observe(viewLifecycleOwner) { resposta ->
-            binding.telefone.error = resposta
+            binding.telefoneLyt.error = resposta
         }
         viewModel.passwordRegisterField.observe(viewLifecycleOwner) { resposta ->
-            binding.senhaCadastro.error = resposta
+            binding.senhaCadastroLyt.error = resposta
         }
 
         //TODO PARAMETRIZAR COR E CONFIGURACAO DA SNACKBAR PARA DIFERENCIAR EVENTOS.

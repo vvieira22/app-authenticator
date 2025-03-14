@@ -17,8 +17,8 @@
             android:id="@+id/action_loginFragment_to_acceptTermsFragment"
             app:destination="@id/acceptTermsFragment" />
         <action
-            android:id="@+id/action_loginFragment_to_welcomeFragment"
-            app:destination="@id/welcomeFragment" />
+            android:id="@+id/action_loginFragment_to_FinishRegisterFragment"
+            app:destination="@id/FinishRegisterFragment" />
     </fragment>
 
     <fragment
@@ -37,14 +37,14 @@
         android:label="AcceptTermsFragment"
         tools:layout="@layout/fragment_accept_terms">
         <action
-            android:id="@+id/action_acceptTermsFragment_to_welcomeFragment"
-            app:destination="@id/welcomeFragment" />
+            android:id="@+id/action_acceptTermsFragment_to_FinishRegisterFragment"
+            app:destination="@id/FinishRegisterFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/welcomeFragment"
-        android:name="com.vvieira.appauthenticator.ui.WelcomeFragment"
-        android:label="WelcomeFragment"
+        android:id="@+id/FinishRegisterFragment"
+        android:name="com.vvieira.appauthenticator.ui.FinishRegisterFragment"
+        android:label="FinishRegisterFragment"
         tools:layout="@layout/fragment_welcome">
     </fragment>
 </navigation>
