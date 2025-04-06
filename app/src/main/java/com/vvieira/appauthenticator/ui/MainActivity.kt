@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         installSplashScreen()
         enableEdgeToEdge()
 //        window.navigationBarColor = ContextCompat.getColor(this, R.color.LoginBottom)
+//        setTheme(R.style.Theme_NpFonseca)
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

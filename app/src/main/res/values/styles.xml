@@ -29,4 +29,12 @@
     <style name="TextInputEditText.Outlined" parent="">
         <item name="colorControlActivated">@color/white</item>
     </style>
+
+    <style name="Theme.NpFonseca" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/np_fonseca_primary</item>
+        <item name="colorSecondary">@color/np_fonseca_secondary</item>
+    </style>
+
+
+
 </resources>

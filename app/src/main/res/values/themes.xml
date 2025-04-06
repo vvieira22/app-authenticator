@@ -6,4 +6,9 @@
         <item name="colorPrimaryDark">@color/bluelogin</item>
     </style>
 
+    <style name="Base.Theme.NpFonseca" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/np_fonseca_primary</item>
+        <item name="colorSecondary">@color/np_fonseca_secondary</item>
+        <item name="iconLogin">@drawable/logo_np_fonseca_login</item>
+    </style>
 </resources>

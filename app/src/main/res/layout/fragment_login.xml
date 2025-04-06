@@ -24,10 +24,10 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="180dp"
-            android:layout_height="180dp"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
             android:layout_marginBottom="35dp"
-            android:src="@drawable/icon_login" />
+            android:src="?attr/iconLogin" />
 
         <!--        <EditText-->
         <!--            android:id="@+id/login_field_lyt"-->
@@ -45,6 +45,7 @@
 <!--        login_field-->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/login_field_lyt"
+            android:layout_marginTop="30dp"
             style="@style/TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -101,7 +102,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="75dp"
             android:backgroundTint="@color/white"
-            android:padding="10dp"
+            android:padding="8dp"
             android:text="Entrar"
             android:textColor="#101010"
             android:textSize="25sp" />

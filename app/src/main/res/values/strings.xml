@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">AppAuthenticator</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 
     <!--MENSAGENS DE ERRO LOGIN-->
     <string name="invalid_credential">Senha ou Email incorretos.</string>
@@ -63,7 +65,6 @@
     <string name="http_success_action_completed_200">Ação concluída com sucesso.</string>
     <string name="http_success_request_sent_202">Solicitação enviada com sucesso.</string>
     <string name="http_success_operation_200">Operação realizada com sucesso.</string>
-
 
 
     <!--Termos de uso-->

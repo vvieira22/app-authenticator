@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">AppAuthenticator</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 
     <!--ERROR MESSAGES WHEN SIGN IN-->
     <string name="invalid_credential">Password or email is invalid.</string>

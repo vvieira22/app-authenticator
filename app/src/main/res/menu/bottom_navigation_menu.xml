@@ -1,0 +1,26 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:checkableBehavior="single">
+    <item
+        android:id="@+id/item_1"
+        android:icon="@drawable/home_icon"
+        android:title="Início"/>
+    <item
+        android:id="@+id/item_2"
+        android:icon="@drawable/favorito_icon"
+        android:title="Favoritos"/>
+    <item
+        android:id="@+id/item_3"
+        android:title="Carrinho"
+        android:icon="@drawable/cart_icon"
+        android:enabled="true"/>
+    <item
+        android:id="@+id/item_4"
+        android:icon="@drawable/icon_person"
+        android:title="Perfil"/>
+    <item
+        android:id="@+id/item_5"
+        android:icon="@drawable/pesquisar_icon"
+        android:title="Pesquisar"/>
+    </group>
+</menu>

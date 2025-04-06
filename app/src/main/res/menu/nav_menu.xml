@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:id="@+id/item_1"
+        android:title="Pesquisar"
+        android:icon="@drawable/pesquisar_icon" />
+    <item
+        android:id="@+id/item_2"
+        android:title="Início"
+        android:icon="@drawable/home_icon" />
+    <item
+        android:id="@+id/item_3"
+        android:title="Configurações"
+        android:icon="@drawable/config_icon" />
+    <item
+        android:id="@+id/item_4"
+        android:title="Meu dados"
+        android:icon="@drawable/icon_person" />
+    <item
+        android:id="@+id/item_5"
+        android:title="Favoritos"
+        android:icon="@drawable/favorito_icon" />
+
+</menu>

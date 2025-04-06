@@ -10,4 +10,7 @@
     <color name="cancel_red_dark">#D32F2F</color>
     <color name="cancel_red_light">#FFCDD2</color>
 
+    <color name="np_fonseca_primary">#1D6347</color>
+    <color name="np_fonseca_secondary">#BBFFFFFF</color>
+
 </resources>

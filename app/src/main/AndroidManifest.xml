@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:usesCleartextTraffic="true"
         android:name=".MyApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -14,10 +13,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Base.Theme.AppAuthenticator"
+        android:theme="@style/Base.Theme.NpFonseca"
+        android:usesCleartextTraffic="true"
         tools:targetApi="34">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.IdleActivity"
             android:exported="true"
             android:theme="@style/Theme.MyApp.MySplash">
             <intent-filter>
