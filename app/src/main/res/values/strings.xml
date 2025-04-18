@@ -122,5 +122,7 @@
     <string name="clause_10">10. Contato</string>
     <string name="clause_10_text">Se você tiver dúvidas ou preocupações sobre estes termos, entre em
         contato conosco através do nosso suporte ao cliente.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

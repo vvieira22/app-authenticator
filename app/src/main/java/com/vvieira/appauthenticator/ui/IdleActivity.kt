@@ -1,6 +1,7 @@
 package com.vvieira.appauthenticator.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.addCallback
 import android.view.MenuItem
 import androidx.activity.OnBackPressedCallback
@@ -10,7 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
+import com.vvieira.appauthenticator.Home
 import com.vvieira.appauthenticator.R
 import com.vvieira.appauthenticator.databinding.ActivityIdleBinding
 import com.vvieira.appauthenticator.domain.model.Categoria
@@ -29,9 +32,29 @@ class IdleActivity : AppCompatActivity() {
 
         binding = ActivityIdleBinding.inflate(layoutInflater) // Initialize binding
         setContentView(binding.root)
-
         setupActionBar()
+        replaceFragment(Home())
+        binding.bottomNavigation.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.inicio -> { Log.d("teste", "inicio")}
+                R.id.favoritos -> {Log.d("teste", "inicio")}
+                R.id.carrinho -> {Log.d("teste", "inicio")}
+                R.id.perfil -> {Log.d("teste", "inicio")}
+                R.id.pesquisar -> {Log.d("teste", "inicio")}
+
+                else -> {}
+            }
+            true
+        }
+
         setupRecyclerView()
+    }
+
+    private fun replaceFragment(fragment : Fragment) {
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.fragment_container, fragment)
+        fragmentTransaction.commit()
     }
 
     private fun setupRecyclerView(){
@@ -45,6 +68,7 @@ class IdleActivity : AppCompatActivity() {
         val categoriasAdapter = CategoriasAdapter(this, categoriasList)
         binding.recyclerCategorias.adapter = categoriasAdapter
     }
+
     private fun setupActionBar(){
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
@@ -94,6 +118,8 @@ class IdleActivity : AppCompatActivity() {
             }
         })
     }
+
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (toggle.onOptionsItemSelected(item)) {
             return true

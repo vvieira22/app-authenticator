@@ -2,24 +2,24 @@
     <group
         android:checkableBehavior="single">
     <item
-        android:id="@+id/item_1"
+        android:id="@+id/inicio"
         android:icon="@drawable/home_icon"
         android:title="Início"/>
     <item
-        android:id="@+id/item_2"
+        android:id="@+id/favoritos"
         android:icon="@drawable/favorito_icon"
         android:title="Favoritos"/>
     <item
-        android:id="@+id/item_3"
+        android:id="@+id/carrinho"
         android:title="Carrinho"
         android:icon="@drawable/cart_icon"
         android:enabled="true"/>
     <item
-        android:id="@+id/item_4"
+        android:id="@+id/perfil"
         android:icon="@drawable/icon_person"
         android:title="Perfil"/>
     <item
-        android:id="@+id/item_5"
+        android:id="@+id/pesquisar"
         android:icon="@drawable/pesquisar_icon"
         android:title="Pesquisar"/>
     </group>
