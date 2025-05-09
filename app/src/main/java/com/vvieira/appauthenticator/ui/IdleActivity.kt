@@ -24,7 +24,6 @@ class IdleActivity : AppCompatActivity() {
     lateinit var toggle: ActionBarDrawerToggle
     lateinit var binding: ActivityIdleBinding // Declare binding as lateinit
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         enableEdgeToEdge()
@@ -33,7 +32,7 @@ class IdleActivity : AppCompatActivity() {
         binding = ActivityIdleBinding.inflate(layoutInflater) // Initialize binding
         setContentView(binding.root)
         setupActionBar()
-        replaceFragment(Home())
+
         binding.bottomNavigation.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.inicio -> { Log.d("teste", "inicio")}
@@ -48,13 +47,6 @@ class IdleActivity : AppCompatActivity() {
         }
 
         setupRecyclerView()
-    }
-
-    private fun replaceFragment(fragment : Fragment) {
-        val fragmentManager = supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.fragment_container, fragment)
-        fragmentTransaction.commit()
     }
 
     private fun setupRecyclerView(){
