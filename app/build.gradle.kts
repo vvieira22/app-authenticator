@@ -66,6 +66,9 @@ android {
 
 dependencies {
 
+    //carousel
+    implementation(libs.androidx.viewpager2)
+
     //Google Authentication
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)

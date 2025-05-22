@@ -23,13 +23,20 @@
             app:layout_constraintEnd_toStartOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/fragment_container"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
         </androidx.appcompat.widget.Toolbar>
 
-        <FrameLayout
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:name="com.vvieira.appauthenticator.ui.idle.IdleFragment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
@@ -38,23 +45,11 @@
             android:background="@color/np_fonseca_primary"
             app:itemHorizontalTranslationEnabled="false"
             app:labelVisibilityMode="labeled"
-            app:layout_constraintBottom_toBottomOf="@+id/fragment_container"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/bottom_navigation_menu" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerCategorias"
-            android:layout_width="match_parent"
-            android:layout_marginTop="30dp"
-            android:layout_height="0dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="3"
-            android:orientation="horizontal"
-            tools:listitem="@layout/categorias_item_layout"
-            app:layout_constraintEnd_toEndOf="@+id/fragment_container"
-            app:layout_constraintStart_toStartOf="@+id/fragment_container"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
