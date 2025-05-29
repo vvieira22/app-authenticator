@@ -14,7 +14,7 @@ import androidx.fragment.app.commit
 import com.google.android.material.navigation.NavigationView
 import com.vvieira.appauthenticator.R
 import com.vvieira.appauthenticator.databinding.ActivityIdleBinding
-import com.vvieira.appauthenticator.ui.idle.IdleFragment
+import com.vvieira.appauthenticator.ui.idle.HomeFragment
 
 class IdleActivity : AppCompatActivity() {
 
@@ -35,7 +35,7 @@ class IdleActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
-                replace(R.id.fragment_container, IdleFragment())
+                replace(R.id.fragment_container, HomeFragment())
                 // Se você usar o Navigation Component, a navegação será gerenciada de outra forma
             }
         }
@@ -47,7 +47,7 @@ class IdleActivity : AppCompatActivity() {
                 R.id.inicio -> {
                     Log.d("teste", "inicio")
                     supportFragmentManager.commit {
-                        replace(R.id.fragment_container, IdleFragment())
+                        replace(R.id.fragment_container, HomeFragment())
                     }
                     true
                 }

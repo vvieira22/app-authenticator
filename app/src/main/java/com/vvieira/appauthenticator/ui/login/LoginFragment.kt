@@ -5,6 +5,8 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -78,18 +80,25 @@ class LoginFragment : Fragment() {
     private fun setListeners() {
         binding.botaoLogin.setOnClickListener {
 //            showLoading()
-            lifecycleScope.launch {
-                viewModel.login(
-                    Login(
-                        email = binding.loginField.text.toString(),
-                        password = binding.senhaLogin.text.toString(),
-                        type = DEFAUT_AUTH
-                    ),
-                    requireContext()
-                )
-//                ).join()// Aguarda a conclusão do Job
-//                hideLoading()
-            }
+//            lifecycleScope.launch {
+//                viewModel.login(
+//                    Login(
+//                        email = binding.loginField.text.toString(),
+//                        password = binding.senhaLogin.text.toString(),
+//                        type = DEFAUT_AUTH
+//                    ),
+//                    requireContext()
+//                )
+////                ).join()// Aguarda a conclusão do Job
+////                hideLoading()
+//            }
+
+            showLoading()
+            Handler(Looper.getMainLooper()).postDelayed({
+                val navController = it.findNavController()
+                navController.navigate(R.id.action_loginFragment_to_mainAppGraph)
+                hideLoading()
+            }, 2000)
         }
 
 //        binding.recuperarSenha.setOnClickListener {

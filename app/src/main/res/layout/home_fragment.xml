@@ -50,14 +50,13 @@
             android:id="@+id/recyclerCategorias"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:layout_marginTop="30dp"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/indicatorLayout"
-            tools:itemCount="3"
+            tools:itemCount="5"
             tools:listitem="@layout/categorias_item_layout" />
 
         <LinearLayout
@@ -122,7 +121,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayoutMaisVendidos"
-            tools:itemCount="3"
+            tools:itemCount="4"
             tools:listitem="@layout/mais_vendidos_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

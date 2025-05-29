@@ -1,7 +1,6 @@
 package com.vvieira.appauthenticator.ui.idle
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -9,9 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
@@ -24,7 +21,7 @@ import com.vvieira.appauthenticator.recyclerviews.adapter.BannersCarouselAdapter
 import com.vvieira.appauthenticator.recyclerviews.adapter.CategoriasAdapter
 import com.vvieira.appauthenticator.recyclerviews.adapter.MaisVendidosAdapter
 
-class IdleFragment : Fragment() {
+class HomeFragment : Fragment() {
 
     private var _binding: HomeFragmentBinding? = null
     private val binding get() = _binding!!
